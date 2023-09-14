@@ -4,16 +4,37 @@ import { TouchableOpacity, StyleSheet, Text } from "react-native";
 export default function TouchableButton({ label, theme, action }) {
   return (
     <TouchableOpacity
-      style={[styles.button, theme == "filled" ? styles.filled : styles.light]}
+      style={[styles.button, fontButtonStyle(theme)]}
       onPress={action}
     >
-      <Text
-        style={[styles.text, theme == "filled" ? styles.filled : styles.light]}
-      >
-        {label}
-      </Text>
+      <Text style={[styles.text, fontButtonStyle(theme)]}>{label}</Text>
     </TouchableOpacity>
   );
+}
+
+function fontButtonStyle(type) {
+  switch (type) {
+    case "filled":
+      return {
+        backgroundColor: "#000000",
+        color: "#ffffff",
+      };
+    case "outlined":
+      return {
+        backgroundColor: "#ffffff",
+        color: "#000000",
+      };
+    case "light":
+      return {
+        backgroundColor: "#EDEDED",
+        color: "#000000",
+      };
+    default:
+      return {
+        backgroundColor: "#000000",
+        color: "#ffffff",
+      };
+  }
 }
 
 const styles = StyleSheet.create({
@@ -30,6 +51,11 @@ const styles = StyleSheet.create({
   filled: {
     backgroundColor: "#000000",
     color: "#ffffff",
+  },
+  outlined: {
+    backgroundColor: "#ffffff",
+    color: "#000000",
+    borderWidth: 1,
   },
   light: {
     backgroundColor: "#EDEDED",

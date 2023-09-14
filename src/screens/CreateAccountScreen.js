@@ -38,13 +38,11 @@ export default function CreateAccountScreen() {
   });
 
   const onContinuePressed = () => {
-    // const nameError = nameValidator(name.value);
-    // if (nameError) {
-    //   setName({ ...name, error: nameError });
-    //   return;
-    // }
-    console.log(userName, password);
     alert("Continue");
+  };
+
+  const onBackPressed = () => {
+    alert("Back");
   };
 
   return (
@@ -133,6 +131,12 @@ export default function CreateAccountScreen() {
         label="Continue"
         theme="filled"
         action={onContinuePressed}
+      ></TouchableButton>
+
+      <TouchableButton
+        label="Back"
+        theme="outlined"
+        action={onBackPressed}
       ></TouchableButton>
     </ScrollView>
   );
