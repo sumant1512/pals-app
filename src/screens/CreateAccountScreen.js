@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 
-import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View } from "../components/Themed";
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
@@ -50,7 +48,7 @@ export default function CreateAccountScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <PalsText label="Create Account" type="h1"></PalsText>
 
       <PalsTextInput
@@ -136,7 +134,7 @@ export default function CreateAccountScreen() {
         theme="filled"
         action={onContinuePressed}
       ></TouchableButton>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -144,6 +142,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    justifyContent: "center",
   },
 });
