@@ -11,19 +11,24 @@ export default {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          Start: {
             screens: {
-              TabOneScreen: "one",
+              StartScreen: "start",
             },
           },
-          TabTwo: {
+          Home: {
             screens: {
-              TabTwoScreen: "two",
+              HomeScreen: "home",
             },
           },
-          AppStart: {
+          Login: {
             screens: {
-              AppStartScreen: "start",
+              LoginScreen: "login",
+            },
+          },
+          Create: {
+            screens: {
+              CreateScreen: "create",
             },
           },
         },
