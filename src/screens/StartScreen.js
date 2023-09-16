@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import TouchableButton from "../components/PalsTouchableButton";
+import { Image } from "react-native";
+import Logo from "../components/Logo";
 
 export default function StartScreen({ navigation }) {
   const getStarted = () => {
@@ -9,6 +11,8 @@ export default function StartScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Logo></Logo>
+
       <TouchableButton
         label="Get started"
         theme="filled"
@@ -27,7 +31,7 @@ export default function StartScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 32,
     justifyContent: "center",
   },
 });

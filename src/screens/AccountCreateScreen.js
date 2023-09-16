@@ -5,6 +5,7 @@ import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import { Text } from "react-native";
+import Logo from "../components/Logo";
 
 export default function AccountCreateScreen({ navigation }) {
   const [name, setName] = useState({
@@ -48,6 +49,7 @@ export default function AccountCreateScreen({ navigation }) {
 
   return (
     <ScrollView style={styles.container}>
+      <Logo bottom={20}></Logo>
       <PalsText label="Create Account" type="h1"></PalsText>
 
       <PalsTextInput
@@ -134,10 +136,10 @@ export default function AccountCreateScreen({ navigation }) {
         action={onContinuePressed}
       ></TouchableButton>
 
-      <Text style={styles.signUp}>
-        Already have an account?
-        <TouchableOpacity onPress={navigateToSignIn}>Sign in</TouchableOpacity>
-      </Text>
+      <TouchableOpacity style={styles.signUp}>
+        {/* <Text> Already have an account?</Text> */}
+        <Text onPress={navigateToSignIn}> Sign in</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -145,7 +147,7 @@ export default function AccountCreateScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 32,
   },
   signUp: {
     textAlign: "center",

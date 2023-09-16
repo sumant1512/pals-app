@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
 import { View } from "../components/Themed";
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import PalsUrl from "../components/PalsUrl";
-import { Text } from "react-native";
+import Logo from "../components/Logo";
 
 export default function LoginScreen({ navigation }) {
   const [userName, setUserName] = useState({
@@ -35,6 +35,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Logo bottom={40}></Logo>
       <PalsText label="Log in" type="h1"></PalsText>
 
       <PalsTextInput
@@ -74,10 +75,10 @@ export default function LoginScreen({ navigation }) {
         action={onLoginPressed}
       ></TouchableButton>
 
-      <Text style={styles.signUp}>
-        Don't have an account?
-        <TouchableOpacity onPress={navigateToSignUp}>Sign up</TouchableOpacity>
-      </Text>
+      <TouchableOpacity style={styles.signUp}>
+        {/* <Text> Don't have an account?</Text> */}
+        <Text onPress={navigateToSignUp}> Sign up</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -85,7 +86,7 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 32,
     justifyContent: "center",
   },
   signUp: {

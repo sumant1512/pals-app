@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 
 import TouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
+import Logo from "../components/Logo";
 
 export default function AccountVerifyScreen({ navigation }) {
   const [otp, setOtp] = useState({
@@ -20,6 +21,7 @@ export default function AccountVerifyScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Logo bottom={40}></Logo>
       <PalsTextInput
         label="Otp"
         value={otp.value}
@@ -51,7 +53,7 @@ export default function AccountVerifyScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 32,
     justifyContent: "center",
   },
 });

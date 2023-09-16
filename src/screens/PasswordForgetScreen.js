@@ -4,6 +4,7 @@ import { StyleSheet, View } from "react-native";
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
+import Logo from "../components/Logo";
 
 export default function PasswordForgetScreen({ navigation }) {
   const [userName, setUserName] = useState({
@@ -25,6 +26,7 @@ export default function PasswordForgetScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <Logo bottom={40}></Logo>
       <PalsText label="Forget Password" type="h1"></PalsText>
 
       <PalsTextInput
@@ -70,7 +72,7 @@ export default function PasswordForgetScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 32,
     justifyContent: "center",
   },
 });
