@@ -139,10 +139,10 @@ export default function AccountCreateScreen({ navigation }) {
         ></TouchableButton>
       </View>
 
-      <View style={styles.signUpLine}>
+      <View style={styles.signInLine}>
         <Text>
           Already have an account?{" "}
-          <Text style={styles.signUp} onPress={navigateToSignIn}>
+          <Text style={styles.signIn} onPress={navigateToSignIn}>
             Sign in
           </Text>
         </Text>
@@ -155,14 +155,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    top: 40,
+    marginTop: 40,
   },
   continueBtn: { marginTop: 20 },
-  signUpLine: {
+  signInLine: {
     alignSelf: "center",
     marginTop: 20,
+    marginBottom: 30,
   },
-  signUp: {
+  signIn: {
     fontWeight: "bold",
   },
 });
