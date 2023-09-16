@@ -50,7 +50,9 @@ export default function AccountCreateScreen({ navigation }) {
 
   return (
     <ScrollView style={styles.container}>
-      <Logo bottom={20}></Logo>
+      <View style={styles.logo}>
+        <Logo bottom={20}></Logo>
+      </View>
       <PalsText label="Create Account" type="h1"></PalsText>
 
       <PalsTextInput
@@ -157,6 +159,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 40,
   },
+  logo: { marginTop: 50 },
   continueBtn: { marginTop: 20 },
   signInLine: {
     alignSelf: "center",
