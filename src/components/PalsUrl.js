@@ -11,7 +11,6 @@ export default function PalsUrl({ label, action }) {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 16,
     textAlign: "right",
   },
 });

@@ -57,11 +57,13 @@ export default function PasswordSetScreen({ navigation }) {
         description={confirmPassword.description}
       ></PalsTextInput>
 
-      <TouchableButton
-        label="Save"
-        theme="filled"
-        action={onSavePressed}
-      ></TouchableButton>
+      <View style={styles.continueBtn}>
+        <TouchableButton
+          label="Save"
+          theme="filled"
+          action={onSavePressed}
+        ></TouchableButton>
+      </View>
       <TouchableButton
         label="Back"
         theme="outlined"
@@ -77,4 +79,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     justifyContent: "center",
   },
+  continueBtn: { marginTop: 20 },
 });

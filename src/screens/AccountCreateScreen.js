@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import { Text } from "react-native";
 import Logo from "../components/Logo";
+import { View } from "react-native";
 
 export default function AccountCreateScreen({ navigation }) {
   const [name, setName] = useState({
@@ -130,16 +131,22 @@ export default function AccountCreateScreen({ navigation }) {
         description={confirmPassword.description}
       ></PalsTextInput>
 
-      <TouchableButton
-        label="Continue"
-        theme="filled"
-        action={onContinuePressed}
-      ></TouchableButton>
+      <View style={styles.continueBtn}>
+        <TouchableButton
+          label="Continue"
+          theme="filled"
+          action={onContinuePressed}
+        ></TouchableButton>
+      </View>
 
-      <TouchableOpacity style={styles.signUp}>
-        {/* <Text> Already have an account?</Text> */}
-        <Text onPress={navigateToSignIn}> Sign in</Text>
-      </TouchableOpacity>
+      <View style={styles.signUpLine}>
+        <Text>
+          Already have an account?{" "}
+          <Text style={styles.signUp} onPress={navigateToSignIn}>
+            Sign in
+          </Text>
+        </Text>
+      </View>
     </ScrollView>
   );
 }
@@ -147,9 +154,14 @@ export default function AccountCreateScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 32,
+    paddingHorizontal: 20,
+  },
+  continueBtn: { marginTop: 20 },
+  signUpLine: {
+    alignSelf: "center",
+    marginTop: 20,
   },
   signUp: {
-    textAlign: "center",
+    fontWeight: "bold",
   },
 });

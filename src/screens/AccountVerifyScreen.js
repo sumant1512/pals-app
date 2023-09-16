@@ -35,11 +35,13 @@ export default function AccountVerifyScreen({ navigation }) {
         description={otp.description}
       ></PalsTextInput>
 
-      <TouchableButton
-        label="Verify"
-        theme="dark"
-        action={verifyAccount}
-      ></TouchableButton>
+      <View style={styles.continueBtn}>
+        <TouchableButton
+          label="Verify"
+          theme="dark"
+          action={verifyAccount}
+        ></TouchableButton>
+      </View>
 
       <TouchableButton
         label="Back"
@@ -56,4 +58,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     justifyContent: "center",
   },
+  continueBtn: { marginTop: 20 },
 });

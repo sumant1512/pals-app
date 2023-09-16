@@ -55,11 +55,13 @@ export default function PasswordForgetScreen({ navigation }) {
         description={otp.description}
       ></PalsTextInput>
 
-      <TouchableButton
-        label="Continue"
-        theme="filled"
-        action={onContinuePressed}
-      ></TouchableButton>
+      <View style={styles.continueBtn}>
+        <TouchableButton
+          label="Continue"
+          theme="filled"
+          action={onContinuePressed}
+        ></TouchableButton>
+      </View>
       <TouchableButton
         label="Back"
         theme="outlined"
@@ -75,4 +77,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     justifyContent: "center",
   },
+  continueBtn: { marginTop: 20 },
 });

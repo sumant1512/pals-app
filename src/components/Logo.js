@@ -1,14 +1,14 @@
 import React from "react";
-import { TouchableOpacity, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 
 export default function Logo({ bottom }) {
   return (
-    <TouchableOpacity>
+    <View>
       <Image
         source={require("./../assets/pals_paint.png")}
         style={[styles.image, marginBottom(bottom ? bottom : 150)]}
       />
-    </TouchableOpacity>
+    </View>
   );
 }
 
@@ -19,11 +19,6 @@ function marginBottom(bottom) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    top: 10,
-    left: 4,
-  },
   image: {
     height: 118,
     width: "100%",

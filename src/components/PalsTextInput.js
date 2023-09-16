@@ -16,16 +16,19 @@ export default function PalsTextInput({ errorText, description, ...props }) {
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 22,
+    fontSize: 16,
     fontWeight: "400",
+    marginBottom: 4,
+    marginTop: 16,
   },
   input: {
-    height: 56,
+    height: 50,
     backgroundColor: "#EDEDED",
     alignItems: "center",
     padding: 12,
-    marginTop: 8,
     borderRadius: 10,
+    borderColor: "#dadada",
+    borderWidth: 1,
   },
   description: {
     fontSize: 13,

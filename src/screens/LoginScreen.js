@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { StyleSheet, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-import { View } from "../components/Themed";
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
@@ -64,10 +63,12 @@ export default function LoginScreen({ navigation }) {
         description={password.description}
       ></PalsTextInput>
 
-      <PalsUrl
-        label="Forgot password?"
-        action={navigateToForgetPassword}
-      ></PalsUrl>
+      <View style={styles.forgetPw}>
+        <PalsUrl
+          label="Forgot password?"
+          action={navigateToForgetPassword}
+        ></PalsUrl>
+      </View>
 
       <TouchableButton
         label="Login"
@@ -75,10 +76,14 @@ export default function LoginScreen({ navigation }) {
         action={onLoginPressed}
       ></TouchableButton>
 
-      <TouchableOpacity style={styles.signUp}>
-        {/* <Text> Don't have an account?</Text> */}
-        <Text onPress={navigateToSignUp}> Sign up</Text>
-      </TouchableOpacity>
+      <View style={styles.signUpLine}>
+        <Text>
+          Don't have an account?{" "}
+          <Text style={styles.signUp} onPress={navigateToSignUp}>
+            Sign up
+          </Text>
+        </Text>
+      </View>
     </View>
   );
 }
@@ -86,10 +91,15 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 32,
+    paddingHorizontal: 20,
     justifyContent: "center",
   },
+  forgetPw: { marginTop: 8, marginBottom: 20 },
+  signUpLine: {
+    alignSelf: "center",
+    marginTop: 20,
+  },
   signUp: {
-    textAlign: "center",
+    fontWeight: "bold",
   },
 });

@@ -15,11 +15,13 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Logo></Logo>
-      <TouchableButton
-        label="Login"
-        theme="light"
-        action={navigateToLogin}
-      ></TouchableButton>
+      <View style={styles.loginBtn}>
+        <TouchableButton
+          label="Login"
+          theme="light"
+          action={navigateToLogin}
+        ></TouchableButton>
+      </View>
 
       <TouchableButton
         label="Create account"
@@ -35,5 +37,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 32,
     justifyContent: "center",
+  },
+  loginBtn: {
+    marginBottom: 20,
   },
 });

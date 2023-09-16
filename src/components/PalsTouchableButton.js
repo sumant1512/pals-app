@@ -23,11 +23,15 @@ function fontButtonStyle(type) {
       return {
         backgroundColor: "#ffffff",
         color: "#000000",
+        borderColor: "#dadada",
+        borderWidth: 1,
       };
     case "light":
       return {
         backgroundColor: "#EDEDED",
         color: "#000000",
+        borderColor: "#dadada",
+        borderWidth: 1,
       };
     default:
       return {
