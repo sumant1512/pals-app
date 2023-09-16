@@ -1,6 +1,5 @@
 import { StyleSheet, View } from "react-native";
-
-import TouchableButton from "../components/PalsTouchableButton";
+import PalsText from "../components/PalsText";
 
 export default function UserDashboardScreen({ navigation }) {
   const navigateToCreateAccount = () => {
@@ -13,17 +12,7 @@ export default function UserDashboardScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <TouchableButton
-        label="Login"
-        theme="light"
-        action={navigateToLogin}
-      ></TouchableButton>
-
-      <TouchableButton
-        label="Create account"
-        theme="light"
-        action={navigateToCreateAccount}
-      ></TouchableButton>
+      <PalsText label="User Dashboard" type="h1"></PalsText>
     </View>
   );
 }
@@ -33,5 +22,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: "center",
+    alignItems: "center",
   },
 });

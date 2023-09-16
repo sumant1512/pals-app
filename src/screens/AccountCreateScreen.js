@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
+import { Text } from "react-native";
 
 export default function AccountCreateScreen({ navigation }) {
   const [name, setName] = useState({
@@ -39,6 +40,10 @@ export default function AccountCreateScreen({ navigation }) {
 
   const onContinuePressed = () => {
     navigation.push("AccountVerifyScreen");
+  };
+
+  const navigateToSignIn = () => {
+    navigation.push("LoginScreen");
   };
 
   return (
@@ -128,6 +133,11 @@ export default function AccountCreateScreen({ navigation }) {
         theme="filled"
         action={onContinuePressed}
       ></TouchableButton>
+
+      <Text style={styles.signUp}>
+        Already have an account?
+        <TouchableOpacity onPress={navigateToSignIn}>Sign in</TouchableOpacity>
+      </Text>
     </ScrollView>
   );
 }
@@ -136,5 +146,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+  },
+  signUp: {
+    textAlign: "center",
   },
 });

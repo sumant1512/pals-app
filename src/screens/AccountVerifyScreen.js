@@ -11,7 +11,7 @@ export default function AccountVerifyScreen({ navigation }) {
   });
 
   const verifyAccount = () => {
-    alert("Verify account");
+    navigation.push("LoginScreen");
   };
 
   const onBackButtonPressed = () => {

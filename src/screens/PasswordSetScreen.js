@@ -1,28 +1,69 @@
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
+import PalsText from "../components/PalsText";
+import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 
 export default function PasswordSetScreen({ navigation }) {
-  const navigateToCreateAccount = () => {
-    navigation.push("AccountCreateScreen");
+  const [password, setPassword] = useState({
+    value: "",
+    error: "",
+    description: "",
+  });
+  const [confirmPassword, setConfirmPassword] = useState({
+    value: "",
+    error: "",
+    description: "",
+  });
+
+  const onSavePressed = () => {
+    navigation.push("PasswordSetScreen");
   };
 
-  const navigateToLogin = () => {
-    navigation.push("LoginScreen");
+  const onBackButtonPressed = () => {
+    navigation.push("PasswordForgetScreen");
   };
 
   return (
     <View style={styles.container}>
-      <TouchableButton
-        label="Login"
-        theme="light"
-        action={navigateToLogin}
-      ></TouchableButton>
+      <PalsText label="Forget Password" type="h1"></PalsText>
+
+      <PalsTextInput
+        label="Password"
+        value={password.value}
+        onChangeText={(text) =>
+          setPassword({
+            value: text,
+            error: "",
+          })
+        }
+        errorText={password.error}
+        description={password.description}
+      ></PalsTextInput>
+
+      <PalsTextInput
+        label="Confirm Password"
+        value={confirmPassword.value}
+        onChangeText={(text) =>
+          setconfirmPassword({
+            value: text,
+            error: "",
+          })
+        }
+        errorText={confirmPassword.error}
+        description={confirmPassword.description}
+      ></PalsTextInput>
 
       <TouchableButton
-        label="Create account"
-        theme="light"
-        action={navigateToCreateAccount}
+        label="Save"
+        theme="filled"
+        action={onSavePressed}
+      ></TouchableButton>
+      <TouchableButton
+        label="Back"
+        theme="outlined"
+        action={onBackButtonPressed}
       ></TouchableButton>
     </View>
   );
