@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, Text } from "react-native";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
-import { Text } from "react-native";
 import Logo from "../components/Logo";
+
 import { View } from "react-native";
 
 export default function AccountCreateScreen({ navigation }) {
@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    top: 40,
   },
   continueBtn: { marginTop: 20 },
   signUpLine: {
