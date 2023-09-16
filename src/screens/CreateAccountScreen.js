@@ -5,7 +5,7 @@ import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 
-export default function CreateAccountScreen() {
+export default function CreateAccountScreen({ navigation }) {
   const [name, setName] = useState({
     value: "",
     error: "",
@@ -42,7 +42,7 @@ export default function CreateAccountScreen() {
   };
 
   const onBackPressed = () => {
-    alert("Back");
+    navigation.push("HomeScreen");
   };
 
   return (

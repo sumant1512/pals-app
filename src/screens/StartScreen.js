@@ -1,16 +1,10 @@
-import React, { useState } from "react";
-
-import { StyleSheet } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import TouchableButton from "../components/PalsTouchableButton";
-import { View } from "react-native";
 
-export default function StartScreen() {
-  const [name, setName] = useState({ value: "", error: "" });
-
-  const [text, onChangeText] = React.useState("Useless Text");
-
+export default function StartScreen({ navigation }) {
   const getStarted = () => {
-    alert("Navihate to home");
+    navigation.push("HomeScreen");
   };
 
   return (

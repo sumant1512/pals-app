@@ -1,11 +1,14 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-import { View } from "../components/Themed";
 import TouchableButton from "../components/PalsTouchableButton";
 
-export default function HomeScreen() {
-  const createAccount = () => {
-    alert("Create account");
+export default function HomeScreen({ navigation }) {
+  const navigateToCreateAccount = () => {
+    navigation.push("CreateAccountScreen");
+  };
+
+  const navigateToLogin = () => {
+    navigation.push("LoginScreen");
   };
 
   return (
@@ -13,13 +16,13 @@ export default function HomeScreen() {
       <TouchableButton
         label="Login"
         theme="light"
-        action={createAccount}
+        action={navigateToLogin}
       ></TouchableButton>
 
       <TouchableButton
         label="Create account"
         theme="light"
-        action={createAccount}
+        action={navigateToCreateAccount}
       ></TouchableButton>
     </View>
   );
