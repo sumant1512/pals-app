@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 
 import TouchableButton from "../components/PalsTouchableButton";
 
-export default function HomeScreen({ navigation }) {
+export default function PasswordForgetScreen({ navigation }) {
   const navigateToCreateAccount = () => {
     navigation.push("AccountCreateScreen");
   };

@@ -5,7 +5,7 @@ import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 
-export default function CreateAccountScreen({ navigation }) {
+export default function AccountCreateScreen({ navigation }) {
   const [name, setName] = useState({
     value: "",
     error: "",
@@ -38,11 +38,7 @@ export default function CreateAccountScreen({ navigation }) {
   });
 
   const onContinuePressed = () => {
-    alert("Continue");
-  };
-
-  const onBackPressed = () => {
-    navigation.push("HomeScreen");
+    navigation.push("AccountVerifyScreen");
   };
 
   return (
@@ -131,12 +127,6 @@ export default function CreateAccountScreen({ navigation }) {
         label="Continue"
         theme="filled"
         action={onContinuePressed}
-      ></TouchableButton>
-
-      <TouchableButton
-        label="Back"
-        theme="outlined"
-        action={onBackPressed}
       ></TouchableButton>
     </ScrollView>
   );
