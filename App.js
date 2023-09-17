@@ -28,7 +28,7 @@ export default function App() {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="StartScreen"
+          initialRouteName="UserDashboardScreen"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="StartScreen" component={StartScreen} />

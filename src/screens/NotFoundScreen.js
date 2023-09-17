@@ -19,9 +19,10 @@ export default function NotFoundScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 40,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
   },
 });

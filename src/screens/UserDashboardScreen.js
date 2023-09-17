@@ -1,29 +1,74 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import PalsText from "../components/PalsText";
 import BackButton from "../components/BackButton";
+import { Image } from "react-native";
+import TouchableButton from "../components/PalsTouchableButton";
 
 export default function UserDashboardScreen({ navigation }) {
-  const navigateToCreateAccount = () => {
-    navigation.push("AccountCreateScreen");
-  };
-
-  const navigateToLogin = () => {
-    navigation.push("LoginScreen");
+  const addCoupanPressed = () => {
+    navigation.push("UserAddCoupanScreen");
   };
 
   return (
     <View style={styles.container}>
-      <BackButton action={navigation.goBack} />
-      <PalsText label="User Dashboard" type="h1"></PalsText>
+      <View style={styles.card}>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require("./../assets/credit_card.png")}
+            style={styles.image}
+          />
+        </View>
+
+        <View style={styles.textContainer}>
+          <Text style={styles.heading}>Pals' Credit</Text>
+          <Text style={styles.credit}>986</Text>
+        </View>
+      </View>
+
+      <View>
+        <TouchableButton
+          label="Add Coupan"
+          theme="filled"
+          action={addCoupanPressed}
+        ></TouchableButton>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 20,
+    paddingVertical: 40,
+  },
+  card: {
+    flexDirection: "row",
+    backgroundColor: "#00206F",
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 35,
+  },
+  imageContainer: {
+    flex: 1,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    alignSelf: "center",
+  },
+  textContainer: {
+    flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+  },
+  heading: {
+    alignSelf: "center",
+    color: "#ffffff",
+    fontSize: 24,
+  },
+  credit: {
+    alignSelf: "center",
+    color: "#ffffff",
+    fontWeight: "bold",
+    fontSize: 36,
   },
 });

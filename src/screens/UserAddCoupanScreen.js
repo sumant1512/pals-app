@@ -1,6 +1,7 @@
 import { StyleSheet, View } from "react-native";
 
 import TouchableButton from "../components/PalsTouchableButton";
+import BackButton from "../components/BackButton";
 
 export default function UserAddCoupanScreen({ navigation }) {
   const navigateToCreateAccount = () => {
@@ -13,17 +14,7 @@ export default function UserAddCoupanScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <TouchableButton
-        label="Login"
-        theme="light"
-        action={navigateToLogin}
-      ></TouchableButton>
-
-      <TouchableButton
-        label="Create account"
-        theme="light"
-        action={navigateToCreateAccount}
-      ></TouchableButton>
+      <BackButton></BackButton>
     </View>
   );
 }
@@ -32,6 +23,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    justifyContent: "center",
+    paddingVertical: 40,
   },
 });
