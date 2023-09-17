@@ -31,7 +31,7 @@ export default function UserProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 32,
+    paddingHorizontal: 20,
     justifyContent: "center",
   },
 });

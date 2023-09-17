@@ -4,28 +4,16 @@ import { StyleSheet, Text, View } from "react-native";
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
-import PalsUrl from "../components/PalsUrl";
 import Logo from "../components/Logo";
 
 export default function LoginScreen({ navigation }) {
-  const [userName, setUserName] = useState({
+  const [mobileNumber, setMobileNumber] = useState({
     value: "",
     error: "",
-    description: "",
   });
 
-  const [password, setPassword] = useState({
-    value: "",
-    error: "",
-    description: "",
-  });
-
-  const onLoginPressed = () => {
-    navigation.push("UserDashboardScreen");
-  };
-
-  const navigateToForgetPassword = () => {
-    navigation.push("PasswordForgetScreen");
+  const onContinuePressed = () => {
+    navigation.push("LoginVerifyScreen");
   };
 
   const navigateToSignUp = () => {
@@ -38,43 +26,24 @@ export default function LoginScreen({ navigation }) {
       <PalsText label="Log in" type="h1"></PalsText>
 
       <PalsTextInput
-        label="Username"
-        value={userName.value}
+        label="Mobile number"
+        value={mobileNumber.value}
         onChangeText={(text) =>
           setUserName({
             value: text,
             error: "",
           })
         }
-        errorText={userName.error}
-        description={userName.description}
+        errorText={mobileNumber.error}
       ></PalsTextInput>
 
-      <PalsTextInput
-        label="Password"
-        value={password.value}
-        onChangeText={(text) =>
-          setPassword({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={password.error}
-        description={password.description}
-      ></PalsTextInput>
-
-      <View style={styles.forgetPw}>
-        <PalsUrl
-          label="Forgot password?"
-          action={navigateToForgetPassword}
-        ></PalsUrl>
+      <View style={styles.continueBtn}>
+        <TouchableButton
+          label="Continue"
+          theme="filled"
+          action={onContinuePressed}
+        ></TouchableButton>
       </View>
-
-      <TouchableButton
-        label="Login"
-        theme="filled"
-        action={onLoginPressed}
-      ></TouchableButton>
 
       <View style={styles.signUpLine}>
         <Text>
@@ -94,7 +63,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     justifyContent: "center",
   },
-  forgetPw: { marginTop: 8, marginBottom: 20 },
+  continueBtn: { marginTop: 20 },
   signUpLine: {
     alignSelf: "center",
     marginTop: 20,

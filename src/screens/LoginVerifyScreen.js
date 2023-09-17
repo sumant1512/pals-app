@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import TouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
@@ -7,14 +7,14 @@ import Logo from "../components/Logo";
 import PalsText from "../components/PalsText";
 import PalsUrl from "../components/PalsUrl";
 
-export default function AccountVerifyScreen({ navigation }) {
+export default function LoginVerifyScreen({ navigation }) {
   const [otp, setOtp] = useState({
     value: "",
     error: "",
   });
 
-  const verifyAccount = () => {
-    navigation.push("LoginScreen");
+  const loginAccount = () => {
+    navigation.push("UserDashboardScreen");
   };
 
   const onResendOTPPressed = () => {
@@ -22,10 +22,6 @@ export default function AccountVerifyScreen({ navigation }) {
   };
 
   const onBackButtonPressed = () => {
-    navigation.push("AccountCreateScreen");
-  };
-
-  const navigateToSignIn = () => {
     navigation.push("LoginScreen");
   };
 
@@ -50,11 +46,11 @@ export default function AccountVerifyScreen({ navigation }) {
         <PalsUrl label="Resend OTP" action={onResendOTPPressed}></PalsUrl>
       </View>
 
-      <View style={styles.verifyBtn}>
+      <View style={styles.continueBtn}>
         <TouchableButton
-          label="Verify"
+          label="Login"
           theme="dark"
-          action={verifyAccount}
+          action={loginAccount}
         ></TouchableButton>
       </View>
 
@@ -63,15 +59,6 @@ export default function AccountVerifyScreen({ navigation }) {
         theme="outlined"
         action={onBackButtonPressed}
       ></TouchableButton>
-
-      <View style={styles.signInLine}>
-        <Text>
-          Already have an account?{" "}
-          <Text style={styles.signIn} onPress={navigateToSignIn}>
-            Sign in
-          </Text>
-        </Text>
-      </View>
     </View>
   );
 }
@@ -82,14 +69,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     justifyContent: "center",
   },
-  verifyBtn: { marginTop: 20 },
+  continueBtn: { marginTop: 20 },
   resendOtp: { marginTop: 8 },
-  signInLine: {
-    alignSelf: "center",
-    marginTop: 20,
-    marginBottom: 30,
-  },
-  signIn: {
-    fontWeight: "bold",
-  },
 });

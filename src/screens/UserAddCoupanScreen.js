@@ -31,7 +31,7 @@ export default function UserAddCoupanScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 32,
+    paddingHorizontal: 20,
     justifyContent: "center",
   },
 });

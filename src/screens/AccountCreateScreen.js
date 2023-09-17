@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { StyleSheet, ScrollView, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
-
-import { View } from "react-native";
 
 export default function AccountCreateScreen({ navigation }) {
   const [name, setName] = useState({
@@ -14,17 +12,7 @@ export default function AccountCreateScreen({ navigation }) {
     error: "",
     description: "",
   });
-  const [email, setEmail] = useState({
-    value: "",
-    error: "",
-    description: "",
-  });
   const [mobile, setMobile] = useState({
-    value: "",
-    error: "",
-    description: "",
-  });
-  const [userName, setUserName] = useState({
     value: "",
     error: "",
     description: "",
@@ -49,10 +37,8 @@ export default function AccountCreateScreen({ navigation }) {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.logo}>
-        <Logo bottom={20}></Logo>
-      </View>
+    <View style={styles.container}>
+      <Logo bottom={40}></Logo>
       <PalsText label="Create Account" type="h1"></PalsText>
 
       <PalsTextInput
@@ -69,19 +55,6 @@ export default function AccountCreateScreen({ navigation }) {
       ></PalsTextInput>
 
       <PalsTextInput
-        label="Email"
-        value={email.value}
-        onChangeText={(text) =>
-          setEmail({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={email.error}
-        description={email.description}
-      ></PalsTextInput>
-
-      <PalsTextInput
         label="Mobile"
         value={mobile.value}
         onChangeText={(text) =>
@@ -92,45 +65,6 @@ export default function AccountCreateScreen({ navigation }) {
         }
         errorText={mobile.error}
         description={mobile.description}
-      ></PalsTextInput>
-
-      <PalsTextInput
-        label="Username"
-        value={userName.value}
-        onChangeText={(text) =>
-          setUserName({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={userName.error}
-        description={userName.description}
-      ></PalsTextInput>
-
-      <PalsTextInput
-        label="Password"
-        value={password.value}
-        onChangeText={(text) =>
-          setPassword({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={password.error}
-        description={password.description}
-      ></PalsTextInput>
-
-      <PalsTextInput
-        label="Confirm Password"
-        value={confirmPassword.value}
-        onChangeText={(text) =>
-          setconfirmPassword({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={confirmPassword.error}
-        description={confirmPassword.description}
       ></PalsTextInput>
 
       <View style={styles.continueBtn}>
@@ -149,7 +83,7 @@ export default function AccountCreateScreen({ navigation }) {
           </Text>
         </Text>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -157,9 +91,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    marginTop: 40,
+    justifyContent: "center",
   },
-  logo: { marginTop: 50 },
   continueBtn: { marginTop: 20 },
   signInLine: {
     alignSelf: "center",

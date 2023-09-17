@@ -22,14 +22,14 @@ export default function PasswordSetScreen({ navigation }) {
     navigation.push("LoginScreen");
   };
 
-  const onBackButtonPressed = () => {
-    navigation.push("PasswordForgetScreen");
+  const onCancelButtonPressed = () => {
+    navigation.push("LoginScreen");
   };
 
   return (
     <View style={styles.container}>
       <Logo bottom={40}></Logo>
-      <PalsText label="Forget Password" type="h1"></PalsText>
+      <PalsText label="Set Password" type="h1"></PalsText>
 
       <PalsTextInput
         label="Password"
@@ -65,9 +65,9 @@ export default function PasswordSetScreen({ navigation }) {
         ></TouchableButton>
       </View>
       <TouchableButton
-        label="Back"
+        label="Cancel"
         theme="outlined"
-        action={onBackButtonPressed}
+        action={onCancelButtonPressed}
       ></TouchableButton>
     </View>
   );
@@ -76,7 +76,7 @@ export default function PasswordSetScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 32,
+    paddingHorizontal: 20,
     justifyContent: "center",
   },
   continueBtn: { marginTop: 20 },

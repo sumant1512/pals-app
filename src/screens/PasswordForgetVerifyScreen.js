@@ -5,50 +5,59 @@ import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
+import PalsUrl from "../components/PalsUrl";
 
-export default function PasswordForgetScreen({ navigation }) {
-  const [userName, setUserName] = useState({
+export default function PasswordForgetVerifyScreen({ navigation }) {
+  const [otp, setOtp] = useState({
     value: "",
     error: "",
   });
 
-  const onSendOtpPressed = () => {
-    navigation.push("PasswordForgetVerifyScreen");
+  const onVerifyPressed = () => {
+    navigation.push("PasswordSetScreen");
   };
 
-  const onCancelButtonPressed = () => {
-    navigation.push("LoginScreen");
+  const onResendOTPPressed = () => {
+    alert("Resend OTP pressed.");
+  };
+
+  const onBackButtonPressed = () => {
+    navigation.push("PasswordForgetScreen");
   };
 
   return (
     <View style={styles.container}>
       <Logo bottom={40}></Logo>
-      <PalsText label="Send Otp" type="h1"></PalsText>
+      <PalsText label="Verify" type="h1"></PalsText>
 
       <PalsTextInput
-        label="Username"
-        value={userName.value}
+        label="OTP"
+        value={otp.value}
         onChangeText={(text) =>
-          setUserName({
+          setOtp({
             value: text,
             error: "",
           })
         }
-        errorText={userName.error}
-        description={userName.description}
+        errorText={otp.error}
+        description={otp.description}
       ></PalsTextInput>
+
+      <View style={styles.resendOtp}>
+        <PalsUrl label="Resend OTP" action={onResendOTPPressed}></PalsUrl>
+      </View>
 
       <View style={styles.continueBtn}>
         <TouchableButton
-          label="Send Otp"
+          label="Verify"
           theme="filled"
-          action={onSendOtpPressed}
+          action={onVerifyPressed}
         ></TouchableButton>
       </View>
       <TouchableButton
-        label="Cancel"
+        label="Back"
         theme="outlined"
-        action={onCancelButtonPressed}
+        action={onBackButtonPressed}
       ></TouchableButton>
     </View>
   );
@@ -61,4 +70,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   continueBtn: { marginTop: 20 },
+  resendOtp: { marginTop: 8 },
 });

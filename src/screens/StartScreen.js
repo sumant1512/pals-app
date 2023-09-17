@@ -6,7 +6,7 @@ import Logo from "../components/Logo";
 
 export default function StartScreen({ navigation }) {
   const getStarted = () => {
-    navigation.push("HomeScreen");
+    navigation.push("LoginScreen");
   };
 
   return (
@@ -31,7 +31,7 @@ export default function StartScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 32,
+    paddingHorizontal: 20,
     justifyContent: "center",
   },
 });

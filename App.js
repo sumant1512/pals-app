@@ -13,6 +13,8 @@ import UserAddCoupanScreen from "./src/screens/UserAddCoupanScreen";
 import UserProfileScreen from "./src/screens/UserProfileScreen";
 import PasswordForgetScreen from "./src/screens/PasswordForgetScreen";
 import PasswordSetScreen from "./src/screens/PasswordSetScreen";
+import PasswordForgetVerifyScreen from "./src/screens/PasswordForgetVerifyScreen";
+import LoginVerifyScreen from "./src/screens/LoginVerifyScreen";
 
 const Stack = createStackNavigator();
 
@@ -30,8 +32,11 @@ export default function App() {
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="StartScreen" component={StartScreen} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen
+            name="LoginVerifyScreen"
+            component={LoginVerifyScreen}
+          />
           <Stack.Screen
             name="AccountCreateScreen"
             component={AccountCreateScreen}
@@ -43,6 +48,10 @@ export default function App() {
           <Stack.Screen
             name="PasswordForgetScreen"
             component={PasswordForgetScreen}
+          />
+          <Stack.Screen
+            name="PasswordForgetVerifyScreen"
+            component={PasswordForgetVerifyScreen}
           />
           <Stack.Screen
             name="PasswordSetScreen"
