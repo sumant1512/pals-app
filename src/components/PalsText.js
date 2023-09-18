@@ -31,7 +31,7 @@ function fontSize(type) {
       };
     case "p3":
       return {
-        marginBottom: 16,
+        marginBottom: 10,
         fontSize: 22,
       };
     case "p4":

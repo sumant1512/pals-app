@@ -58,16 +58,16 @@ export default function App() {
             component={PasswordSetScreen}
           />
           <Stack.Screen
-            name="UserProfileScreen"
-            component={UserProfileScreen}
-          />
-          <Stack.Screen
             name="UserDashboardScreen"
             component={UserDashboardScreen}
           />
           <Stack.Screen
             name="UserAddCoupanScreen"
             component={UserAddCoupanScreen}
+          />
+          <Stack.Screen
+            name="UserProfileScreen"
+            component={UserProfileScreen}
           />
           <Stack.Screen name="NotFoundScreen" component={NotFoundScreen} />
         </Stack.Navigator>
