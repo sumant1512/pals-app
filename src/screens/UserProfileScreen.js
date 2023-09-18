@@ -6,7 +6,17 @@ import PalsText from "../components/PalsText";
 
 export default function UserProfileScreen({ navigation }) {
   const onLogoutPressed = () => {
-    navigation.push("LoginScreen");
+    fetch("http://localhost:8080/auth/logout/5", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((json) => navigation.push("LoginScreen"))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
   };
 
   return (

@@ -12,7 +12,7 @@ export default function AccountCreateScreen({ navigation }) {
     error: "",
     description: "",
   });
-  const [mobile, setMobile] = useState({
+  const [phone, setPhone] = useState({
     value: "",
     error: "",
     description: "",
@@ -29,7 +29,22 @@ export default function AccountCreateScreen({ navigation }) {
   });
 
   const onContinuePressed = () => {
-    navigation.push("AccountVerifyScreen");
+    fetch("http://localhost:8080/auth/register", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name.value,
+        phone: phone.value,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        navigation.push("AccountVerifyScreen");
+      })
+      .catch((error) => console.error(error));
   };
 
   const navigateToSignIn = () => {
@@ -56,15 +71,15 @@ export default function AccountCreateScreen({ navigation }) {
 
       <PalsTextInput
         label="Mobile"
-        value={mobile.value}
+        value={phone.value}
         onChangeText={(text) =>
-          setMobile({
+          setPhone({
             value: text,
             error: "",
           })
         }
-        errorText={mobile.error}
-        description={mobile.description}
+        errorText={phone.error}
+        description={phone.description}
       ></PalsTextInput>
 
       <View style={styles.continueBtn}>

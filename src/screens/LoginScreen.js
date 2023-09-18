@@ -7,13 +7,27 @@ import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
 
 export default function LoginScreen({ navigation }) {
-  const [mobileNumber, setMobileNumber] = useState({
+  const [phone, setPhone] = useState({
     value: "",
     error: "",
   });
 
   const onContinuePressed = () => {
-    navigation.push("LoginVerifyScreen");
+    fetch("http://localhost:8080/auth/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phone: phone.value,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        navigation.push("LoginVerifyScreen");
+      })
+      .catch((error) => console.error(error));
   };
 
   const navigateToSignUp = () => {
@@ -27,14 +41,14 @@ export default function LoginScreen({ navigation }) {
 
       <PalsTextInput
         label="Mobile number"
-        value={mobileNumber.value}
+        value={phone.value}
         onChangeText={(text) =>
-          setUserName({
+          setPhone({
             value: text,
             error: "",
           })
         }
-        errorText={mobileNumber.error}
+        errorText={phone.error}
       ></PalsTextInput>
 
       <View style={styles.continueBtn}>

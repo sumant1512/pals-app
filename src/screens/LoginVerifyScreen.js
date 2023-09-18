@@ -14,7 +14,23 @@ export default function LoginVerifyScreen({ navigation }) {
   });
 
   const loginAccount = () => {
-    navigation.push("UserDashboardScreen");
+    fetch("http://localhost:8080/auth/verify", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phone: "9131410942",
+        otp: otp.value,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(JSON.stringify(responseData));
+        navigation.push("UserDashboardScreen");
+      })
+      .catch((error) => console.error(error));
   };
 
   const onResendOTPPressed = () => {
