@@ -1,8 +1,7 @@
-import { StyleSheet, View, Text } from "react-native";
-import PalsText from "../components/PalsText";
-import BackButton from "../components/BackButton";
-import { Image } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
+
 import TouchableButton from "../components/PalsTouchableButton";
+import UserHeader from "../components/UserHeader";
 
 export default function UserDashboardScreen({ navigation }) {
   const addCoupanPressed = () => {
@@ -11,6 +10,7 @@ export default function UserDashboardScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <UserHeader></UserHeader>
       <View style={styles.card}>
         <View style={styles.imageContainer}>
           <Image
