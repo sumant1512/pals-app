@@ -1,20 +1,15 @@
-import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function UserHeader({ navigation }) {
-  const navigateToProfile = () => {
-    navigation.push("UserProfileScreen");
-  };
-
+export default function UserHeader({ action }) {
   return (
     <View style={styles.container}>
       <Image
         source={require("./../assets/pals_paint.png")}
         style={styles.logo}
       />
-      <TouchableOpacity style={styles.imgContainer} onPress={navigateToProfile}>
+      <TouchableOpacity style={styles.imgContainer} onPress={action}>
         <Image
-          onPress={navigateToProfile}
           source={require("./../assets/user_avtar.png")}
           style={styles.userImage}
         />

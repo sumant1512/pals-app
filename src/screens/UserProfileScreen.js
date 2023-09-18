@@ -1,29 +1,13 @@
 import { StyleSheet, View } from "react-native";
 
-import TouchableButton from "../components/PalsTouchableButton";
+import UserHeader from "../components/UserHeader";
+import BackButton from "../components/BackButton";
 
 export default function UserProfileScreen({ navigation }) {
-  const navigateToCreateAccount = () => {
-    navigation.push("AccountCreateScreen");
-  };
-
-  const navigateToLogin = () => {
-    navigation.push("LoginScreen");
-  };
-
   return (
     <View style={styles.container}>
-      <TouchableButton
-        label="Login"
-        theme="light"
-        action={navigateToLogin}
-      ></TouchableButton>
-
-      <TouchableButton
-        label="Create account"
-        theme="light"
-        action={navigateToCreateAccount}
-      ></TouchableButton>
+      <UserHeader></UserHeader>
+      <BackButton></BackButton>
     </View>
   );
 }
@@ -33,6 +17,5 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 40,
-    justifyContent: "center",
   },
 });

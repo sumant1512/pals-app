@@ -8,23 +8,28 @@ export default function UserDashboardScreen({ navigation }) {
     navigation.push("UserAddCoupanScreen");
   };
 
+  const profilePressed = () => {
+    navigation.push("UserProfileScreen");
+  };
+
   return (
     <View style={styles.container}>
-      <UserHeader></UserHeader>
-      <View style={styles.card}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={require("./../assets/credit_card.png")}
-            style={styles.image}
-          />
-        </View>
+      <View>
+        <UserHeader action={profilePressed}></UserHeader>
+        <View style={styles.card}>
+          <View style={styles.imageContainer}>
+            <Image
+              source={require("./../assets/credit_card.png")}
+              style={styles.image}
+            />
+          </View>
 
-        <View style={styles.textContainer}>
-          <Text style={styles.heading}>Pals' Credit</Text>
-          <Text style={styles.credit}>986</Text>
+          <View style={styles.textContainer}>
+            <Text style={styles.heading}>Pals' Credit</Text>
+            <Text style={styles.credit}>986</Text>
+          </View>
         </View>
       </View>
-
       <View>
         <TouchableButton
           label="Add Coupan"
@@ -40,6 +45,8 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingVertical: 40,
+    flex: 1,
+    justifyContent: "space-between",
   },
   card: {
     flexDirection: "row",
