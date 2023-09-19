@@ -5,6 +5,7 @@ import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
+import { phoneValidators } from "../helpers/phoneValidators";
 
 export default function LoginScreen({ navigation }) {
   const [phone, setPhone] = useState({
@@ -13,21 +14,30 @@ export default function LoginScreen({ navigation }) {
   });
 
   const onContinuePressed = () => {
-    fetch("http://localhost:8080/auth/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        phone: phone.value,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        navigation.push("LoginVerifyScreen");
+    if (phone.value) {
+      fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: phone.value,
+        }),
       })
-      .catch((error) => console.error(error));
+        .then((response) => response.json())
+        .then((responseData) => {
+          navigation.push("LoginVerifyScreen");
+        })
+        .catch((error) => console.error(error));
+    }
+  };
+
+  const onPhoneChanged = (value) => {
+    setPhone({
+      value: value,
+      error: phoneValidators(value),
+    });
   };
 
   const navigateToSignUp = () => {
@@ -42,12 +52,7 @@ export default function LoginScreen({ navigation }) {
       <PalsTextInput
         label="Mobile number"
         value={phone.value}
-        onChangeText={(text) =>
-          setPhone({
-            value: text,
-            error: "",
-          })
-        }
+        onChangeText={(text) => onPhoneChanged(text)}
         errorText={phone.error}
       ></PalsTextInput>
 

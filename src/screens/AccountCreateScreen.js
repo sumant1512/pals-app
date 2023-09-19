@@ -5,6 +5,8 @@ import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
+import { nameValidators } from "../helpers/nameValidators";
+import { phoneValidators } from "../helpers/phoneValidators";
 
 export default function AccountCreateScreen({ navigation }) {
   const [name, setName] = useState({
@@ -29,22 +31,38 @@ export default function AccountCreateScreen({ navigation }) {
   });
 
   const onContinuePressed = () => {
-    fetch("http://localhost:8080/auth/register", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: name.value,
-        phone: phone.value,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        navigation.push("AccountVerifyScreen");
+    if (name.value && phone.value) {
+      fetch("http://localhost:8080/auth/register", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name.value,
+          phone: phone.value,
+        }),
       })
-      .catch((error) => console.error(error));
+        .then((response) => response.json())
+        .then((responseData) => {
+          navigation.push("AccountVerifyScreen");
+        })
+        .catch((error) => console.error(error));
+    }
+  };
+
+  const onNameChanged = (value) => {
+    setName({
+      value: value,
+      error: nameValidators(value),
+    });
+  };
+
+  const onPhoneChanged = (value) => {
+    setPhone({
+      value: value,
+      error: phoneValidators(value),
+    });
   };
 
   const navigateToSignIn = () => {
@@ -59,12 +77,7 @@ export default function AccountCreateScreen({ navigation }) {
       <PalsTextInput
         label="Full Name"
         value={name.value}
-        onChangeText={(text) =>
-          setName({
-            value: text,
-            error: "",
-          })
-        }
+        onChangeText={(text) => onNameChanged(text)}
         errorText={name.error}
         description={name.description}
       ></PalsTextInput>
@@ -72,12 +85,7 @@ export default function AccountCreateScreen({ navigation }) {
       <PalsTextInput
         label="Mobile"
         value={phone.value}
-        onChangeText={(text) =>
-          setPhone({
-            value: text,
-            error: "",
-          })
-        }
+        onChangeText={(text) => onPhoneChanged(text)}
         errorText={phone.error}
         description={phone.description}
       ></PalsTextInput>

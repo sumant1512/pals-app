@@ -14,23 +14,25 @@ export default function AccountVerifyScreen({ navigation }) {
   });
 
   const verifyAccount = () => {
-    fetch("http://localhost:8080/auth/verify", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        phone: "9131410942",
-        otp: otp.value,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log(JSON.stringify(responseData));
-        navigation.push("UserDashboardScreen");
+    if (otp.value) {
+      fetch("http://localhost:8080/auth/verify", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: "9131410942",
+          otp: otp.value,
+        }),
       })
-      .catch((error) => console.error(error));
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log(JSON.stringify(responseData));
+          navigation.push("UserDashboardScreen");
+        })
+        .catch((error) => console.error(error));
+    }
   };
 
   const onResendOTPPressed = () => {
