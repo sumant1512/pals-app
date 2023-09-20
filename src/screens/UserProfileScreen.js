@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 
 import UserHeader from "../components/UserHeader";
@@ -5,6 +6,7 @@ import BackButton from "../components/BackButton";
 import PalsText from "../components/PalsText";
 
 export default function UserProfileScreen({ navigation }) {
+  const [loading, setLoading] = useState(true);
   const onLogoutPressed = () => {
     fetch("http://localhost:8080/auth/logout/5", {
       method: "GET",

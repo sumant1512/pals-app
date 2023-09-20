@@ -41,6 +41,7 @@ export default function AccountCreateScreen({ navigation }) {
         body: JSON.stringify({
           name: name.value,
           phone: phone.value,
+          userType: "painter",
         }),
       })
         .then((response) => response.json())
