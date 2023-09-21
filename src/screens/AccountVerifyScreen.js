@@ -40,7 +40,20 @@ export default function AccountVerifyScreen({ navigation }) {
   };
 
   const onBackButtonPressed = () => {
-    navigation.push("AccountCreateScreen");
+    const id = 1;
+    fetch(`http://localhost:8080/auth/resetAuthInfo/${id}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(JSON.stringify(responseData));
+        navigation.push("AccountCreateScreen");
+      })
+      .catch((error) => console.error(error));
   };
 
   const navigateToSignIn = () => {

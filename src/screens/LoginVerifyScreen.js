@@ -21,7 +21,7 @@ export default function LoginVerifyScreen({ navigation }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        phone: "9131410942",
+        phone: "9579310997",
         otp: otp.value,
       }),
     })
@@ -38,7 +38,20 @@ export default function LoginVerifyScreen({ navigation }) {
   };
 
   const onBackButtonPressed = () => {
-    navigation.push("LoginScreen");
+    const id = 1;
+    fetch(`http://localhost:8080/auth/resetAuthInfo/${id}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(JSON.stringify(responseData));
+        navigation.push("LoginScreen");
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
