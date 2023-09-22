@@ -27,8 +27,10 @@ export default function LoginVerifyScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        console.log(JSON.stringify(responseData));
-        navigation.push("UserDashboardScreen");
+        const token = responseData.data;
+        if (token) {
+          navigation.push("UserDashboardScreen");
+        }
       })
       .catch((error) => console.error(error));
   };
