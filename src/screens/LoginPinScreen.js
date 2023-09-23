@@ -72,7 +72,10 @@ export default function LoginPinScreen({ navigation }) {
         name="pin"
         placeholder="Pin"
         control={control}
-        rules={{ required: "Pin is required." }}
+        rules={{
+          required: "Pin is required.",
+          minLength: { value: 4, message: "Min length should be 4." },
+        }}
       />
 
       <View style={styles.forgotPin}>
@@ -83,7 +86,7 @@ export default function LoginPinScreen({ navigation }) {
         <TouchableButton
           label="Login"
           theme="dark"
-          action={loginAccount}
+          action={handleSubmit(loginAccount)}
         ></TouchableButton>
       </View>
 

@@ -11,6 +11,7 @@ export default function AccountSetPinScreen({ navigation }) {
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -18,6 +19,8 @@ export default function AccountSetPinScreen({ navigation }) {
       confirmPin: "",
     },
   });
+
+  const firstPin = watch("pin");
 
   const setPinPressed = (data) => {
     console.log(data);
@@ -36,21 +39,26 @@ export default function AccountSetPinScreen({ navigation }) {
         name="pin"
         placeholder="Pin"
         control={control}
-        rules={{ required: "Pin is required." }}
+        rules={{
+          required: "Pin is required.",
+          minLength: { value: 4, message: "Min length should be 4." },
+        }}
       />
 
       <PalsTextInput
         name="confirmPin"
         placeholder="Confirm Pin"
         control={control}
-        rules={{ required: "Confirm pin is required." }}
+        rules={{
+          validate: (value) => value === firstPin || "Pin do not match.",
+        }}
       />
 
       <View style={styles.continueBtn}>
         <TouchableButton
           label="Set"
           theme="dark"
-          action={setPinPressed}
+          action={handleSubmit(setPinPressed)}
         ></TouchableButton>
       </View>
 

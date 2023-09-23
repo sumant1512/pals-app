@@ -2,7 +2,6 @@ import { useColorScheme } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import StartScreen from "./src/screens/StartScreen";
-import HomeScreen from "./src/screens/HomeScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import AccountCreateScreen from "./src/screens/AccountCreateScreen";
 import NotFoundScreen from "./src/screens/NotFoundScreen";
@@ -29,7 +28,7 @@ export default function App() {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="PinForgetScreen"
+          initialRouteName="StartScreen"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="StartScreen" component={StartScreen} />

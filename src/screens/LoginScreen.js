@@ -5,7 +5,7 @@ import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
-import { phoneValidators } from "../helpers/phoneValidators";
+import { PHONE_REGEX } from "../helpers/regex";
 
 export default function LoginScreen({ navigation }) {
   const {
@@ -36,7 +36,13 @@ export default function LoginScreen({ navigation }) {
         name="phone"
         placeholder="Mobile number"
         control={control}
-        rules={{ required: "Mobile is required." }}
+        rules={{
+          required: "Mobile is required.",
+          pattern: {
+            value: PHONE_REGEX,
+            message: "Invalid mobile number.",
+          },
+        }}
       />
 
       <View style={styles.continueBtn}>
