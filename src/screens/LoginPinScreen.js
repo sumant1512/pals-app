@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { useForm } from "react-hook-form";
 
 import TouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
@@ -7,36 +7,44 @@ import Logo from "../components/Logo";
 import PalsText from "../components/PalsText";
 import PalsUrl from "../components/PalsUrl";
 
-export default function LoginVerifyScreen({ navigation }) {
-  const [otp, setOtp] = useState({
-    value: "",
-    error: "",
+export default function LoginPinScreen({ navigation }) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      pin: "",
+    },
   });
 
-  const loginAccount = () => {
-    fetch("http://localhost:8080/auth/verify", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        phone: "9579310997",
-        otp: otp.value,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        const token = responseData.data;
-        if (token) {
-          navigation.push("UserDashboardScreen");
-        }
-      })
-      .catch((error) => console.error(error));
+  const loginAccount = (data) => {
+    // fetch("http://localhost:8080/auth/verify", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     phone: "9579310997",
+    //     otp: otp.value,
+    //   }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((responseData) => {
+    //     const token = responseData.data;
+    //     if (token) {
+    //       navigation.push("UserDashboardScreen");
+    //     }
+    //   })
+    //   .catch((error) => console.error(error));
+    console.log(data);
+    navigation.push("UserDashboardScreen");
   };
 
-  const onResendOTPPressed = () => {
+  const onForgotPinPressed = () => {
     alert("Resend OTP pressed.");
+    navigation.push("PinForgetScreen");
   };
 
   const onBackButtonPressed = () => {
@@ -61,20 +69,14 @@ export default function LoginVerifyScreen({ navigation }) {
       <Logo bottom={40}></Logo>
       <PalsText label="Verify" type="h1"></PalsText>
       <PalsTextInput
-        label="Otp"
-        value={otp.value}
-        onChangeText={(text) =>
-          setOtp({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={otp.error}
-        description={otp.description}
-      ></PalsTextInput>
+        name="pin"
+        placeholder="Pin"
+        control={control}
+        rules={{ required: "Pin is required." }}
+      />
 
-      <View style={styles.resendOtp}>
-        <PalsUrl label="Resend OTP" action={onResendOTPPressed}></PalsUrl>
+      <View style={styles.forgotPin}>
+        <PalsUrl label="Forgot Pin?" action={onForgotPinPressed}></PalsUrl>
       </View>
 
       <View style={styles.continueBtn}>
@@ -102,5 +104,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   continueBtn: { marginTop: 20 },
-  resendOtp: { marginTop: 8 },
+  forgotPin: { marginTop: 8 },
 });

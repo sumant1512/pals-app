@@ -7,7 +7,7 @@ export default function TouchableButton({ label, theme, action }) {
       style={[styles.button, fontButtonStyle(theme)]}
       onPress={action}
     >
-      <Text style={[styles.text, fontButtonStyle(theme)]}>{label}</Text>
+      <Text style={[styles.text, fontTextStyle(theme)]}>{label}</Text>
     </TouchableOpacity>
   );
 }
@@ -17,25 +17,42 @@ function fontButtonStyle(type) {
     case "filled":
       return {
         backgroundColor: "#000000",
-        color: "#ffffff",
       };
     case "outlined":
       return {
         backgroundColor: "#ffffff",
-        color: "#000000",
         borderColor: "#dadada",
         borderWidth: 1,
       };
     case "light":
       return {
         backgroundColor: "#EDEDED",
-        color: "#000000",
         borderColor: "#dadada",
         borderWidth: 1,
       };
     default:
       return {
         backgroundColor: "#000000",
+      };
+  }
+}
+
+function fontTextStyle(type) {
+  switch (type) {
+    case "filled":
+      return {
+        color: "#ffffff",
+      };
+    case "outlined":
+      return {
+        color: "#000000",
+      };
+    case "light":
+      return {
+        color: "#000000",
+      };
+    default:
+      return {
         color: "#ffffff",
       };
   }
@@ -51,18 +68,5 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 22,
     fontWeight: "400",
-  },
-  filled: {
-    backgroundColor: "#000000",
-    color: "#ffffff",
-  },
-  outlined: {
-    backgroundColor: "#ffffff",
-    color: "#000000",
-    borderWidth: 1,
-  },
-  light: {
-    backgroundColor: "#EDEDED",
-    color: "#000000",
   },
 });

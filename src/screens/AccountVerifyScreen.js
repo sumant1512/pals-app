@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { useForm } from "react-hook-form";
 
 import TouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
@@ -8,31 +8,19 @@ import PalsText from "../components/PalsText";
 import PalsUrl from "../components/PalsUrl";
 
 export default function AccountVerifyScreen({ navigation }) {
-  const [otp, setOtp] = useState({
-    value: "",
-    error: "",
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      otp: "",
+    },
   });
 
-  const verifyAccount = () => {
-    if (otp.value) {
-      fetch("http://localhost:8080/auth/verify", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          phone: "9131410942",
-          otp: otp.value,
-        }),
-      })
-        .then((response) => response.json())
-        .then((responseData) => {
-          console.log(JSON.stringify(responseData));
-          navigation.push("UserDashboardScreen");
-        })
-        .catch((error) => console.error(error));
-    }
+  const verifyAccount = (data) => {
+    console.log(data);
+    navigation.push("AccountSetPinScreen");
   };
 
   const onResendOTPPressed = () => {
@@ -65,17 +53,11 @@ export default function AccountVerifyScreen({ navigation }) {
       <Logo bottom={40}></Logo>
       <PalsText label="Verify" type="h1"></PalsText>
       <PalsTextInput
-        label="Otp"
-        value={otp.value}
-        onChangeText={(text) =>
-          setOtp({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={otp.error}
-        description={otp.description}
-      ></PalsTextInput>
+        name="otp"
+        placeholder="OTP"
+        control={control}
+        rules={{ required: "OTP is required." }}
+      />
 
       <View style={styles.resendOtp}>
         <PalsUrl label="Resend OTP" action={onResendOTPPressed}></PalsUrl>
@@ -85,7 +67,7 @@ export default function AccountVerifyScreen({ navigation }) {
         <TouchableButton
           label="Verify"
           theme="dark"
-          action={verifyAccount}
+          action={handleSubmit(verifyAccount)}
         ></TouchableButton>
       </View>
 

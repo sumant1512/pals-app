@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { useForm } from "react-hook-form";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
@@ -7,14 +7,20 @@ import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
 import PalsUrl from "../components/PalsUrl";
 
-export default function PasswordForgetVerifyScreen({ navigation }) {
-  const [otp, setOtp] = useState({
-    value: "",
-    error: "",
+export default function PinForgetVerifyScreen({ navigation }) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      otp: "",
+    },
   });
 
-  const onVerifyPressed = () => {
-    navigation.push("PasswordSetScreen");
+  const onVerifyPressed = (data) => {
+    console.log(data);
+    navigation.push("PinSetScreen");
   };
 
   const onResendOTPPressed = () => {
@@ -22,7 +28,7 @@ export default function PasswordForgetVerifyScreen({ navigation }) {
   };
 
   const onBackButtonPressed = () => {
-    navigation.push("PasswordForgetScreen");
+    navigation.push("PinForgetScreen");
   };
 
   return (
@@ -31,17 +37,11 @@ export default function PasswordForgetVerifyScreen({ navigation }) {
       <PalsText label="Verify" type="h1"></PalsText>
 
       <PalsTextInput
-        label="OTP"
-        value={otp.value}
-        onChangeText={(text) =>
-          setOtp({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={otp.error}
-        description={otp.description}
-      ></PalsTextInput>
+        name="otp"
+        placeholder="OTP"
+        control={control}
+        rules={{ required: "OTP is required." }}
+      />
 
       <View style={styles.resendOtp}>
         <PalsUrl label="Resend OTP" action={onResendOTPPressed}></PalsUrl>
@@ -51,7 +51,7 @@ export default function PasswordForgetVerifyScreen({ navigation }) {
         <TouchableButton
           label="Verify"
           theme="filled"
-          action={onVerifyPressed}
+          action={handleSubmit(onVerifyPressed)}
         ></TouchableButton>
       </View>
       <TouchableButton

@@ -11,10 +11,11 @@ import AccountVerifyScreen from "./src/screens/AccountVerifyScreen";
 import UserDashboardScreen from "./src/screens/UserDashboardScreen";
 import UserAddCoupanScreen from "./src/screens/UserAddCoupanScreen";
 import UserProfileScreen from "./src/screens/UserProfileScreen";
-import PasswordForgetScreen from "./src/screens/PasswordForgetScreen";
-import PasswordSetScreen from "./src/screens/PasswordSetScreen";
-import PasswordForgetVerifyScreen from "./src/screens/PasswordForgetVerifyScreen";
-import LoginVerifyScreen from "./src/screens/LoginVerifyScreen";
+import PinForgetScreen from "./src/screens/PinForgetScreen";
+import PinSetScreen from "./src/screens/PinSetScreen";
+import PinForgetVerifyScreen from "./src/screens/PinForgetVerifyScreen";
+import LoginPinScreen from "./src/screens/LoginPinScreen";
+import AccountSetPinScreen from "./src/screens/AccountSetPinScreen";
 
 const Stack = createStackNavigator();
 
@@ -28,15 +29,12 @@ export default function App() {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="StartScreen"
+          initialRouteName="PinForgetScreen"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="StartScreen" component={StartScreen} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen
-            name="LoginVerifyScreen"
-            component={LoginVerifyScreen}
-          />
+          <Stack.Screen name="LoginPinScreen" component={LoginPinScreen} />
           <Stack.Screen
             name="AccountCreateScreen"
             component={AccountCreateScreen}
@@ -46,17 +44,15 @@ export default function App() {
             component={AccountVerifyScreen}
           />
           <Stack.Screen
-            name="PasswordForgetScreen"
-            component={PasswordForgetScreen}
+            name="AccountSetPinScreen"
+            component={AccountSetPinScreen}
           />
+          <Stack.Screen name="PinForgetScreen" component={PinForgetScreen} />
           <Stack.Screen
-            name="PasswordForgetVerifyScreen"
-            component={PasswordForgetVerifyScreen}
+            name="PinForgetVerifyScreen"
+            component={PinForgetVerifyScreen}
           />
-          <Stack.Screen
-            name="PasswordSetScreen"
-            component={PasswordSetScreen}
-          />
+          <Stack.Screen name="PinSetScreen" component={PinSetScreen} />
           <Stack.Screen
             name="UserDashboardScreen"
             component={UserDashboardScreen}

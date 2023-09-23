@@ -1,19 +1,25 @@
-import { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { useForm } from "react-hook-form";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
 
-export default function PasswordForgetScreen({ navigation }) {
-  const [userName, setUserName] = useState({
-    value: "",
-    error: "",
+export default function PinForgetScreen({ navigation }) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      phone: "",
+    },
   });
 
-  const onSendOtpPressed = () => {
-    navigation.push("PasswordForgetVerifyScreen");
+  const onSendOtpPressed = (data) => {
+    console.log(data);
+    navigation.push("PinForgetVerifyScreen");
   };
 
   const onCancelButtonPressed = () => {
@@ -26,23 +32,17 @@ export default function PasswordForgetScreen({ navigation }) {
       <PalsText label="Send Otp" type="h1"></PalsText>
 
       <PalsTextInput
-        label="Username"
-        value={userName.value}
-        onChangeText={(text) =>
-          setUserName({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={userName.error}
-        description={userName.description}
-      ></PalsTextInput>
+        name="phone"
+        placeholder="Mobile number"
+        control={control}
+        rules={{ required: "Mobile is required." }}
+      />
 
       <View style={styles.continueBtn}>
         <TouchableButton
           label="Send Otp"
           theme="filled"
-          action={onSendOtpPressed}
+          action={handleSubmit(onSendOtpPressed)}
         ></TouchableButton>
       </View>
       <TouchableButton

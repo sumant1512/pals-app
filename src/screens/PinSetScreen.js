@@ -1,24 +1,25 @@
-import { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { useForm } from "react-hook-form";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
 
-export default function PasswordSetScreen({ navigation }) {
-  const [password, setPassword] = useState({
-    value: "",
-    error: "",
-    description: "",
-  });
-  const [confirmPassword, setConfirmPassword] = useState({
-    value: "",
-    error: "",
-    description: "",
+export default function PinSetScreen({ navigation }) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      pin: "",
+      confirmPin: "",
+    },
   });
 
-  const onSavePressed = () => {
+  const onSavePressed = (data) => {
+    console.log(data);
     navigation.push("LoginScreen");
   };
 
@@ -32,36 +33,24 @@ export default function PasswordSetScreen({ navigation }) {
       <PalsText label="Set Password" type="h1"></PalsText>
 
       <PalsTextInput
-        label="Password"
-        value={password.value}
-        onChangeText={(text) =>
-          setPassword({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={password.error}
-        description={password.description}
-      ></PalsTextInput>
+        name="pin"
+        placeholder="Pin"
+        control={control}
+        rules={{ required: "Pin is required." }}
+      />
 
       <PalsTextInput
-        label="Confirm Password"
-        value={confirmPassword.value}
-        onChangeText={(text) =>
-          setconfirmPassword({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={confirmPassword.error}
-        description={confirmPassword.description}
-      ></PalsTextInput>
+        name="confirmPin"
+        placeholder="Confirm Pin"
+        control={control}
+        rules={{ required: "Confirm pin is required." }}
+      />
 
       <View style={styles.continueBtn}>
         <TouchableButton
           label="Save"
           theme="filled"
-          action={onSavePressed}
+          action={handleSubmit(onSavePressed)}
         ></TouchableButton>
       </View>
       <TouchableButton

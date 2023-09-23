@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useForm } from "react-hook-form";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
@@ -8,36 +8,19 @@ import Logo from "../components/Logo";
 import { phoneValidators } from "../helpers/phoneValidators";
 
 export default function LoginScreen({ navigation }) {
-  const [phone, setPhone] = useState({
-    value: "",
-    error: "",
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      phone: "",
+    },
   });
 
-  const onContinuePressed = () => {
-    if (phone.value) {
-      fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          phone: phone.value,
-        }),
-      })
-        .then((response) => response.json())
-        .then((responseData) => {
-          navigation.push("LoginVerifyScreen");
-        })
-        .catch((error) => console.error(error));
-    }
-  };
-
-  const onPhoneChanged = (value) => {
-    setPhone({
-      value: value,
-      error: phoneValidators(value),
-    });
+  const onContinuePressed = (data) => {
+    console.log(data);
+    navigation.push("LoginPinScreen");
   };
 
   const navigateToSignUp = () => {
@@ -50,17 +33,17 @@ export default function LoginScreen({ navigation }) {
       <PalsText label="Log in" type="h1"></PalsText>
 
       <PalsTextInput
-        label="Mobile number"
-        value={phone.value}
-        onChangeText={(text) => onPhoneChanged(text)}
-        errorText={phone.error}
-      ></PalsTextInput>
+        name="phone"
+        placeholder="Mobile number"
+        control={control}
+        rules={{ required: "Mobile is required." }}
+      />
 
       <View style={styles.continueBtn}>
         <TouchableButton
           label="Continue"
           theme="filled"
-          action={onContinuePressed}
+          action={handleSubmit(onContinuePressed)}
         ></TouchableButton>
       </View>
 
