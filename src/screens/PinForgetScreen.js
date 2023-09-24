@@ -29,7 +29,7 @@ export default function PinForgetScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Logo bottom={40}></Logo>
-      <PalsText label="Send Otp" type="h1"></PalsText>
+      <PalsText label="Reset Pin" type="h1"></PalsText>
 
       <PalsTextInput
         name="phone"

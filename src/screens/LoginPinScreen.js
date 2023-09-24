@@ -1,5 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { useForm } from "react-hook-form";
+import { useRoute } from "@react-navigation/native";
 
 import TouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
@@ -8,6 +9,7 @@ import PalsText from "../components/PalsText";
 import PalsUrl from "../components/PalsUrl";
 
 export default function LoginPinScreen({ navigation }) {
+  const route = useRoute();
   const {
     control,
     handleSubmit,
@@ -38,7 +40,7 @@ export default function LoginPinScreen({ navigation }) {
     //     }
     //   })
     //   .catch((error) => console.error(error));
-    console.log(data);
+    console.log(data, route?.params?.phone);
     navigation.push("UserDashboardScreen");
   };
 

@@ -1,5 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import { useForm } from "react-hook-form";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import TouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
@@ -7,7 +8,9 @@ import Logo from "../components/Logo";
 import PalsText from "../components/PalsText";
 import PalsUrl from "../components/PalsUrl";
 
-export default function AccountSetPinScreen({ navigation }) {
+export default function AccountSetPinScreen() {
+  const navigation = useNavigation();
+  const route = useRoute();
   const {
     control,
     handleSubmit,
@@ -23,8 +26,25 @@ export default function AccountSetPinScreen({ navigation }) {
   const firstPin = watch("pin");
 
   const setPinPressed = (data) => {
-    console.log(data);
-    navigation.push("LoginScreen");
+    fetch("http://localhost:8080/auth/setPin", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: route?.params?.userId,
+        authToken: route?.params?.authToken,
+        pin: data.pin,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.status) {
+          navigation.navigate("LoginScreen");
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   const onCancelPressed = () => {
@@ -65,7 +85,7 @@ export default function AccountSetPinScreen({ navigation }) {
       <TouchableButton
         label="Cancel"
         theme="outlined"
-        action={handleSubmit(onCancelPressed)}
+        action={onCancelPressed}
       ></TouchableButton>
     </View>
   );

@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
 import { useForm } from "react-hook-form";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import TouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
@@ -7,7 +8,9 @@ import Logo from "../components/Logo";
 import PalsText from "../components/PalsText";
 import PalsUrl from "../components/PalsUrl";
 
-export default function AccountVerifyScreen({ navigation }) {
+export default function AccountVerifyScreen() {
+  const navigation = useNavigation();
+  const route = useRoute();
   const {
     control,
     handleSubmit,
@@ -19,8 +22,27 @@ export default function AccountVerifyScreen({ navigation }) {
   });
 
   const verifyAccount = (data) => {
-    console.log(data);
-    navigation.push("AccountSetPinScreen");
+    fetch("http://localhost:8080/auth/verify", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phone: route?.params?.phone,
+        otp: data.otp,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.status) {
+          navigation.navigate("AccountSetPinScreen", {
+            userId: responseData?.data?.userId,
+            authToken: responseData?.data?.authToken,
+          });
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   const onResendOTPPressed = () => {

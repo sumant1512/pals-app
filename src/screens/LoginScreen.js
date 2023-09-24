@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import { useForm } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
@@ -7,7 +8,8 @@ import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
 import { PHONE_REGEX } from "../helpers/regex";
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
+  const navigation = useNavigation();
   const {
     control,
     handleSubmit,
@@ -19,8 +21,8 @@ export default function LoginScreen({ navigation }) {
   });
 
   const onContinuePressed = (data) => {
-    console.log(data);
-    navigation.push("LoginPinScreen");
+    const { phone } = data;
+    navigation.navigate("LoginPinScreen", { phone });
   };
 
   const navigateToSignUp = () => {
