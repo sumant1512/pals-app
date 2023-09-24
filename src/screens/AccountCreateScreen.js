@@ -12,15 +12,20 @@ export default function AccountCreateScreen() {
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
       name: "Hemant Mishra",
       phone: "9131410942",
+      pin: "",
+      confirmPin: "",
     },
   });
 
-  const onContinuePressed = async (data) => {
+  const firstPin = watch("pin");
+
+  const onCreatePressed = async (data) => {
     await fetch("http://localhost:8080/auth/register", {
       method: "POST",
       headers: {
@@ -33,7 +38,7 @@ export default function AccountCreateScreen() {
       .then((responseData) => {
         if (responseData.status) {
           navigation.navigate("AccountVerifyScreen", {
-            phone: responseData?.phone,
+            phone: responseData?.data?.phone,
           });
         }
       })
@@ -62,11 +67,30 @@ export default function AccountCreateScreen() {
         rules={{ required: "Mobile is required." }}
       />
 
+      <PalsTextInput
+        name="pin"
+        placeholder="Pin"
+        control={control}
+        rules={{
+          required: "Pin is required.",
+          minLength: { value: 4, message: "Min length should be 4." },
+        }}
+      />
+
+      <PalsTextInput
+        name="confirmPin"
+        placeholder="Confirm Pin"
+        control={control}
+        rules={{
+          validate: (value) => value === firstPin || "Pin do not match.",
+        }}
+      />
+
       <View style={styles.continueBtn}>
         <TouchableButton
-          label="Continue"
+          label="Create"
           theme="filled"
-          action={handleSubmit(onContinuePressed)}
+          action={handleSubmit(onCreatePressed)}
         ></TouchableButton>
       </View>
 

@@ -37,8 +37,7 @@ export default function App() {
   if (!isLoadingComplete) {
     return (
       <View>
-        {" "}
-        <Text>Loading</Text>{" "}
+        <Text>Loading...</Text>
       </View>
     );
   } else {

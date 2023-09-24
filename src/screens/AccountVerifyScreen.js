@@ -36,10 +36,7 @@ export default function AccountVerifyScreen() {
       .then((response) => response.json())
       .then((responseData) => {
         if (responseData.status) {
-          navigation.navigate("AccountSetPinScreen", {
-            userId: responseData?.data?.userId,
-            authToken: responseData?.data?.authToken,
-          });
+          navigation.navigate("LoginScreen");
         }
       })
       .catch((error) => console.error(error));
@@ -47,6 +44,24 @@ export default function AccountVerifyScreen() {
 
   const onResendOTPPressed = () => {
     alert("Resend OTP pressed.");
+    fetch("http://localhost:8080/auth/resendOtp", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: route?.params?.userId,
+        otp: data.otp,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.status) {
+          navigation.navigate("LoginScreen");
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   const onBackButtonPressed = () => {

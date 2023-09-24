@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { useForm } from "react-hook-form";
 
 import PalsText from "../components/PalsText";
@@ -26,6 +26,10 @@ export default function PinForgetScreen({ navigation }) {
     navigation.push("LoginScreen");
   };
 
+  const navigateToSignIn = () => {
+    navigation.push("LoginScreen");
+  };
+
   return (
     <View style={styles.container}>
       <Logo bottom={40}></Logo>
@@ -50,6 +54,15 @@ export default function PinForgetScreen({ navigation }) {
         theme="outlined"
         action={onCancelButtonPressed}
       ></TouchableButton>
+
+      <View style={styles.signInLine}>
+        <Text>
+          Already have an account?{" "}
+          <Text style={styles.signIn} onPress={navigateToSignIn}>
+            Sign in
+          </Text>
+        </Text>
+      </View>
     </View>
   );
 }
@@ -62,4 +75,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   continueBtn: { marginTop: 20 },
+  signInLine: {
+    alignSelf: "center",
+    marginTop: 20,
+    marginBottom: 30,
+  },
+  signIn: {
+    fontWeight: "bold",
+  },
 });

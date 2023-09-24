@@ -8,6 +8,7 @@ import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
 import { PHONE_REGEX } from "../helpers/regex";
+import PalsUrl from "../components/PalsUrl";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -48,6 +49,10 @@ export default function LoginScreen() {
     navigation.push("AccountCreateScreen");
   };
 
+  const onForgotPinPressed = () => {
+    navigation.push("PinForgetScreen");
+  };
+
   return (
     <View style={styles.container}>
       <Logo bottom={40}></Logo>
@@ -75,6 +80,10 @@ export default function LoginScreen() {
           minLength: { value: 4, message: "Min length should be 4." },
         }}
       />
+
+      <View style={styles.forgotPin}>
+        <PalsUrl label="Forgot Pin?" action={onForgotPinPressed}></PalsUrl>
+      </View>
 
       <View style={styles.continueBtn}>
         <TouchableButton
@@ -111,4 +120,5 @@ const styles = StyleSheet.create({
   signUp: {
     fontWeight: "bold",
   },
+  forgotPin: { marginTop: 8 },
 });

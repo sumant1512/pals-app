@@ -6,7 +6,6 @@ import TouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
 import Logo from "../components/Logo";
 import PalsText from "../components/PalsText";
-import PalsUrl from "../components/PalsUrl";
 
 export default function AccountSetPinScreen() {
   const navigation = useNavigation();
