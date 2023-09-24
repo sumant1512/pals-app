@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
@@ -17,12 +18,30 @@ export default function LoginScreen() {
   } = useForm({
     defaultValues: {
       phone: "",
+      pin: "",
     },
   });
 
-  const onContinuePressed = (data) => {
-    const { phone } = data;
-    navigation.navigate("LoginPinScreen", { phone });
+  const onLoginPressed = (data) => {
+    fetch("http://localhost:8080/auth/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...data,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.status) {
+          console.log(responseData);
+          AsyncStorage.setItem("authToken", responseData?.data?.authToken);
+          navigation.navigate("UserDashboardScreen");
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   const navigateToSignUp = () => {
@@ -47,11 +66,21 @@ export default function LoginScreen() {
         }}
       />
 
+      <PalsTextInput
+        name="pin"
+        placeholder="Pin"
+        control={control}
+        rules={{
+          required: "Pin is required.",
+          minLength: { value: 4, message: "Min length should be 4." },
+        }}
+      />
+
       <View style={styles.continueBtn}>
         <TouchableButton
-          label="Continue"
+          label="Login"
           theme="filled"
-          action={handleSubmit(onContinuePressed)}
+          action={handleSubmit(onLoginPressed)}
         ></TouchableButton>
       </View>
 

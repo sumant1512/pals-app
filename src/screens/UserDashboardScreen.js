@@ -1,4 +1,5 @@
 import { StyleSheet, View, Text, Image } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import TouchableButton from "../components/PalsTouchableButton";
 import UserHeader from "../components/UserHeader";
@@ -9,6 +10,7 @@ export default function UserDashboardScreen({ navigation }) {
   };
 
   const profilePressed = () => {
+    console.log(AsyncStorage.getItem("authToken"));
     navigation.push("UserProfileScreen");
   };
 

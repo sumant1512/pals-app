@@ -1,12 +1,14 @@
-import React from "react";
 import { StyleSheet, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import TouchableButton from "../components/PalsTouchableButton";
-import { Image } from "react-native";
 import Logo from "../components/Logo";
 
-export default function StartScreen({ navigation }) {
+export default function StartScreen() {
+  const navigation = useNavigation();
   const getStarted = () => {
-    navigation.push("LoginScreen");
+    AsyncStorage.setItem("isFirstTimeOpen", "no");
+    navigation.navigate("LoginScreen");
   };
 
   return (
@@ -18,16 +20,10 @@ export default function StartScreen({ navigation }) {
         theme="filled"
         action={getStarted}
       ></TouchableButton>
-
-      {/* <PalsText label="20 credit added to your Wallet" type="p2"></PalsText>
-      <PalsText label="Profile Settings" type="p3"></PalsText>
-      <PalsText label="Pals' Credit" type="p4"></PalsText>
-      <PalsText label="986" type="h2"></PalsText> */}
     </View>
   );
 }
 
-// Some styles given to button
 const styles = StyleSheet.create({
   container: {
     flex: 1,
