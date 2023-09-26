@@ -7,6 +7,7 @@ import PalsTextInput from "../components/PalsTextInput";
 import Logo from "../components/Logo";
 import PalsText from "../components/PalsText";
 import PalsUrl from "../components/PalsUrl";
+import { serverDomain } from "../constants/Config";
 
 export default function AccountVerifyScreen() {
   const navigation = useNavigation();
@@ -22,7 +23,7 @@ export default function AccountVerifyScreen() {
   });
 
   const verifyAccount = (data) => {
-    fetch("http://localhost:8080/auth/verify", {
+    fetch(`${serverDomain}/auth/verify`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -43,42 +44,23 @@ export default function AccountVerifyScreen() {
   };
 
   const onResendOTPPressed = () => {
-    alert("Resend OTP pressed.");
-    fetch("http://localhost:8080/auth/resendOtp", {
+    fetch(`${serverDomain}/auth/resendOtp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: route?.params?.userId,
-        otp: data.otp,
+        phone: route?.params?.phone,
       }),
     })
       .then((response) => response.json())
-      .then((responseData) => {
-        if (responseData.status) {
-          navigation.navigate("LoginScreen");
-        }
-      })
+      .then((responseData) => {})
       .catch((error) => console.error(error));
   };
 
   const onBackButtonPressed = () => {
-    const id = 1;
-    fetch(`http://localhost:8080/auth/resetAuthInfo/${id}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log(JSON.stringify(responseData));
-        navigation.push("AccountCreateScreen");
-      })
-      .catch((error) => console.error(error));
+    navigation.goBack();
   };
 
   const navigateToSignIn = () => {

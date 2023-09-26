@@ -1,12 +1,15 @@
 import { StyleSheet, View, Text } from "react-native";
 import { useForm } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
+import { serverDomain } from "../constants/Config";
 
-export default function PinForgetScreen({ navigation }) {
+export default function PinForgetScreen() {
+  const navigation = useNavigation();
   const {
     control,
     handleSubmit,
@@ -18,22 +21,39 @@ export default function PinForgetScreen({ navigation }) {
   });
 
   const onSendOtpPressed = (data) => {
-    console.log(data);
-    navigation.push("PinForgetVerifyScreen");
+    fetch(`${serverDomain}/auth/forgetPassword`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phone: data?.phone,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData?.status) {
+          navigation.navigate("PinResetScreen", {
+            phone: data?.phone,
+          });
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   const onCancelButtonPressed = () => {
-    navigation.push("LoginScreen");
+    navigation.goBack();
   };
 
   const navigateToSignIn = () => {
-    navigation.push("LoginScreen");
+    navigation.navigate("LoginScreen");
   };
 
   return (
     <View style={styles.container}>
       <Logo bottom={40}></Logo>
-      <PalsText label="Reset Pin" type="h1"></PalsText>
+      <PalsText label="Forgot password" type="h1"></PalsText>
 
       <PalsTextInput
         name="phone"

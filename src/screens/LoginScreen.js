@@ -9,6 +9,7 @@ import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
 import { PHONE_REGEX } from "../helpers/regex";
 import PalsUrl from "../components/PalsUrl";
+import { serverDomain } from "../constants/Config";
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -18,13 +19,14 @@ export default function LoginScreen() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      phone: "",
-      pin: "",
+      phone: "9131410942",
+      pin: "5527",
     },
   });
 
   const onLoginPressed = (data) => {
-    fetch("http://localhost:8080/auth/login", {
+    console.log(data);
+    fetch(`${serverDomain}/auth/login`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -38,8 +40,14 @@ export default function LoginScreen() {
       .then((responseData) => {
         if (responseData.status) {
           console.log(responseData);
-          AsyncStorage.setItem("authToken", responseData?.data?.authToken);
-          navigation.navigate("UserDashboardScreen");
+          if (responseData?.data?.isVerified) {
+            AsyncStorage.setItem("authToken", responseData?.data?.authToken);
+            navigation.navigate("UserDashboardScreen");
+          } else {
+            navigation.navigate("AccountVerifyScreen", {
+              phone: data.phone,
+            });
+          }
         }
       })
       .catch((error) => console.error(error));

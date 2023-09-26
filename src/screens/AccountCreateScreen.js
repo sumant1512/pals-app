@@ -6,6 +6,7 @@ import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
+import { serverDomain } from "../constants/Config";
 
 export default function AccountCreateScreen() {
   const navigation = useNavigation();
@@ -26,7 +27,7 @@ export default function AccountCreateScreen() {
   const firstPin = watch("pin");
 
   const onCreatePressed = async (data) => {
-    await fetch("http://localhost:8080/auth/register", {
+    await fetch(`${serverDomain}/auth/register`, {
       method: "POST",
       headers: {
         Accept: "application/json",

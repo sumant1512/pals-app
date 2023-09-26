@@ -1,44 +1,103 @@
 import { StyleSheet, View, Text } from "react-native";
 import { useForm } from "react-hook-form";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
 import PalsUrl from "../components/PalsUrl";
+import { serverDomain } from "../constants/Config";
 
-export default function PinForgetVerifyScreen({ navigation }) {
+export default function PinResetScreen() {
+  const navigation = useNavigation();
+  const route = useRoute();
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
       otp: "",
+      pin: "",
+      confirmPin: "",
     },
   });
 
+  const firstPin = watch("pin");
+
   const onVerifyPressed = (data) => {
     console.log(data);
-    navigation.push("PinSetScreen");
+
+    fetch(`${serverDomain}/auth/resetPin`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phone: route?.params?.phone,
+        otp: data.otp,
+        pin: data?.pin,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.status) {
+          navigation.navigate("LoginScreen");
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   const onResendOTPPressed = () => {
-    alert("Resend OTP pressed.");
+    fetch(`${serverDomain}/auth/resendOtp`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        phone: route?.params?.phone,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {})
+      .catch((error) => console.error(error));
   };
 
   const onBackButtonPressed = () => {
-    navigation.push("PinForgetScreen");
+    navigation.goBack();
   };
 
   const navigateToSignIn = () => {
-    navigation.push("LoginScreen");
+    navigation.navigate("LoginScreen");
   };
 
   return (
     <View style={styles.container}>
       <Logo bottom={40}></Logo>
-      <PalsText label="Verify" type="h1"></PalsText>
+      <PalsText label="Reset Pin" type="h1"></PalsText>
+
+      <PalsTextInput
+        name="pin"
+        placeholder="Pin"
+        control={control}
+        rules={{
+          required: "Pin is required.",
+          minLength: { value: 4, message: "Min length should be 4." },
+        }}
+      />
+
+      <PalsTextInput
+        name="confirmPin"
+        placeholder="Confirm Pin"
+        control={control}
+        rules={{
+          validate: (value) => value === firstPin || "Pin do not match.",
+        }}
+      />
 
       <PalsTextInput
         name="otp"

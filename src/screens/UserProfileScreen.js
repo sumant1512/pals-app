@@ -4,11 +4,12 @@ import { StyleSheet, View, TouchableOpacity } from "react-native";
 import UserHeader from "../components/UserHeader";
 import BackButton from "../components/BackButton";
 import PalsText from "../components/PalsText";
+import { serverDomain } from "../constants/Config";
 
 export default function UserProfileScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const onLogoutPressed = () => {
-    fetch("http://localhost:8080/auth/logout/1", {
+    fetch(`${serverDomain}/auth/logout/1`, {
       method: "GET",
       headers: {
         Accept: "application/json",

@@ -14,10 +14,7 @@ import UserDashboardScreen from "./src/screens/UserDashboardScreen";
 import UserAddCoupanScreen from "./src/screens/UserAddCoupanScreen";
 import UserProfileScreen from "./src/screens/UserProfileScreen";
 import PinForgetScreen from "./src/screens/PinForgetScreen";
-import PinSetScreen from "./src/screens/PinSetScreen";
-import PinForgetVerifyScreen from "./src/screens/PinForgetVerifyScreen";
-import LoginPinScreen from "./src/screens/LoginPinScreen";
-import AccountSetPinScreen from "./src/screens/AccountSetPinScreen";
+import PinResetScreen from "./src/screens/PinResetScreen";
 
 const Stack = createStackNavigator();
 
@@ -50,7 +47,6 @@ export default function App() {
           >
             <Stack.Screen name="StartScreen" component={StartScreen} />
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
-            <Stack.Screen name="LoginPinScreen" component={LoginPinScreen} />
             <Stack.Screen
               name="AccountCreateScreen"
               component={AccountCreateScreen}
@@ -59,16 +55,8 @@ export default function App() {
               name="AccountVerifyScreen"
               component={AccountVerifyScreen}
             />
-            <Stack.Screen
-              name="AccountSetPinScreen"
-              component={AccountSetPinScreen}
-            />
             <Stack.Screen name="PinForgetScreen" component={PinForgetScreen} />
-            <Stack.Screen
-              name="PinForgetVerifyScreen"
-              component={PinForgetVerifyScreen}
-            />
-            <Stack.Screen name="PinSetScreen" component={PinSetScreen} />
+            <Stack.Screen name="PinResetScreen" component={PinResetScreen} />
             <Stack.Screen
               name="UserDashboardScreen"
               component={UserDashboardScreen}
@@ -92,9 +80,7 @@ export default function App() {
             initialRouteName="LoginScreen"
             screenOptions={{ headerShown: false }}
           >
-            <Stack.Screen name="StartScreen" component={StartScreen} />
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
-            <Stack.Screen name="LoginPinScreen" component={LoginPinScreen} />
             <Stack.Screen
               name="AccountCreateScreen"
               component={AccountCreateScreen}
@@ -103,16 +89,8 @@ export default function App() {
               name="AccountVerifyScreen"
               component={AccountVerifyScreen}
             />
-            <Stack.Screen
-              name="AccountSetPinScreen"
-              component={AccountSetPinScreen}
-            />
             <Stack.Screen name="PinForgetScreen" component={PinForgetScreen} />
-            <Stack.Screen
-              name="PinForgetVerifyScreen"
-              component={PinForgetVerifyScreen}
-            />
-            <Stack.Screen name="PinSetScreen" component={PinSetScreen} />
+            <Stack.Screen name="PinResetScreen" component={PinResetScreen} />
             <Stack.Screen
               name="UserDashboardScreen"
               component={UserDashboardScreen}

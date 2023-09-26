@@ -1,0 +1,1 @@
+export const serverDomain = "http://localhost:8080";
