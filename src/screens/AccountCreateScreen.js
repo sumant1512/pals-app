@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ScrollView, SafeAreaView } from "react-native";
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 
@@ -51,68 +51,81 @@ export default function AccountCreateScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Logo bottom={40}></Logo>
-      <PalsText label="Create Account" type="h1"></PalsText>
-      <PalsTextInput
-        name="name"
-        placeholder="Full name"
-        control={control}
-        rules={{ required: "Full name is required." }}
-      />
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.image}>
+          <Logo bottom={40}></Logo>
+        </View>
+        <PalsText label="Create Account" type="h1"></PalsText>
+        <PalsTextInput
+          name="name"
+          placeholder="Full name"
+          control={control}
+          rules={{ required: "Full name is required." }}
+        />
 
-      <PalsTextInput
-        name="phone"
-        placeholder="Mobile"
-        control={control}
-        rules={{ required: "Mobile is required." }}
-      />
+        <PalsTextInput
+          name="phone"
+          placeholder="Mobile"
+          control={control}
+          rules={{ required: "Mobile is required." }}
+        />
 
-      <PalsTextInput
-        name="pin"
-        placeholder="Pin"
-        control={control}
-        rules={{
-          required: "Pin is required.",
-          minLength: { value: 4, message: "Min length should be 4." },
-        }}
-      />
+        <PalsTextInput
+          name="pin"
+          placeholder="Pin"
+          control={control}
+          rules={{
+            required: "Pin is required.",
+            minLength: { value: 4, message: "Min length should be 4." },
+          }}
+        />
 
-      <PalsTextInput
-        name="confirmPin"
-        placeholder="Confirm Pin"
-        control={control}
-        rules={{
-          validate: (value) => value === firstPin || "Pin do not match.",
-        }}
-      />
+        <PalsTextInput
+          name="confirmPin"
+          placeholder="Confirm Pin"
+          control={control}
+          rules={{
+            validate: (value) => value === firstPin || "Pin do not match.",
+          }}
+        />
 
-      <View style={styles.continueBtn}>
-        <TouchableButton
-          label="Create"
-          theme="filled"
-          action={handleSubmit(onCreatePressed)}
-        ></TouchableButton>
-      </View>
+        <View style={styles.continueBtn}>
+          <TouchableButton
+            label="Create"
+            theme="filled"
+            action={handleSubmit(onCreatePressed)}
+          ></TouchableButton>
+        </View>
 
-      <View style={styles.signInLine}>
-        <Text>
-          Already have an account?{" "}
-          <Text style={styles.signIn} onPress={navigateToSignIn}>
-            Sign in
+        <View style={styles.signInLine}>
+          <Text>
+            Already have an account?{" "}
+            <Text style={styles.signIn} onPress={navigateToSignIn}>
+              Sign in
+            </Text>
           </Text>
-        </Text>
-      </View>
-    </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
     paddingVertical: 40,
-    justifyContent: "center",
+
+    // scrollbar-width: none;
+  },
+  scrollView: {
+    marginHorizontal: 20,
+  },
+  image: {
+    marginTop: 60,
   },
   continueBtn: { marginTop: 20 },
   signInLine: {
@@ -124,3 +137,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+// const styles = StyleSheet.create({
+//   container: {
+// flex: 1,
+//     paddingHorizontal: 20,
+//     paddingVertical: 40,
+//     top: 100,
+//   },
+//   continueBtn: { marginTop: 20 },
+//   signInLine: {
+//     alignSelf: "center",
+//     marginTop: 20,
+//     marginBottom: 30,
+//   },
+//   signIn: {
+//     fontWeight: "bold",
+//   },
+// });
