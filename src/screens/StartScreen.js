@@ -1,39 +1,34 @@
-import React, { useState } from "react";
-
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import TouchableButton from "../components/PalsTouchableButton";
-import { View } from "react-native";
+import Logo from "../components/Logo";
 
 export default function StartScreen() {
-  const [name, setName] = useState({ value: "", error: "" });
-
-  const [text, onChangeText] = React.useState("Useless Text");
-
+  const navigation = useNavigation();
   const getStarted = () => {
-    alert("Navihate to home");
+    AsyncStorage.setItem("isFirstTimeOpen", "no");
+    navigation.navigate("LoginScreen");
   };
 
   return (
     <View style={styles.container}>
+      <Logo></Logo>
+
       <TouchableButton
         label="Get started"
         theme="filled"
         action={getStarted}
       ></TouchableButton>
-
-      {/* <PalsText label="20 credit added to your Wallet" type="p2"></PalsText>
-      <PalsText label="Profile Settings" type="p3"></PalsText>
-      <PalsText label="Pals' Credit" type="p4"></PalsText>
-      <PalsText label="986" type="h2"></PalsText> */}
     </View>
   );
 }
 
-// Some styles given to button
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingVertical: 40,
     justifyContent: "center",
   },
 });

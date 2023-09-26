@@ -1,40 +1,70 @@
 import React from "react";
-import { View, StyleSheet, Text, TextInput } from "react-native";
+import { View, Text, TextInput, StyleSheet } from "react-native";
+import { Controller } from "react-hook-form";
 
-export default function PalsTextInput({ errorText, description, ...props }) {
+const PalsTextInput = ({
+  control,
+  name,
+  rules = {},
+  placeholder,
+  secureTextEntry,
+}) => {
   return (
-    <View>
-      <Text style={styles.label}>{props.label}</Text>
-      <TextInput style={styles.input} {...props} />
-      {description && !errorText ? (
-        <Text style={styles.description}>{description}</Text>
-      ) : null}
-      {errorText ? <Text style={styles.error}>{errorText}</Text> : null}
-    </View>
+    <Controller
+      control={control}
+      name={name}
+      rules={rules}
+      render={({
+        field: { value, onChange, onBlur },
+        fieldState: { error },
+      }) => (
+        <>
+          <Text style={styles.label}>{placeholder}</Text>
+          <View
+            style={[
+              styles.container,
+              { borderColor: error ? "red" : "#e8e8e8" },
+            ]}
+          >
+            <TextInput
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              style={styles.input}
+              secureTextEntry={secureTextEntry}
+            />
+          </View>
+          {error && (
+            <Text style={{ color: "red", alignSelf: "stretch" }}>
+              {error.message || "Error"}
+            </Text>
+          )}
+        </>
+      )}
+    />
   );
-}
+};
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#EDEDED",
+    width: "100%",
+    borderColor: "#e8e8e8",
+    borderRadius: 10,
+    borderColor: "#dadada",
+    borderWidth: 1,
+  },
   label: {
-    fontSize: 22,
+    fontSize: 16,
     fontWeight: "400",
+    marginBottom: 4,
+    marginTop: 16,
   },
   input: {
-    height: 56,
-    backgroundColor: "#EDEDED",
-    alignItems: "center",
-    padding: 12,
-    marginTop: 8,
+    height: 50,
+    paddingHorizontal: 10,
     borderRadius: 10,
   },
-  description: {
-    fontSize: 13,
-    color: "#00008B",
-    paddingTop: 8,
-  },
-  error: {
-    fontSize: 13,
-    color: "#FF0000",
-    paddingTop: 0,
-  },
 });
+
+export default PalsTextInput;

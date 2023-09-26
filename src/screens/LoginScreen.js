@@ -1,71 +1,114 @@
-import { useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { useForm } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { View } from "../components/Themed";
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
+import Logo from "../components/Logo";
+import { PHONE_REGEX } from "../helpers/regex";
+import PalsUrl from "../components/PalsUrl";
+import { serverDomain } from "../constants/Config";
 
 export default function LoginScreen() {
-  const [userName, setUserName] = useState({
-    value: "",
-    error: "",
-    description: "",
+  const navigation = useNavigation();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      phone: "9131410942",
+      pin: "5527",
+    },
   });
 
-  const [password, setPassword] = useState({
-    value: "",
-    error: "",
-    description: "",
-  });
+  const onLoginPressed = (data) => {
+    console.log(data);
+    fetch(`${serverDomain}/auth/login`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...data,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.status) {
+          console.log(responseData);
+          if (responseData?.data?.isVerified) {
+            AsyncStorage.setItem("authToken", responseData?.data?.authToken);
+            navigation.navigate("UserDashboardScreen");
+          } else {
+            navigation.navigate("AccountVerifyScreen", {
+              phone: data.phone,
+            });
+          }
+        }
+      })
+      .catch((error) => console.error(error));
+  };
 
-  const onLoginPressed = () => {
-    // const nameError = nameValidator(name.value);
-    // if (nameError) {
-    //   setName({ ...name, error: nameError });
-    //   return;
-    // }
-    console.log(userName, password);
-    alert("Login");
+  const navigateToSignUp = () => {
+    navigation.push("AccountCreateScreen");
+  };
+
+  const onForgotPinPressed = () => {
+    navigation.push("PinForgetScreen");
   };
 
   return (
     <View style={styles.container}>
+      <Logo bottom={40}></Logo>
       <PalsText label="Log in" type="h1"></PalsText>
 
       <PalsTextInput
-        label="Username"
-        value={userName.value}
-        onChangeText={(text) =>
-          setUserName({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={userName.error}
-        description={userName.description}
-      ></PalsTextInput>
+        name="phone"
+        placeholder="Mobile number"
+        control={control}
+        rules={{
+          required: "Mobile is required.",
+          pattern: {
+            value: PHONE_REGEX,
+            message: "Invalid mobile number.",
+          },
+        }}
+      />
 
       <PalsTextInput
-        label="Password"
-        value={password.value}
-        onChangeText={(text) =>
-          setPassword({
-            value: text,
-            error: "",
-          })
-        }
-        errorText={password.error}
-        description={password.description}
-      ></PalsTextInput>
+        name="pin"
+        placeholder="Pin"
+        control={control}
+        rules={{
+          required: "Pin is required.",
+          minLength: { value: 4, message: "Min length should be 4." },
+        }}
+      />
 
-      <PalsText label="Forgot password?" type="p1"></PalsText>
+      <View style={styles.forgotPin}>
+        <PalsUrl label="Forgot Pin?" action={onForgotPinPressed}></PalsUrl>
+      </View>
 
-      <TouchableButton
-        label="Login"
-        theme="filled"
-        action={onLoginPressed}
-      ></TouchableButton>
+      <View style={styles.continueBtn}>
+        <TouchableButton
+          label="Login"
+          theme="filled"
+          action={handleSubmit(onLoginPressed)}
+        ></TouchableButton>
+      </View>
+
+      <View style={styles.signUpLine}>
+        <Text>
+          Don't have an account?{" "}
+          <Text style={styles.signUp} onPress={navigateToSignUp}>
+            Sign up
+          </Text>
+        </Text>
+      </View>
     </View>
   );
 }
@@ -74,6 +117,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingVertical: 40,
     justifyContent: "center",
   },
+  continueBtn: { marginTop: 20 },
+  signUpLine: {
+    alignSelf: "center",
+    marginTop: 20,
+  },
+  signUp: {
+    fontWeight: "bold",
+  },
+  forgotPin: { marginTop: 8 },
 });

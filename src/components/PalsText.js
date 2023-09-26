@@ -10,7 +10,7 @@ function fontSize(type) {
     case "h1":
       return {
         fontWeight: "500",
-        marginBottom: 20,
+        marginBottom: 4,
         fontSize: 30,
       };
     case "h2":
@@ -31,7 +31,7 @@ function fontSize(type) {
       };
     case "p3":
       return {
-        marginBottom: 16,
+        marginBottom: 10,
         fontSize: 22,
       };
     case "p4":

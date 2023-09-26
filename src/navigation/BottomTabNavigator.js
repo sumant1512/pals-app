@@ -7,7 +7,7 @@ import { useColorScheme } from "react-native";
 
 import Colors from "../constants/Colors";
 import LoginScreen from "../screens/LoginScreen";
-import CreateAccountScreen from "../screens/CreateAccountScreen";
+import AccountCreateScreen from "../screens/AccountCreateScreen";
 import StartScreen from "../screens/StartScreen";
 import HomeScreen from "../screens/HomeScreen";
 
@@ -123,7 +123,7 @@ function CreateAccountNavigator() {
     <CreateAccountStack.Navigator>
       <CreateAccountStack.Screen
         name="create"
-        component={CreateAccountScreen}
+        component={AccountCreateScreen}
         options={{ headerTitle: "Create Account" }}
       />
     </CreateAccountStack.Navigator>
