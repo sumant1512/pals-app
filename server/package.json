@@ -1,0 +1,30 @@
+{
+  "name": "kbc-be",
+  "version": "1.0.0",
+  "description": "This is backend of KBC",
+  "main": "main.js",
+  "dependencies": {
+    "ag-psd": "^20.2.1",
+    "bcryptjs": "^2.4.3",
+    "canvas": "^3.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.17.1",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.0",
+    "messagebird": "^3.6.2",
+    "mongoose": "^8.9.5",
+    "mysql2": "^3.3.5",
+    "nodemon": "^3.1.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sumant1512/FFF-BE.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon main.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
