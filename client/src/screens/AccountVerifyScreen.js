@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text } from "react-native";
 import { useForm } from "react-hook-form";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import TouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
@@ -22,36 +23,54 @@ export default function AccountVerifyScreen() {
     },
   });
 
+  const setAuthTokenToStorage = async (token) => {
+    try {
+      await AsyncStorage.setItem("authToken", token);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const setOpenedScreen = async (screenName) => {
+    try {
+      await AsyncStorage.setItem("openedScreen", screenName);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const verifyAccount = (data) => {
-    fetch(`${serverDomain}/auth/verify`, {
+    fetch(`${serverDomain}/api/auth/verify`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        phone: route?.params?.phone,
+        mobile: route?.params?.mobile,
         otp: data.otp,
       }),
     })
       .then((response) => response.json())
       .then((responseData) => {
         if (responseData.status) {
-          navigation.navigate("LoginScreen");
+          setAuthTokenToStorage(responseData?.authToken);
+          setOpenedScreen("user");
+          navigation.navigate("UserDashboardScreen");
         }
       })
       .catch((error) => console.error(error));
   };
 
   const onResendOTPPressed = () => {
-    fetch(`${serverDomain}/auth/resendOtp`, {
+    fetch(`${serverDomain}/api/auth/sendOtp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        phone: route?.params?.phone,
+        mobile: route?.params?.mobile,
       }),
     })
       .then((response) => response.json())
@@ -116,7 +135,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   verifyBtn: { marginTop: 20 },
-  resendOtp: { marginTop: 8 },
+  resendOtp: { alignSelf: "flex-end", marginTop: 8 },
   signInLine: {
     alignSelf: "center",
     marginTop: 20,

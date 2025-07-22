@@ -1,26 +1,25 @@
 const jwt = require("jsonwebtoken");
-const connection = require("./mysql-connection");
+const Session = require("../models/Session");
 const AUTH_SECRET_KEY = "palsshop!123";
-const config = process.env;
 
 const authorize = async (req, res, next) => {
-  // Reading auth token from headers
-  const authToken = req.headers["auth-token"];
+  const authHeader = req.headers.authorization;
 
-  // Checing if auth token exists
-  if (!authToken) {
-    return res.status(401).send("Unauthorized user.");
-  }
+  if (!authHeader?.startsWith("Bearer "))
+    return res.status(401).json({ message: "Unauthorized" });
+
+  const token = authHeader.split(" ")[1];
 
   try {
-    // Verifying token for authorization
-    const data = await jwt.verify(authToken, AUTH_SECRET_KEY);
+    const decoded = jwt.verify(token, AUTH_SECRET_KEY);
+    const session = await Session.findOne({ token });
 
-    // Setting user data to request
-    req.userData = data;
-    return next();
-  } catch (error) {
-    return res.status(401).send("Unauthorized user.");
+    if (!session) return res.status(401).json({ message: "Session expired" });
+
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid Token" });
   }
 };
 

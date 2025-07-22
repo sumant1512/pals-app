@@ -52,12 +52,12 @@ export default function UserProfileScreen() {
   };
 
   const onLogoutPressed = (authtoken) => {
-    fetch(`${serverDomain}/user/logout/1`, {
+    fetch(`${serverDomain}/api/auth/logout`, {
       method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        authtoken: userAuthToken,
+        authorization: `Bearer ${userAuthToken}`,
       },
     })
       .then((resp) => resp.json())

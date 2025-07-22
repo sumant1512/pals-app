@@ -18,16 +18,14 @@ export default function AccountCreateScreen() {
   } = useForm({
     defaultValues: {
       name: "Hemant Mishra",
-      phone: "9131410942",
-      pin: "",
-      confirmPin: "",
+      mobile: "9131410942",
     },
   });
 
   const firstPin = watch("pin");
 
-  const onCreatePressed = async (data) => {
-    await fetch(`${serverDomain}/auth/register`, {
+  const onRegisterPressed = async (data) => {
+    await fetch(`${serverDomain}/api/auth/register`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -39,7 +37,7 @@ export default function AccountCreateScreen() {
       .then((responseData) => {
         if (responseData.status) {
           navigation.navigate("AccountVerifyScreen", {
-            phone: responseData?.data?.phone,
+            mobile: responseData?.data?.mobile,
           });
         }
       })
@@ -68,36 +66,17 @@ export default function AccountCreateScreen() {
         />
 
         <PalsTextInput
-          name="phone"
+          name="mobile"
           placeholder="Mobile"
           control={control}
           rules={{ required: "Mobile is required." }}
         />
 
-        <PalsTextInput
-          name="pin"
-          placeholder="Pin"
-          control={control}
-          rules={{
-            required: "Pin is required.",
-            minLength: { value: 4, message: "Min length should be 4." },
-          }}
-        />
-
-        <PalsTextInput
-          name="confirmPin"
-          placeholder="Confirm Pin"
-          control={control}
-          rules={{
-            validate: (value) => value === firstPin || "Pin do not match.",
-          }}
-        />
-
         <View style={styles.continueBtn}>
           <TouchableButton
-            label="Create"
+            label="Register"
             theme="filled"
-            action={handleSubmit(onCreatePressed)}
+            action={handleSubmit(onRegisterPressed)}
           ></TouchableButton>
         </View>
 
@@ -118,7 +97,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 40,
-
     // scrollbar-width: none;
   },
   scrollView: {

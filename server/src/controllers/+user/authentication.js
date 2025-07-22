@@ -1,26 +1,27 @@
 const jwt = require("jsonwebtoken");
-
-const connection = require("./../../utils/mysql-connection");
 const generateOTP = require("../../utils/otp-generator");
 
 const User = require("../../models/User");
+const Session = require("../../models/Session");
 const { ERROR_500 } = require("./../../utils/constant");
 const AUTH_SECRET_KEY = "palsshop!123";
 
-const createUser = async (req, res, next) => {
+const registerUser = async (req, res, next) => {
   const { mobile, name } = req.body;
 
   if (!mobile || !name) {
     return res
       .status(400)
-      .json({ message: "Mobile number and Name is required." });
+      .json({ message: "Mobile number and Name is required.", status: false });
   }
 
   try {
     // Searching user in db
     const user = await User.findOne({ mobile });
     if (user) {
-      return res.status(400).send("User already exists");
+      return res
+        .status(400)
+        .send({ message: "User already exists", status: false });
     }
 
     // Creating user in mongodb
@@ -35,12 +36,57 @@ const createUser = async (req, res, next) => {
         return res.json({
           message: "Otp Sent to you registered mobile number.",
           otp: otp,
+          status: true,
         });
       }) // returning repsonse
       .catch((err) => res.json({ error: err })); // returning db error
   } catch (error) {
     console.log(error);
-    res.status(500).send(ERROR_500);
+    res.status(500).send({ message: ERROR_500, status: false });
+  }
+};
+
+const sendOtp = async (req, res, next) => {
+  const { mobile } = req.body;
+
+  if (!mobile) {
+    return res
+      .status(400)
+      .json({ message: "Mobile number is required.", status: false });
+  }
+
+  try {
+    // Searching user in db
+    const user = await User.findOne({ mobile });
+    if (user) {
+      const loginOtp = await generateOTP(6);
+      user.otp = loginOtp;
+      await user.save();
+      return res.json({
+        message: "Otp Sent to you registered mobile number.",
+        otp: loginOtp,
+        status: true,
+      });
+    }
+
+    // Creating user in mongodb
+    User.create({
+      mobile,
+    })
+      .then(async (user) => {
+        const otp = await generateOTP(6);
+        user.otp = otp;
+        await user.save();
+        return res.json({
+          message: "Otp Sent to you registered mobile number.",
+          otp: otp,
+          status: true,
+        });
+      }) // returning repsonse
+      .catch((err) => res.json({ error: err })); // returning db error
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: ERROR_500, status: true });
   }
 };
 
@@ -48,7 +94,9 @@ const verifyOtp = async (req, res, next) => {
   const { mobile, otp } = req.body;
 
   if (!mobile || !otp) {
-    return res.status(400).json({ message: "Mobile and Otp is required." });
+    return res
+      .status(400)
+      .json({ message: "Mobile and Otp is required.", status: false });
   }
 
   try {
@@ -58,7 +106,9 @@ const verifyOtp = async (req, res, next) => {
     // Checking user and verifying OTP
     if (!user || user.otp !== otp) {
       // Response when invalid credentials.
-      return res.status(400).json({ message: "Invalid Mobile or OTP." });
+      return res
+        .status(400)
+        .json({ message: "Invalid Mobile or OTP.", status: false });
     }
 
     const data = {
@@ -67,25 +117,52 @@ const verifyOtp = async (req, res, next) => {
 
     const authToken = await jwt.sign(data, AUTH_SECRET_KEY);
 
+    await Session.create({
+      userId: user._id,
+      token: authToken,
+      expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+    });
+
     // Response when user logged in.
-    res.status(200).json({ message: "User Logged in.", authToken: authToken });
+    res
+      .status(200)
+      .json({ message: "User Logged in.", authToken: authToken, status: true });
   } catch (error) {
     console.log(error);
-    res.status(500).send(ERROR_500);
+    res.status(500).send({ message: ERROR_500, status: false });
   }
 };
 
-const logout = (req, res, next) => {
-  const userId = req.params.id;
-  const query = `UPDATE users SET authToken = NULL WHERE userId = ${userId}`;
+const logout = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
 
-  connection.query(query, (error, results) => {
-    if (error) {
-      console.error("Error executing MySQL query:", error);
-      return res.status(500).json({ message: "Internal server error" });
+    // Check if the Authorization header is provided
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res
+        .status(401)
+        .json({ message: "Unauthorized: No token provided", status: false });
     }
-    return res.status(200).json({ message: "Logout successful" });
-  });
+
+    const token = authHeader.split(" ")[1];
+
+    // Delete the session from DB
+    const result = await Session.deleteOne({ token });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        message: "Session not found or already logged out",
+        status: false,
+      });
+    }
+
+    return res.status(200).json({ message: "Logout successful", status: true });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", status: false });
+  }
 };
 
 const isAuthenticated = (req, res, next) => {
@@ -93,7 +170,8 @@ const isAuthenticated = (req, res, next) => {
 };
 
 module.exports = {
-  createUser: createUser,
+  registerUser: registerUser,
+  sendOtp: sendOtp,
   verifyOtp: verifyOtp,
   logout: logout,
   isAuthenticated: isAuthenticated,

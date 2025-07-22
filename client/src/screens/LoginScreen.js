@@ -8,8 +8,7 @@ import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import Logo from "../components/Logo";
-import { PHONE_REGEX } from "../helpers/regex";
-import PalsUrl from "../components/PalsUrl";
+import { MOBILE_REGEX } from "../helpers/regex";
 import { serverDomain } from "../constants/Config";
 
 export default function LoginScreen() {
@@ -21,39 +20,12 @@ export default function LoginScreen() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      phone: "9131410942",
-      pin: "5527",
+      mobile: "9131410942",
     },
   });
 
-  const setAuthTokenToStorage = async (token) => {
-    try {
-      await AsyncStorage.setItem("authToken", token);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const setOpenedScreen = async (screenName) => {
-    try {
-      await AsyncStorage.setItem("openedScreen", screenName);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const resetAuth = async () => {
-    try {
-      await AsyncStorage.removeItem("authToken");
-      setOpenedScreen("login");
-      navigation.navigate("LoginScreen");
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   const onLoginPressed = (data) => {
-    fetch(`${serverDomain}/auth/login`, {
+    fetch(`${serverDomain}/api/auth/sendOtp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -73,15 +45,9 @@ export default function LoginScreen() {
       })
       .then((responseData) => {
         if (responseData.status) {
-          if (responseData?.data?.isVerified) {
-            setAuthTokenToStorage(responseData?.data?.authToken);
-            setOpenedScreen("user");
-            navigation.navigate("UserDashboardScreen");
-          } else {
-            navigation.navigate("AccountVerifyScreen", {
-              phone: data.phone,
-            });
-          }
+          navigation.navigate("AccountVerifyScreen", {
+            mobile: data.mobile,
+          });
         }
       })
       .catch((error) => {
@@ -93,41 +59,23 @@ export default function LoginScreen() {
     navigation.push("AccountCreateScreen");
   };
 
-  const onForgotPinPressed = () => {
-    navigation.push("PinForgetScreen");
-  };
-
   return (
     <View style={styles.container}>
       <Logo bottom={40}></Logo>
       <PalsText label="Log in" type="h1"></PalsText>
 
       <PalsTextInput
-        name="phone"
+        name="mobile"
         placeholder="Mobile number"
         control={control}
         rules={{
           required: "Mobile is required.",
           pattern: {
-            value: PHONE_REGEX,
+            value: MOBILE_REGEX,
             message: "Invalid mobile number.",
           },
         }}
       />
-
-      <PalsTextInput
-        name="pin"
-        placeholder="Pin"
-        control={control}
-        rules={{
-          required: "Pin is required.",
-          minLength: { value: 4, message: "Min length should be 4." },
-        }}
-      />
-
-      <View style={styles.forgotPin}>
-        <PalsUrl label="Forgot Pin?" action={onForgotPinPressed}></PalsUrl>
-      </View>
 
       <View style={styles.continueBtn}>
         <TouchableButton
