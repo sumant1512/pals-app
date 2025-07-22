@@ -2,17 +2,19 @@ import { StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
+import ErrorModal from "../components/PalsErrorModal";
 import Logo from "../components/Logo";
 import { MOBILE_REGEX } from "../helpers/regex";
 import { serverDomain } from "../constants/Config";
 
 export default function LoginScreen() {
   const [loading, setLoading] = useState(true);
+  const [errorVisible, setErrorVisible] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const navigation = useNavigation();
   const {
     control,
@@ -51,12 +53,10 @@ export default function LoginScreen() {
         }
       })
       .catch((error) => {
-        console.error("API Error:", error.message);
+        console.error("API Error:", error);
+        setErrorMsg(JSON.parse(error.message).message);
+        setErrorVisible(true);
       });
-  };
-
-  const navigateToSignUp = () => {
-    navigation.push("AccountCreateScreen");
   };
 
   return (
@@ -83,15 +83,12 @@ export default function LoginScreen() {
           theme="filled"
           action={handleSubmit(onLoginPressed)}
         ></TouchableButton>
-      </View>
 
-      <View style={styles.signUpLine}>
-        <Text>
-          Don't have an account?{" "}
-          <Text style={styles.signUp} onPress={navigateToSignUp}>
-            Sign up
-          </Text>
-        </Text>
+        <ErrorModal
+          visible={errorVisible}
+          message={errorMsg}
+          onClose={() => setErrorVisible(false)}
+        />
       </View>
     </View>
   );
@@ -105,12 +102,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   continueBtn: { marginTop: 20 },
-  signUpLine: {
-    alignSelf: "center",
-    marginTop: 20,
-  },
-  signUp: {
-    fontWeight: "bold",
-  },
   forgotPin: { alignSelf: "flex-end", marginTop: 8 },
 });

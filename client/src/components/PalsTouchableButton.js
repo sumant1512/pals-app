@@ -21,8 +21,8 @@ function fontButtonStyle(type) {
     case "outlined":
       return {
         backgroundColor: "#ffffff",
-        borderColor: "#dadada",
         borderWidth: 1,
+        borderColor: "#ddd",
       };
     case "light":
       return {
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   text: {
-    fontSize: 22,
-    fontWeight: "400",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });

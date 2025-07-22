@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useForm } from "react-hook-form";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { serverDomain } from "../constants/Config";
 
 import UserHeader from "../components/UserHeader";
 import BackButton from "../components/BackButton";
 import PalsText from "../components/PalsText";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
-import { serverDomain } from "../constants/Config";
 
 export default function UserProfileSettingsScreen() {
   const navigation = useNavigation();
@@ -21,8 +23,6 @@ export default function UserProfileSettingsScreen() {
   } = useForm({
     defaultValues: {
       name: "",
-      upi: "",
-      nameOnBankAccount: "",
     },
   });
 
@@ -74,7 +74,7 @@ export default function UserProfileSettingsScreen() {
       .then((resp) => resp.json())
       .then((updateUserInfo) => {
         if (updateUserInfo.status) {
-          navigation.navigate("UserProfileScreen");
+          navigation.navigate("DealerProfileScreen");
         }
       })
       .catch((error) => console.error(error.json()))
@@ -83,13 +83,11 @@ export default function UserProfileSettingsScreen() {
 
   return (
     <View style={styles.container}>
-      <UserHeader></UserHeader>
-      <BackButton></BackButton>
+      <UserHeader />
+      <BackButton />
 
-      <View style={styles.list}>
-        <TouchableOpacity style={styles.link}>
-          <PalsText label="Profile Settings" type="p3"></PalsText>
-        </TouchableOpacity>
+      <View style={styles.heading}>
+        <PalsText label="Profile Settings" type="p3"></PalsText>
       </View>
 
       <View>
@@ -98,20 +96,6 @@ export default function UserProfileSettingsScreen() {
           placeholder="Full name"
           control={control}
           rules={{ required: "Full name is required." }}
-        />
-
-        <PalsTextInput
-          name="upi"
-          placeholder="UPI"
-          control={control}
-          rules={{ required: "UPI is required." }}
-        />
-
-        <PalsTextInput
-          name="nameOnBankAccount"
-          placeholder="Name on Bank Account"
-          control={control}
-          rules={{ required: "Name on Bank account is required." }}
         />
 
         <View style={styles.continueBtn}>
@@ -132,13 +116,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 40,
   },
-  list: {
+  heading: {
     marginTop: 24,
   },
-  link: {
-    borderBottomWidth: 1,
-    borderColor: "#E6E6E6",
+  continueBtn: {
     marginTop: 16,
-    alignSelf: "center",
   },
 });

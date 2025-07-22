@@ -13,6 +13,23 @@ const UserSchema = new mongoose.Schema({
   otp: {
     type: String,
   },
+  userType: {
+    type: String,
+    enum: ["Dealer", "Admin", "Painter"],
+    default: "Dealer",
+  },
+  totalCredit: {
+    type: Number,
+    default: 0,
+  },
+  totalDebit: {
+    type: Number,
+    default: 0,
+  },
+  availableCredit: {
+    type: Number,
+    default: 0,
+  },
   timestamp: {
     type: String,
     required: true,
@@ -20,6 +37,6 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-const User = mongoose.model("user", UserSchema);
+const User = mongoose.model("User", UserSchema);
 User.createIndexes();
 module.exports = User;

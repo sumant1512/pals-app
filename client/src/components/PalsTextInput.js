@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "400",
     marginBottom: 4,
-    marginTop: 16,
+    marginTop: 10,
   },
   input: {
     height: 50,

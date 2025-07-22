@@ -9,7 +9,7 @@ export default function HomeScreen({ navigation }) {
   };
 
   const navigateToLogin = () => {
-    navigation.push("LoginScreen");
+    navigation.push("Login");
   };
 
   return (

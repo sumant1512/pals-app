@@ -1,48 +1,62 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
-import StartScreen from "../screens/StartScreen";
+import { ScrollView } from "react-native";
 import LoginScreen from "../screens/LoginScreen";
-import AccountCreateScreen from "../screens/AccountCreateScreen";
 import AccountVerifyScreen from "../screens/AccountVerifyScreen";
-import PinForgetScreen from "../screens/PinForgetScreen";
-import PinResetScreen from "../screens/PinResetScreen";
-import UserDashboardScreen from "../screens/UserDashboardScreen";
-import UserAddCoupanScreen from "../screens/UserAddCoupanScreen";
-import UserProfileScreen from "../screens/UserProfileScreen";
+import AccountCreateScreen from "../screens/AccountCreateScreen";
+import DashboardScreen from "../screens/DashboardScreen";
+import QRsViewScreen from "../screens/QRsViewScreen";
+import QRsCreateScreen from "../screens/QRsCreateScreen";
+import UserScanCouponScreen from "../screens/UserScanCouponScreen";
+import DealerProfileScreen from "../screens/DealerProfileScreen";
 import UserProfileSettingsScreen from "../screens/UserProfileSettingsScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import UserTransactionsScreen from "../screens/UserTransactionsScreen";
+import DealerLedgerScreen from "../screens/DealerLedgerScreen";
+import DealerCreditRequestScreen from "../screens/DealerCreditRequestScreen";
+import DealerTabs from "./DealerTabs";
+import AdminTabs from "./AdminTabs";
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
   return (
-    <NavigationContainer>
+    <ScrollView contentContainerStyle={{ minHeight: "100%" }}>
       <Stack.Navigator
-        initialRouteName="LoginScreen"
+        initialRouteName="Dealer"
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen name="StartScreen" component={StartScreen} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen
+          name="AccountVerifyScreen"
+          component={AccountVerifyScreen}
+        />
+        <Stack.Screen name="Dealer" component={DealerTabs} />
+        <Stack.Screen name="Admin" component={AdminTabs} />
+        {/* <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen
+          name="AccountVerifyScreen"
+          component={AccountVerifyScreen}
+        />
         <Stack.Screen
           name="AccountCreateScreen"
           component={AccountCreateScreen}
         />
         <Stack.Screen
-          name="AccountVerifyScreen"
-          component={AccountVerifyScreen}
+          name="DealerLedgerScreen"
+          component={DealerLedgerScreen}
         />
-        <Stack.Screen name="PinForgetScreen" component={PinForgetScreen} />
-        <Stack.Screen name="PinResetScreen" component={PinResetScreen} />
+        <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
+        <Stack.Screen name="QRsViewScreen" component={QRsViewScreen} />
+        <Stack.Screen name="QRsCreateScreen" component={QRsCreateScreen} />
         <Stack.Screen
-          name="UserDashboardScreen"
-          component={UserDashboardScreen}
+          name="DealerCreditRequestScreen"
+          component={DealerCreditRequestScreen}
         />
         <Stack.Screen
-          name="UserAddCoupanScreen"
-          component={UserAddCoupanScreen}
+          name="UserScanCouponScreen"
+          component={UserScanCouponScreen}
         />
-        <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
+        <Stack.Screen name="DealerProfileScreen" component={DealerProfileScreen} />
         <Stack.Screen
           name="UserProfileSettingsScreen"
           component={UserProfileSettingsScreen}
@@ -51,9 +65,9 @@ const AppNavigator = () => {
           name="UserTransactionsScreen"
           component={UserTransactionsScreen}
         />
-        <Stack.Screen name="NotFoundScreen" component={NotFoundScreen} />
+        <Stack.Screen name="NotFoundScreen" component={NotFoundScreen} /> */}
       </Stack.Navigator>
-    </NavigationContainer>
+    </ScrollView>
   );
 };
 

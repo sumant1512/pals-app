@@ -1,30 +1,25 @@
-import React, { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import React from "react";
+import { View, ActivityIndicator } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 import { useLoadedAssets } from "./src/hooks/useLoadedAssets";
 import AppNavigator from "./src/navigation/AppNavigator";
-import UserAppNavigator from "./src/navigation/UserAppNavigator";
-import StartAppNavigator from "./src/navigation/StartAppNavigator";
+import BottomTabNavigator from "./src/navigation/BottomTabNavigator";
 
 export default function App() {
   const isLoadingComplete = useLoadedAssets();
-  const [openedScreen, setOpenedScreen] = useState("start");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const checkOpenedScreen = async () => {
-    const result = await AsyncStorage.getItem("openedScreen");
-    setOpenedScreen(result);
-  };
-
-  useEffect(() => {
-    checkOpenedScreen();
-  }, []);
-
-  if (openedScreen === "login") {
-    return <AppNavigator />;
-  } else if (openedScreen === "user") {
-    return <UserAppNavigator />;
-  } else {
-    return <StartAppNavigator />;
+  if (!isLoadingComplete) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
+
+  return (
+    <NavigationContainer>
+      <AppNavigator />
+      {/* <BottomTabNavigator /> */}
+    </NavigationContainer>
+  );
 }

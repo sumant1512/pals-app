@@ -7,6 +7,6 @@ const SessionSchema = new mongoose.Schema({
   expiresAt: { type: Date },
 });
 
-const Session = mongoose.model("session", SessionSchema);
+const Session = mongoose.model("Session", SessionSchema);
 Session.createIndexes();
 module.exports = Session;

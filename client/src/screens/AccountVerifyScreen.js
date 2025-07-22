@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useForm } from "react-hook-form";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -5,12 +6,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import TouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
+import ErrorModal from "../components/PalsErrorModal";
 import Logo from "../components/Logo";
 import PalsText from "../components/PalsText";
 import PalsUrl from "../components/PalsUrl";
 import { serverDomain } from "../constants/Config";
 
 export default function AccountVerifyScreen() {
+  const [loading, setLoading] = useState(true);
+  const [errorVisible, setErrorVisible] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const navigation = useNavigation();
   const route = useRoute();
   const {
@@ -56,10 +61,21 @@ export default function AccountVerifyScreen() {
         if (responseData.status) {
           setAuthTokenToStorage(responseData?.authToken);
           setOpenedScreen("user");
-          navigation.navigate("UserDashboardScreen");
+          navigation.navigate("Dealer");
+        } else {
+          console.error(
+            "[AccountVerifyScreen - verify otp] API Error:",
+            responseData
+          );
+          setErrorMsg(responseData.message);
+          setErrorVisible(true);
         }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error("[AccountVerifyScreen - verify otp] API Error:", error);
+        setErrorMsg(error);
+        setErrorVisible(true);
+      });
   };
 
   const onResendOTPPressed = () => {
@@ -83,7 +99,7 @@ export default function AccountVerifyScreen() {
   };
 
   const navigateToSignIn = () => {
-    navigation.push("LoginScreen");
+    navigation.push("Login");
   };
 
   return (
@@ -123,6 +139,12 @@ export default function AccountVerifyScreen() {
           </Text>
         </Text>
       </View>
+
+      <ErrorModal
+        visible={errorVisible}
+        message={errorMsg}
+        onClose={() => setErrorVisible(false)}
+      />
     </View>
   );
 }

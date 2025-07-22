@@ -8,7 +8,6 @@ import { useColorScheme } from "react-native";
 import Colors from "../constants/Colors";
 import LoginScreen from "../screens/LoginScreen";
 import AccountCreateScreen from "../screens/AccountCreateScreen";
-import StartScreen from "../screens/StartScreen";
 import HomeScreen from "../screens/HomeScreen";
 
 const BottomTab = createBottomTabNavigator();
@@ -21,16 +20,6 @@ export default function BottomTabNavigator() {
       initialRouteName="Login"
       screenOptions={{ tabBarActiveTintColor: Colors[colorScheme].tint }}
     >
-      <BottomTab.Screen
-        name="Start"
-        component={StartNavigator}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
-          ),
-        }}
-      />
       <BottomTab.Screen
         name="Home"
         component={HomeNavigator}
@@ -74,20 +63,6 @@ function TabBarIcon(props) {
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 
-const StartStack = createStackNavigator();
-
-function StartNavigator() {
-  return (
-    <StartStack.Navigator>
-      <StartStack.Screen
-        name="StartScreen"
-        component={StartScreen}
-        options={{ headerTitle: "Start Screen" }}
-      />
-    </StartStack.Navigator>
-  );
-}
-
 const HomeStack = createStackNavigator();
 
 function HomeNavigator() {
@@ -108,7 +83,7 @@ function LoginNavigator() {
   return (
     <LoginStack.Navigator>
       <LoginStack.Screen
-        name="LoginScreen"
+        name="Login"
         component={LoginScreen}
         options={{ headerTitle: "Login" }}
       />

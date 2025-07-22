@@ -1,4 +1,4 @@
-# Navigation Example
+# Pals Coupon Scanner App
 
 <p>
   <!-- iOS -->
@@ -35,3 +35,41 @@
 - Learn more about [Universal React](https://docs.expo.dev/).
 - See what API and components are [available in the React runtimes](https://docs.expo.dev/versions/latest/).
 - Find out more about developing apps and websites: [Official guides](https://docs.expo.dev/guides/).
+
+## ✅ Features Added
+
+🔐 Login Feature Added
+Implemented mobile number based login functionality with OTP verification only for Dealers.
+
+♻️ Shared Error Modal Component Added
+Created a reusable error modal component for consistent error display across the application.
+
+⚠️ Error Modal for Send OTP API
+Integrated error modal to display meaningful feedback if sending OTP fails.
+
+⚠️ Error Modal for Verify OTP API
+Integrated error modal to display meaningful feedback if Verify OTP fails.
+
+⚠️ Error Modal for Get User Info Api
+Integrated error modal to display meaningful feedback if get User info ai fails.
+
+✅ Error Modal for Verify OTP API
+Added error handling modal for scenarios where OTP verification fails, improving user experience.
+
+### 🛠️ Role-based UI on User Dashboard
+
+- Implemented role-based UI on the `DashboardScreen`.
+- If the logged-in user is a **Dealer**, they will see their own Pals Credit summary and a button to scan coupons.
+- If the logged-in user is an **Admin**, they will see a dedicated section (card) to add new dealers.
+- This allows both Admin and Dealer users to have different rights and access specific to their role within the application.
+
+## ❌ Features Removed
+
+- 💳 **"Redeem Now" Modal & API Removed from DashboardScreen**  
+  The Redeem Now modal and associated functionality were removed from the `DashboardScreen`.  
+  However, the modal component still exists in the project and can be reused.  
+  The removed API was:
+
+  ```http
+  POST /api/coupon/credit
+  ```
