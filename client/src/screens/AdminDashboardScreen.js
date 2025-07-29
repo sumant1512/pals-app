@@ -29,7 +29,7 @@ const AdminDashboardScreen = () => {
         </View>
         <View style={styles.cardWrapper}>
           <PalsAdminDashboardCard
-            label={"View QRs"}
+            label={"View Coupons"}
             icon={"qr-code-outline"}
             onPress={() => onCardClick("QRsViewScreen")}
           />

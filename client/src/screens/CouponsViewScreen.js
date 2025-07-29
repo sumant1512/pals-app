@@ -6,7 +6,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
@@ -40,15 +40,12 @@ const clearUserInfoStorage = async () => {
   }
 };
 
-const profilePressed = () => {
-  navigation.navigate("AdminProfile");
-};
-
 export default function QRsScreen() {
   const [loading, setLoading] = useState(true);
   const [errorVisible, setErrorVisible] = useState(false);
   const [qrList, setQrList] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
+  const navigation = useNavigation();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -68,7 +65,6 @@ export default function QRsScreen() {
           axios
             .get(`${serverDomain}/api/coupon/get`, { headers })
             .then((couponResponse) => {
-              console.log("Coupons Response:", couponResponse);
               setQrList(couponResponse?.data?.coupons);
               setLoading(false);
             })
@@ -91,6 +87,10 @@ export default function QRsScreen() {
         }
       });
     })();
+  };
+
+  const profilePressed = () => {
+    navigation.navigate("AdminProfile");
   };
 
   return (

@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
@@ -21,6 +21,7 @@ const DealerCreditRequestScreen = () => {
   const [redeemRequestList, setRedeemRequestList] = useState([]);
   const [errorVisible, setErrorVisible] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const navigation = useNavigation();
 
   const setOpenedScreen = async () => {
     try {
