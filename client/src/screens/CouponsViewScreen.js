@@ -41,7 +41,7 @@ const clearUserInfoStorage = async () => {
 };
 
 const profilePressed = () => {
-  navigation.navigate("AdminProfileScreen");
+  navigation.navigate("AdminProfile");
 };
 
 export default function QRsScreen() {

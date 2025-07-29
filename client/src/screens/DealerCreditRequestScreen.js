@@ -72,7 +72,6 @@ const DealerCreditRequestScreen = () => {
           axios
             .get(`${serverDomain}/api/coupon/get-redeem-request`, { headers })
             .then((couponResponse) => {
-              console.log("Redeem Request Response:", couponResponse);
               setRedeemRequestList(couponResponse?.data?.transactions);
               setLoading(false);
             })
@@ -98,7 +97,7 @@ const DealerCreditRequestScreen = () => {
   };
 
   const profilePressed = () => {
-    navigation.navigate("AdminProfileScreen");
+    navigation.navigate("AdminProfile");
   };
 
   return (

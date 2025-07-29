@@ -9,7 +9,7 @@ import ErrorModal from "../components/PalsErrorModal";
 import UserRedeemModal from "./UserRedeemModal";
 import { serverDomain } from "../constants/Config";
 
-const DashboardDealerScreen = ({ userInfo, addCouponPressed }) => {
+const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [errorVisible, setErrorVisible] = useState(false);
@@ -200,4 +200,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DashboardDealerScreen;
+export default DealerDashboardScreen;

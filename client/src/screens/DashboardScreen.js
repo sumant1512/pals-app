@@ -6,8 +6,8 @@ import axios from "axios";
 
 import UserHeader from "../components/UserHeader";
 import ErrorModal from "../components/PalsErrorModal";
-import DashboardAdminScreen from "./DashboardAdminScreen";
-import DashboardDealerScreen from "./DashboardDealerScreen";
+import AdminDashboardScreen from "./AdminDashboardScreen";
+import DealerDashboardScreen from "./DealerDashboardScreen";
 import { serverDomain } from "../constants/Config";
 
 export default function DashboardScreen({ navigation }) {
@@ -121,12 +121,12 @@ export default function DashboardScreen({ navigation }) {
           {userInfo?.userType === "Admin" ? (
             <>
               {/* Admin Dashboard */}
-              <DashboardAdminScreen />
+              <AdminDashboardScreen />
             </>
           ) : (
             <>
               {/* Dealer Dashboard */}
-              <DashboardDealerScreen
+              <DealerDashboardScreen
                 userInfo={userInfo}
                 addCouponPressed={addCouponPressed}
               />

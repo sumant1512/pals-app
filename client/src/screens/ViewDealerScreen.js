@@ -71,7 +71,7 @@ export default function ViewDealerScreen() {
   };
 
   const profilePressed = () => {
-    navigation.navigate("AdminProfileScreen");
+    navigation.navigate("AdminProfile");
   };
 
   return (

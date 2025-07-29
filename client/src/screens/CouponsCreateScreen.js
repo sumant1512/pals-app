@@ -72,7 +72,7 @@ export default function CreateQRsScreen() {
   };
 
   const profilePressed = () => {
-    navigation.navigate("AdminProfileScreen");
+    navigation.navigate("AdminProfile");
   };
 
   return (

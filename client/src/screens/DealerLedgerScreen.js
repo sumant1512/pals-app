@@ -65,7 +65,7 @@ export default function DealerLedgerScreen() {
   };
 
   const profilePressed = () => {
-    navigation.navigate("AdminProfileScreen");
+    navigation.navigate("AdminProfile");
   };
 
   return (

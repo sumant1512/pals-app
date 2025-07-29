@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import PalsAdminDashboardCard from "../components/PalsAdminDashboardCard";
 
-const DashboardAdminScreen = () => {
+const AdminDashboardScreen = () => {
   const navigation = useNavigation();
 
   const onCardClick = (screen) => {
@@ -76,4 +76,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DashboardAdminScreen;
+export default AdminDashboardScreen;
