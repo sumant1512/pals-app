@@ -3,13 +3,13 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import AdminTabs from "./AdminTabs";
 
-import AdminProfileScreen from "../screens/AdminProfileScreen";
-import DealerCreditRequestScreen from "../screens/DealerCreditRequestScreen";
-import AddDealerScreen from "../screens/AddDealerScreen";
-import ViewDealerScreen from "../screens/ViewDealerScreen";
-import DealerLedgerScreen from "../screens/DealerLedgerScreen";
-import QRsViewScreen from "../screens/CouponsViewScreen";
-import CouponsCreateScreen from "../screens/CouponsCreateScreen";
+import AdminProfileScreen from "../../screens/AdminProfileScreen";
+import DealerCreditRequestScreen from "../../screens/DealerCreditRequestScreen";
+import AddDealerScreen from "../../screens/AddDealerScreen";
+import ViewDealerScreen from "../../screens/ViewDealerScreen";
+import DealerLedgerScreen from "../../screens/DealerLedgerScreen";
+import QRsViewScreen from "../../screens/CouponsViewScreen";
+import CouponsCreateScreen from "../../screens/CouponsCreateScreen";
 
 const Stack = createStackNavigator();
 
@@ -20,7 +20,7 @@ export default function AdminStack() {
       <Stack.Screen name="AdminTabs" component={AdminTabs} />
 
       {/* Other admin screens (not in bottom tab) */}
-      <Stack.Screen name="AdminProfileScreen" component={AdminProfileScreen} />
+      <Stack.Screen name="AdminProfile" component={AdminProfileScreen} />
       <Stack.Screen
         name="DealerCreditRequestScreen"
         component={DealerCreditRequestScreen}

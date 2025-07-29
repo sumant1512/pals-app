@@ -150,7 +150,7 @@ export default function UserTransactionsScreen() {
     <View style={styles.container}>
       <UserHeader action={profilePressed} />
       <BackButton />
-      <PalsText label={"Transactions"} type={"h2"} />
+      <PalsText label={"Transactions"} type={"h5"} />
 
       <View style={styles.listContainer}>
         {loading ? (
@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 40,
   },
   listContainer: {
     flex: 1,

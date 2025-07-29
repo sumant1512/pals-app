@@ -1,8 +1,8 @@
 // navigation/AdminTabs.js
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import DashboardScreen from "../screens/DashboardScreen";
-import CouponsCreateScreen from "../screens/CouponsCreateScreen";
+import DashboardScreen from "../../screens/DashboardScreen";
+import CouponsCreateScreen from "../../screens/CouponsCreateScreen";
 import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();

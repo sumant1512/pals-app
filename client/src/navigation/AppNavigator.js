@@ -1,11 +1,10 @@
-// navigation/AppNavigator.js
 import { createStackNavigator } from "@react-navigation/stack";
 import { ScrollView } from "react-native";
 
 import LoginScreen from "../screens/LoginScreen";
 import AccountVerifyScreen from "../screens/AccountVerifyScreen";
-import DealerTabs from "./DealerTabs";
-import AdminStack from "./AdminStack"; // <-- use this instead of AdminTabs
+import DealerStack from "./dealer/DealerStack";
+import AdminStack from "./admin/AdminStack"; // <-- use this instead of AdminTabs
 
 const Stack = createStackNavigator();
 
@@ -21,7 +20,7 @@ const AppNavigator = () => {
           name="AccountVerifyScreen"
           component={AccountVerifyScreen}
         />
-        <Stack.Screen name="Dealer" component={DealerTabs} />
+        <Stack.Screen name="Dealer" component={DealerStack} />
         <Stack.Screen name="Admin" component={AdminStack} />
       </Stack.Navigator>
     </ScrollView>

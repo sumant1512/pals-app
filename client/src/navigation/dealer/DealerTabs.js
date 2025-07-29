@@ -1,10 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import DashboardScreen from "../screens/DashboardScreen";
-import UserTransactionsScreen from "../screens/UserTransactionsScreen";
-import UserScanCouponScreen from "../screens/UserScanCouponScreen";
+import DashboardScreen from "../../screens/DashboardScreen";
+import UserTransactionsScreen from "../../screens/UserTransactionsScreen";
+import UserScanCouponScreen from "../../screens/UserScanCouponScreen";
 import { Ionicons } from "@expo/vector-icons";
-import DealerProfileScreen from "../screens/DealerProfileScreen";
+import DealerProfileScreen from "../../screens/DealerProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -40,14 +40,6 @@ export default function DealerTabs() {
           tabBarIcon: ({ color }) => (
             <Ionicons name="trending-up-outline" size={24} color={color} />
           ),
-        }}
-      />
-      <Tab.Screen
-        name="DealerProfile"
-        component={DealerProfileScreen}
-        options={{
-          tabBarButton: () => null, // Hides it from bottom tab bar
-          tabBarStyle: { display: "none" }, // Optional: Hide bottom bar while on this screen
         }}
       />
     </Tab.Navigator>

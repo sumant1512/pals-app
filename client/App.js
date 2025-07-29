@@ -3,7 +3,6 @@ import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useLoadedAssets } from "./src/hooks/useLoadedAssets";
 import AppNavigator from "./src/navigation/AppNavigator";
-import BottomTabNavigator from "./src/navigation/BottomTabNavigator";
 
 export default function App() {
   const isLoadingComplete = useLoadedAssets();
@@ -19,7 +18,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <AppNavigator />
-      {/* <BottomTabNavigator /> */}
     </NavigationContainer>
   );
 }
