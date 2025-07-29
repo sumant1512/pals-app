@@ -118,6 +118,13 @@ export default function AdminProfileScreen() {
           <View style={styles.separator} />
 
           <View style={styles.fieldContainer}>
+            <Text style={styles.label}>Designation</Text>
+            <Text style={styles.value}>Pals' {userInfo?.userType}</Text>
+          </View>
+
+          <View style={styles.separator} />
+
+          <View style={styles.fieldContainer}>
             <Text style={styles.label}>SHOP NAME</Text>
             <Text style={styles.value}>Doe's Supplies</Text>
           </View>
