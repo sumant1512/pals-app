@@ -5,7 +5,7 @@ import Logo from "../components/Logo";
 
 export default function HomeScreen({ navigation }) {
   const navigateToCreateAccount = () => {
-    navigation.push("AccountCreateScreen");
+    navigation.push("AddDealerScreen");
   };
 
   const navigateToLogin = () => {
@@ -24,7 +24,7 @@ export default function HomeScreen({ navigation }) {
       </View>
 
       <TouchableButton
-        label="Create account"
+        label="Add Dealer"
         theme="light"
         action={navigateToCreateAccount}
       ></TouchableButton>

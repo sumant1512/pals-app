@@ -17,7 +17,7 @@ const DashboardAdminScreen = () => {
           <PalsAdminDashboardCard
             label={"+ Dealers"}
             icon={"person-add"}
-            onPress={() => onCardClick("AccountCreateScreen")}
+            onPress={() => onCardClick("AddDealerScreen")}
           />
         </View>
         <View style={styles.cardWrapper}>
@@ -29,9 +29,9 @@ const DashboardAdminScreen = () => {
         </View>
         <View style={styles.cardWrapper}>
           <PalsAdminDashboardCard
-            label={"Create QRs"}
+            label={"Create Coupons"}
             icon={"qr-code-outline"}
-            onPress={() => onCardClick("QRsCreateScreen")}
+            onPress={() => onCardClick("CouponsCreateScreen")}
           />
         </View>
         <View style={styles.cardWrapper}>

@@ -7,7 +7,7 @@ import { useColorScheme } from "react-native";
 
 import Colors from "../constants/Colors";
 import LoginScreen from "../screens/LoginScreen";
-import AccountCreateScreen from "../screens/AccountCreateScreen";
+import AddDealerScreen from "../screens/AddDealerScreen";
 import HomeScreen from "../screens/HomeScreen";
 
 const BottomTab = createBottomTabNavigator();
@@ -98,8 +98,8 @@ function CreateAccountNavigator() {
     <CreateAccountStack.Navigator>
       <CreateAccountStack.Screen
         name="create"
-        component={AccountCreateScreen}
-        options={{ headerTitle: "Create Account" }}
+        component={AddDealerScreen}
+        options={{ headerTitle: "Add Dealer" }}
       />
     </CreateAccountStack.Navigator>
   );

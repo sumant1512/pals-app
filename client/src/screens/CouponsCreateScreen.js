@@ -12,7 +12,7 @@ import TouchableButton from "../components/PalsTouchableButton";
 import ErrorModal from "../components/PalsErrorModal";
 import { serverDomain } from "../constants/Config";
 
-export default function AccountCreateScreen() {
+export default function CreateQRsScreen() {
   const [errorVisible, setErrorVisible] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const navigation = useNavigation();
@@ -23,8 +23,8 @@ export default function AccountCreateScreen() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "Sumant Mishra",
-      mobile: "9579310997",
+      amount: "",
+      count: "",
     },
   });
 
@@ -36,7 +36,7 @@ export default function AccountCreateScreen() {
     }
   };
 
-  const onRegisterPressed = async (formData) => {
+  const onCreateCouponPressed = async (formData) => {
     (() => {
       AsyncStorage.getItem("authToken").then((authToken) => {
         if (authToken) {
@@ -45,10 +45,11 @@ export default function AccountCreateScreen() {
             "Content-Type": "application/json",
             authorization: `Bearer ${authToken}`,
           };
+          console.log("Form Data:", formData);
           axios
             .post(
-              `${serverDomain}/api/auth/register`,
-              { ...formData, userType: "Dealer" },
+              `${serverDomain}/api/coupon/generate`,
+              { ...formData },
               { headers }
             )
             .then((userInfoResponse) => {
@@ -80,26 +81,26 @@ export default function AccountCreateScreen() {
         showsVerticalScrollIndicator={false}
       >
         <UserHeader action={profilePressed} />
-        <PalsText label="Create Account" type="h1"></PalsText>
+        <PalsText label="Create Coupons" type="h1"></PalsText>
         <PalsTextInput
-          name="name"
-          placeholder="Full name"
+          name="amount"
+          placeholder="Amount"
           control={control}
-          rules={{ required: "Full name is required." }}
+          rules={{ required: "Amount is required." }}
         />
 
         <PalsTextInput
-          name="mobile"
-          placeholder="Mobile"
+          name="count"
+          placeholder="Count"
           control={control}
-          rules={{ required: "Mobile is required." }}
+          rules={{ required: "Count is required." }}
         />
 
         <View style={styles.continueBtn}>
           <TouchableButton
-            label="Register"
+            label="Create coupon"
             theme="filled"
-            action={handleSubmit(onRegisterPressed)}
+            action={handleSubmit(onCreateCouponPressed)}
           ></TouchableButton>
         </View>
 

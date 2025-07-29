@@ -1,10 +1,9 @@
+// navigation/AdminTabs.js
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import DashboardScreen from "../screens/DashboardScreen";
-import QRsCreateScreen from "../screens/QRsCreateScreen"; // Replace with your admin screen
+import CouponsCreateScreen from "../screens/CouponsCreateScreen";
 import { Ionicons } from "@expo/vector-icons";
-import AdminProfileScreen from "../screens/AdminProfileScreen";
-import DealerCreditRequestScreen from "../screens/DealerCreditRequestScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,27 +25,11 @@ export default function AdminTabs() {
       />
       <Tab.Screen
         name="CreateQR"
-        component={QRsCreateScreen}
+        component={CouponsCreateScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="qr-code-outline" size={24} color={color} />
           ),
-        }}
-      />
-      <Tab.Screen
-        name="AdminProfile"
-        component={AdminProfileScreen}
-        options={{
-          tabBarButton: () => null,
-          tabBarStyle: { display: "none" },
-        }}
-      />
-      <Tab.Screen
-        name="DealerCreditRequestScreen"
-        component={DealerCreditRequestScreen}
-        options={{
-          tabBarButton: () => null,
-          tabBarStyle: { display: "none" },
         }}
       />
     </Tab.Navigator>
