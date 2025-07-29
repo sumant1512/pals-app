@@ -24,8 +24,13 @@ export default function AddDealerScreen() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "Sumant Mishra",
-      mobile: "9579310997",
+      name: "",
+      mobile: "",
+      shop: "",
+      address: "",
+      pin: "",
+      city: "",
+      state: "",
     },
   });
 
@@ -95,6 +100,41 @@ export default function AddDealerScreen() {
           placeholder="Mobile"
           control={control}
           rules={{ required: "Mobile is required." }}
+        />
+
+        <PalsTextInput
+          name="shop"
+          placeholder="Shop Name"
+          control={control}
+          rules={{ required: "Shop name is required." }}
+        />
+
+        <PalsTextInput
+          name="address"
+          placeholder="Address"
+          control={control}
+          rules={{ required: "Address is required." }}
+        />
+
+        <PalsTextInput
+          name="pin"
+          placeholder="Pin"
+          control={control}
+          rules={{ required: "Pin is required." }}
+        />
+
+        <PalsTextInput
+          name="city"
+          placeholder="City"
+          control={control}
+          rules={{ required: "City is required." }}
+        />
+
+        <PalsTextInput
+          name="state"
+          placeholder="State"
+          control={control}
+          rules={{ required: "State is required." }}
         />
 
         <View style={styles.continueBtn}>
