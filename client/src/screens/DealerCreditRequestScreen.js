@@ -54,11 +54,83 @@ const DealerCreditRequestScreen = () => {
   );
 
   const handleApprove = (id) => {
-    console.log("Approved:", id);
+    (() => {
+      AsyncStorage.getItem("authToken").then((authToken) => {
+        if (authToken) {
+          const headers = {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            authorization: `Bearer ${authToken}`,
+          };
+          axios
+            .put(
+              `${serverDomain}/api/dealer/redeem-request/${id}`,
+              { decision: "approve" },
+              { headers }
+            )
+            .then((couponResponse) => {
+              console.log(couponResponse);
+              setLoading(false);
+            })
+            .catch((error) => {
+              console.error("API Error:", error);
+              setErrorMsg(
+                error?.response?.data?.message
+                  ? error?.response?.data?.message
+                  : error?.response?.statusText
+              );
+              setErrorVisible(true);
+              setLoading(false);
+            });
+        } else {
+          setOpenedScreen();
+          clearAuthStorage();
+          clearUserInfoStorage();
+          setLoading(false);
+          navigation.navigate("Login");
+        }
+      });
+    })();
   };
 
   const handleReject = (id) => {
-    console.log("Rejected:", id);
+    (() => {
+      AsyncStorage.getItem("authToken").then((authToken) => {
+        if (authToken) {
+          const headers = {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            authorization: `Bearer ${authToken}`,
+          };
+          axios
+            .put(
+              `${serverDomain}/api/dealer/redeem-request/${id}`,
+              { decision: "reject" },
+              { headers }
+            )
+            .then((couponResponse) => {
+              console.log(couponResponse);
+              setLoading(false);
+            })
+            .catch((error) => {
+              console.error("API Error:", error);
+              setErrorMsg(
+                error?.response?.data?.message
+                  ? error?.response?.data?.message
+                  : error?.response?.statusText
+              );
+              setErrorVisible(true);
+              setLoading(false);
+            });
+        } else {
+          setOpenedScreen();
+          clearAuthStorage();
+          clearUserInfoStorage();
+          setLoading(false);
+          navigation.navigate("Login");
+        }
+      });
+    })();
   };
 
   const getRedeemRequest = () => {
@@ -112,7 +184,7 @@ const DealerCreditRequestScreen = () => {
         <LoaderCard />
       ) : (
         <ScrollView>
-          {redeemRequestList.map((request) => (
+          {redeemRequestList?.map((request) => (
             <View key={request._id} style={styles.card}>
               <View style={styles.row}>
                 <View style={styles.infoSection}>

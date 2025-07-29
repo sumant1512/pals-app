@@ -216,8 +216,9 @@ const getRedeemRequest = async (req, res) => {
     }));
 
     if (!transactions || transactions.length === 0) {
-      return res.status(404).json({
-        message: "No pending debit transactions found",
+      return res.status(200).json({
+        message: "No pending transactions found",
+        transactions: [],
         status: false,
       });
     }
@@ -262,9 +263,9 @@ const getUserTransactionsByAdmin = async (req, res) => {
   try {
     const userId = req.body.userId; // Extracted from JWT middleware
 
-    const transactions = await Transaction.find({ userId }).sort({
-      createdAt: -1,
-    });
+    const transactions = await Transaction.find({ userId })
+      .sort({ createdAt: -1 })
+      .populate("approvedBy", "name");
 
     return res.status(200).json({
       message: "Transactions fetched successfully",

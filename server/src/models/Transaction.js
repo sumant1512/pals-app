@@ -30,6 +30,13 @@ const TransactionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Coupon",
   },
+  approvedAt: {
+    type: Date,
+  },
+  approvedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", // assuming admin is also stored in User collection
+  },
   createdAt: {
     type: Date,
     default: Date.now,

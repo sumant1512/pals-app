@@ -130,6 +130,11 @@ export default function UserTransactionsScreen() {
         </View>
         <Text style={styles.transactionSource}>Source: {item.source}</Text>
         <Text style={styles.transactionRef}>Ref: {item.reference}</Text>
+        {item?.approvedBy?.name && (
+          <Text style={styles.approvedBy}>
+            Approved By: {item.approvedBy.name}
+          </Text>
+        )}
         <Text style={styles.transactionDate}>
           {new Date(item.createdAt).toLocaleString()}
         </Text>
@@ -209,6 +214,11 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   transactionRef: {
+    fontSize: 13,
+    color: "#777",
+    marginTop: 2,
+  },
+  approvedBy: {
     fontSize: 13,
     color: "#777",
     marginTop: 2,

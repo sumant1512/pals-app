@@ -25,7 +25,7 @@ export default function DealerLedgerScreen() {
   );
 
   const navigateToUserTransactions = (data) => {
-    navigation.push("UserTransactionsScreen", {
+    navigation.navigate("UserTransactionsScreen", {
       userId: data,
     });
   };
