@@ -13,6 +13,7 @@ import axios from "axios";
 import ErrorModal from "../components/PalsErrorModal";
 import LoaderCard from "../components/PalsLoaderCard";
 import UserHeader from "../components/UserHeader";
+import BackButton from "../components/BackButton";
 import { serverDomain } from "../constants/Config";
 
 const DealerCreditRequestScreen = () => {
@@ -97,19 +98,20 @@ const DealerCreditRequestScreen = () => {
   };
 
   const profilePressed = () => {
-    navigation.push("DealerProfileScreen");
+    navigation.navigate("AdminProfileScreen");
   };
 
   return (
-    <View contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <UserHeader action={profilePressed} />
+      <BackButton />
 
       <Text style={styles.heading}>Credit Requests</Text>
 
       {loading ? (
         <LoaderCard />
       ) : (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView>
           {redeemRequestList.map((request) => (
             <View key={request._id} style={styles.card}>
               <View style={styles.row}>
