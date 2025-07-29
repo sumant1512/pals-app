@@ -6,6 +6,7 @@ import AdminTabs from "./AdminTabs";
 import AdminProfileScreen from "../screens/AdminProfileScreen";
 import DealerCreditRequestScreen from "../screens/DealerCreditRequestScreen";
 import AddDealerScreen from "../screens/AddDealerScreen";
+import ViewDealerScreen from "../screens/ViewDealerScreen";
 import DealerLedgerScreen from "../screens/DealerLedgerScreen";
 import QRsViewScreen from "../screens/CouponsViewScreen";
 import CouponsCreateScreen from "../screens/CouponsCreateScreen";
@@ -25,6 +26,7 @@ export default function AdminStack() {
         component={DealerCreditRequestScreen}
       />
       <Stack.Screen name="AddDealerScreen" component={AddDealerScreen} />
+      <Stack.Screen name="ViewDealerScreen" component={ViewDealerScreen} />
       <Stack.Screen name="DealerLedgerScreen" component={DealerLedgerScreen} />
       <Stack.Screen name="QRsViewScreen" component={QRsViewScreen} />
       <Stack.Screen

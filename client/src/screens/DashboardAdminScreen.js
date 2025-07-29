@@ -22,6 +22,13 @@ const DashboardAdminScreen = () => {
         </View>
         <View style={styles.cardWrapper}>
           <PalsAdminDashboardCard
+            label={"View Dealers"}
+            icon={"person"}
+            onPress={() => onCardClick("ViewDealerScreen")}
+          />
+        </View>
+        <View style={styles.cardWrapper}>
+          <PalsAdminDashboardCard
             label={"View QRs"}
             icon={"qr-code-outline"}
             onPress={() => onCardClick("QRsViewScreen")}

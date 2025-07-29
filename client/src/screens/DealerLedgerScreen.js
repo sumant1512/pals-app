@@ -6,6 +6,7 @@ import axios from "axios";
 
 import { serverDomain } from "../constants/Config";
 import UserHeader from "../components/UserHeader";
+import BackButton from "../components/BackButton";
 import LoaderCard from "../components/PalsLoaderCard";
 import ErrorModal from "../components/PalsErrorModal";
 import DealerEntryCard from "./DealerEntryCard";
@@ -64,17 +65,18 @@ export default function DealerLedgerScreen() {
   };
 
   const profilePressed = () => {
-    navigation.push("DealerProfileScreen");
+    navigation.navigate("AdminProfileScreen");
   };
 
   return (
     <View style={styles.container}>
       <UserHeader action={profilePressed} />
+      <BackButton />
 
       {loading ? (
         <LoaderCard />
       ) : (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView>
           {dealerLedger.map((dealer, index) => (
             <DealerEntryCard
               key={dealer._id || index}

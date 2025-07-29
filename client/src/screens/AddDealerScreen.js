@@ -7,6 +7,7 @@ import axios from "axios";
 
 import PalsText from "../components/PalsText";
 import UserHeader from "../components/UserHeader";
+import BackButton from "../components/BackButton";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import ErrorModal from "../components/PalsErrorModal";
@@ -70,7 +71,7 @@ export default function AddDealerScreen() {
   };
 
   const profilePressed = () => {
-    navigation.push("DealerProfileScreen");
+    navigation.navigate("AdminProfileScreen");
   };
 
   return (
@@ -80,6 +81,7 @@ export default function AddDealerScreen() {
         showsVerticalScrollIndicator={false}
       >
         <UserHeader action={profilePressed} />
+        <BackButton />
         <PalsText label="Add Dealer" type="h1"></PalsText>
         <PalsTextInput
           name="name"

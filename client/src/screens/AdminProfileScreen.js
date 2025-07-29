@@ -1,87 +1,187 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import {
-  View,
-  Text,
   StyleSheet,
-  Image,
+  View,
   TouchableOpacity,
   ScrollView,
+  Image,
+  Text,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from "@react-navigation/native";
+
+import UserHeader from "../components/UserHeader";
+import BackButton from "../components/BackButton";
 import TouchableButton from "../components/PalsTouchableButton";
+import { serverDomain } from "../constants/Config";
 
-const AdminProfileScreen = () => {
+export default function AdminProfileScreen() {
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
+  const [userAuthToken, setUserAuthToken] = useState("");
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    getAuthToken();
+    getUserInfo();
+  }, []);
+
+  const clearAuthStorage = async () => {
+    try {
+      await AsyncStorage.removeItem("authToken");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const clearUserInfoStorage = async () => {
+    try {
+      await AsyncStorage.removeItem("userInfo");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getAuthToken = () => {
+    (() => {
+      AsyncStorage.getItem("authToken").then((authToken) => {
+        if (authToken) {
+          setUserAuthToken(authToken);
+        }
+      });
+    })();
+  };
+
+  const getUserInfo = (authToken) => {
+    (() => {
+      AsyncStorage.getItem("userInfo").then((userInfo) => {
+        if (userInfo) {
+          const userInfoParsed = JSON.parse(userInfo);
+          setUserInfo(userInfoParsed);
+        }
+      });
+    })();
+  };
+
+  const setOpenedScreen = async () => {
+    try {
+      await AsyncStorage.setItem("openedScreen", "login");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const onLogoutPressed = () => {
+    fetch(`${serverDomain}/api/auth/logout`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        authorization: `Bearer ${userAuthToken}`,
+      },
+    })
+      .then((resp) => resp.json())
+      .then((logoutResponseData) => {
+        if (logoutResponseData?.status) {
+          clearAuthStorage();
+          clearUserInfoStorage();
+          setOpenedScreen();
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "Login" }],
+            })
+          );
+        }
+      })
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.card}>
-        <Image
-          source={require("../assets/profile-placeholder.png")} // Add your placeholder image
-          style={styles.profileImage}
-        />
+    <View style={styles.container}>
+      <UserHeader />
+      <BackButton />
 
-        <View style={styles.fieldContainer}>
-          <Text style={styles.label}>FULL NAME</Text>
-          <Text style={styles.value}>John Doe</Text>
-        </View>
-
-        <View style={styles.separator} />
-
-        <View style={styles.fieldContainer}>
-          <Text style={styles.label}>SHOP NAME</Text>
-          <Text style={styles.value}>Doe's Supplies</Text>
-        </View>
-
-        <View style={styles.separator} />
-
-        <View style={styles.fieldContainer}>
-          <Text style={styles.label}>ADDRESS</Text>
-          <Text style={styles.value}>123 Main St</Text>
-        </View>
-
-        <View style={styles.separator} />
-
-        <View style={styles.row}>
-          <View style={styles.halfField}>
-            <Text style={styles.label}>CITY</Text>
-            <Text style={styles.value}>Anytown</Text>
+      <ScrollView style={styles.scroll}>
+        <View style={styles.card}>
+          <Image
+            source={require("../assets/profile-placeholder.png")}
+            style={styles.profileImage}
+          />
+          <View style={styles.fieldContainer}>
+            <Text style={styles.label}>FULL NAME</Text>
+            <Text style={styles.value}>{userInfo?.name}</Text>
           </View>
-          <View style={styles.halfField}>
+
+          <View style={styles.separator} />
+
+          <View style={styles.fieldContainer}>
+            <Text style={styles.label}>SHOP NAME</Text>
+            <Text style={styles.value}>Doe's Supplies</Text>
+          </View>
+
+          <View style={styles.separator} />
+
+          <View style={styles.fieldContainer}>
+            <Text style={styles.label}>ADDRESS</Text>
+            <Text style={styles.value}>123 Main St</Text>
+          </View>
+
+          <View style={styles.separator} />
+
+          <View style={styles.row}>
+            <View style={styles.halfField}>
+              <Text style={styles.label}>CITY</Text>
+              <Text style={styles.value}>Dewas</Text>
+            </View>
+            <View style={styles.halfField}>
+              <Text style={styles.label}>PIN</Text>
+              <Text style={styles.value}>455001</Text>
+            </View>
+          </View>
+
+          <View style={styles.separator} />
+
+          <View style={styles.fieldContainer}>
             <Text style={styles.label}>STATE</Text>
-            <Text style={styles.value}>California</Text>
+            <Text style={styles.value}>Madhya Pradesh</Text>
+          </View>
+
+          <View style={styles.separator} />
+
+          <View style={styles.fieldContainer}>
+            <Text style={styles.label}>MOBILE NUMBER</Text>
+            <Text style={styles.value}>{userInfo?.mobile}</Text>
+          </View>
+
+          {/* Log Out button stuck at the bottom of the card */}
+          <View>
+            <TouchableButton
+              label="Log Out"
+              theme="outlined"
+              action={onLogoutPressed}
+            />
           </View>
         </View>
-
-        <View style={styles.separator} />
-
-        <View style={styles.fieldContainer}>
-          <Text style={styles.label}>MOBILE NUMBER</Text>
-          <Text style={styles.value}>123-456-7890</Text>
-        </View>
-
-        {/* <TouchableOpacity style={styles.logoutButton}>
-          <Text style={styles.logoutText}>Log Out</Text>
-        </TouchableOpacity> */}
-        <TouchableButton
-          label="Log Out"
-          theme="outlined"
-          action={handleSubmit(onLogoutPressed)}
-        ></TouchableButton>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: "#f9f9f9",
-    justifyContent: "center",
-    padding: 16,
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 40,
   },
   card: {
     backgroundColor: "white",
     borderRadius: 20,
     padding: 20,
     elevation: 4,
+    marginBottom: 20,
   },
   profileImage: {
     width: 100,
@@ -115,19 +215,8 @@ const styles = StyleSheet.create({
   halfField: {
     width: "48%",
   },
-  logoutButton: {
-    marginTop: 30,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 12,
-    paddingVertical: 12,
-    alignItems: "center",
-  },
-  logoutText: {
-    color: "#000",
-    fontWeight: "600",
-    fontSize: 16,
+  scroll: {
+    flex: 1,
+    marginTop: 10,
   },
 });
-
-export default AdminProfileScreen;

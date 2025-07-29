@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 import UserHeader from "../components/UserHeader";
+import BackButton from "../components/BackButton";
 import ErrorModal from "../components/PalsErrorModal";
 import CouponCard from "./CouponCard";
 import { serverDomain } from "../constants/Config";
@@ -40,7 +41,7 @@ const clearUserInfoStorage = async () => {
 };
 
 const profilePressed = () => {
-  navigation.push("DealerProfileScreen");
+  navigation.navigate("AdminProfileScreen");
 };
 
 export default function QRsScreen() {
@@ -95,13 +96,14 @@ export default function QRsScreen() {
   return (
     <View style={styles.container}>
       <UserHeader action={profilePressed} />
+      <BackButton />
 
       {loading ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color="#007bff" />
         </View>
       ) : (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView>
           <Text style={styles.title}>Coupons</Text>
           <View style={styles.grid}>
             {qrList?.map((qr) => (
@@ -123,7 +125,7 @@ export default function QRsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     paddingTop: 40,
     paddingBottom: 40,
   },
