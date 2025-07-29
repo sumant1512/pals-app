@@ -49,7 +49,7 @@ const DealerEntryCard = ({
           {address && <Text style={styles.sub}>{address}</Text>}
         </View>
         <Ionicons
-          name={expanded ? "chevron-up-outline" : "chevron-down-outline"}
+          name={expanded ? "chevron-up" : "chevron-down"}
           size={24}
           color="#176B87"
         />

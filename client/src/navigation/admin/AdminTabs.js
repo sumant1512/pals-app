@@ -19,7 +19,7 @@ export default function AdminTabs() {
         component={DashboardScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Ionicons name="home-outline" size={24} color={color} />
+            <Ionicons name="home" size={24} color={color} />
           ),
         }}
       />
@@ -28,7 +28,7 @@ export default function AdminTabs() {
         component={CouponsCreateScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Ionicons name="qr-code-outline" size={24} color={color} />
+            <Ionicons name="qr-code" size={24} color={color} />
           ),
         }}
       />

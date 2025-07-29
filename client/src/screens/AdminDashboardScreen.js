@@ -30,28 +30,28 @@ const AdminDashboardScreen = () => {
         <View style={styles.cardWrapper}>
           <PalsAdminDashboardCard
             label={"View Coupons"}
-            icon={"qr-code-outline"}
+            icon={"qr-code"}
             onPress={() => onCardClick("QRsViewScreen")}
           />
         </View>
         <View style={styles.cardWrapper}>
           <PalsAdminDashboardCard
             label={"Create Coupons"}
-            icon={"qr-code-outline"}
+            icon={"qr-code"}
             onPress={() => onCardClick("CouponsCreateScreen")}
           />
         </View>
         <View style={styles.cardWrapper}>
           <PalsAdminDashboardCard
             label={"Dealer Ledger"}
-            icon={"trending-up-outline"}
+            icon={"trending-up"}
             onPress={() => onCardClick("DealerLedgerScreen")}
           />
         </View>
         <View style={styles.cardWrapper}>
           <PalsAdminDashboardCard
             label={"Dealer Credit Requests"}
-            icon={"card-outline"}
+            icon={"card"}
             onPress={() => onCardClick("DealerCreditRequestScreen")}
           />
         </View>

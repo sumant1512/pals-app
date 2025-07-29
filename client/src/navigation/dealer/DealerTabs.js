@@ -20,7 +20,7 @@ export default function DealerTabs() {
         component={DashboardScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Ionicons name="home-outline" size={24} color={color} />
+            <Ionicons name="home" size={24} color={color} />
           ),
         }}
       />
@@ -29,7 +29,7 @@ export default function DealerTabs() {
         component={UserScanCouponScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Ionicons name="qr-code-outline" size={24} color={color} />
+            <Ionicons name="qr-code" size={24} color={color} />
           ),
         }}
       />
@@ -38,7 +38,7 @@ export default function DealerTabs() {
         component={UserTransactionsScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Ionicons name="trending-up-outline" size={24} color={color} />
+            <Ionicons name="trending-up" size={24} color={color} />
           ),
         }}
       />
