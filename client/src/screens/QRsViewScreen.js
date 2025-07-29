@@ -11,8 +11,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 import UserHeader from "../components/UserHeader";
-import CouponCard from "./CouponCard";
 import ErrorModal from "../components/PalsErrorModal";
+import CouponCard from "./CouponCard";
 import { serverDomain } from "../constants/Config";
 
 const setOpenedScreen = async () => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,32 +9,47 @@ import {
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+
+import ErrorModal from "../components/PalsErrorModal";
+import LoaderCard from "../components/PalsLoaderCard";
+import UserHeader from "../components/UserHeader";
 import { serverDomain } from "../constants/Config";
 
 const DealerCreditRequestScreen = () => {
-  const creditRequests = [
-    {
-      id: 1,
-      name: "John Doe",
-      shop: "Doe Hardware",
-      address: "123 Elm St\nNew York",
-      amount: 5000,
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      shop: "Smith Electronics",
-      address: "456 Oak St\nLos Angeles",
-      amount: 8000,
-    },
-    {
-      id: 3,
-      name: "Michael Johnson",
-      shop: "Johnson Supplies",
-      address: "789 Pine St\nChicago",
-      amount: 12000,
-    },
-  ];
+  const [loading, setLoading] = useState(true);
+  const [redeemRequestList, setRedeemRequestList] = useState([]);
+  const [errorVisible, setErrorVisible] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const setOpenedScreen = async () => {
+    try {
+      await AsyncStorage.setItem("openedScreen", "login");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const clearAuthStorage = async () => {
+    try {
+      await AsyncStorage.removeItem("authToken");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const clearUserInfoStorage = async () => {
+    try {
+      await AsyncStorage.removeItem("userInfo");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getRedeemRequest();
+    }, [])
+  );
 
   const handleApprove = (id) => {
     console.log("Approved:", id);
@@ -44,13 +59,7 @@ const DealerCreditRequestScreen = () => {
     console.log("Rejected:", id);
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      getCoupons();
-    }, [])
-  );
-
-  const getCoupons = () => {
+  const getRedeemRequest = () => {
     (() => {
       AsyncStorage.getItem("authToken").then((authToken) => {
         if (authToken) {
@@ -62,72 +71,94 @@ const DealerCreditRequestScreen = () => {
           axios
             .get(`${serverDomain}/api/coupon/get-redeem-request`, { headers })
             .then((couponResponse) => {
-              console.log("Coupons Response:", couponResponse);
-              // setQrList(couponResponse?.data?.coupons);
-              // setLoading(false);
+              console.log("Redeem Request Response:", couponResponse);
+              setRedeemRequestList(couponResponse?.data?.transactions);
+              setLoading(false);
             })
             .catch((error) => {
               console.error("API Error:", error);
-              // setErrorMsg(
-              //   error?.response?.data?.message
-              //     ? error?.response?.data?.message
-              //     : error?.response?.statusText
-              // );
-              // setErrorVisible(true);
-              // setLoading(false);
+              setErrorMsg(
+                error?.response?.data?.message
+                  ? error?.response?.data?.message
+                  : error?.response?.statusText
+              );
+              setErrorVisible(true);
+              setLoading(false);
             });
         } else {
-          // setOpenedScreen();
-          // clearAuthStorage();
-          // clearUserInfoStorage();
-          // setLoading(false);
-          // navigation.navigate("Login");
+          setOpenedScreen();
+          clearAuthStorage();
+          clearUserInfoStorage();
+          setLoading(false);
+          navigation.navigate("Login");
         }
       });
     })();
   };
 
+  const profilePressed = () => {
+    navigation.push("DealerProfileScreen");
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View contentContainerStyle={styles.container}>
+      <UserHeader action={profilePressed} />
+
       <Text style={styles.heading}>Credit Requests</Text>
 
-      {creditRequests.map((dealer) => (
-        <View key={dealer.id} style={styles.card}>
-          <View style={styles.row}>
-            <View style={styles.infoSection}>
-              <Text style={styles.name}>{dealer.name}</Text>
-              <Text style={styles.subInfo}>{dealer.shop}</Text>
-              <Text style={styles.subInfo}>{dealer.address}</Text>
+      {loading ? (
+        <LoaderCard />
+      ) : (
+        <ScrollView contentContainerStyle={styles.container}>
+          {redeemRequestList.map((request) => (
+            <View key={request._id} style={styles.card}>
+              <View style={styles.row}>
+                <View style={styles.infoSection}>
+                  <Text style={styles.name}>{request?.name}</Text>
+                  <Text style={styles.subInfo}>{request?.shop}</Text>
+                  <Text style={styles.subInfo}>{request?.address}</Text>
+                </View>
+                <Text style={styles.amount}>
+                  ₹ {request?.amount.toLocaleString()}
+                </Text>
+              </View>
+
+              <View style={styles.buttonRow}>
+                <TouchableOpacity
+                  style={[styles.button, styles.approveBtn]}
+                  onPress={() => handleApprove(request?._id)}
+                >
+                  <Text style={styles.buttonText}>Approve</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.button, styles.rejectBtn]}
+                  onPress={() => handleReject(request?._id)}
+                >
+                  <Text style={[styles.buttonText, { color: "#000" }]}>
+                    Reject
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <Text style={styles.amount}>${dealer.amount.toLocaleString()}</Text>
-          </View>
+          ))}
+        </ScrollView>
+      )}
 
-          <View style={styles.buttonRow}>
-            <TouchableOpacity
-              style={[styles.button, styles.approveBtn]}
-              onPress={() => handleApprove(dealer.id)}
-            >
-              <Text style={styles.buttonText}>Approve</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.button, styles.rejectBtn]}
-              onPress={() => handleReject(dealer.id)}
-            >
-              <Text style={[styles.buttonText, { color: "#000" }]}>Reject</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      ))}
-    </ScrollView>
+      <ErrorModal
+        visible={errorVisible}
+        message={errorMsg}
+        onClose={() => setErrorVisible(false)}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    paddingBottom: 32,
-    backgroundColor: "#fff",
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 40,
   },
   heading: {
     fontSize: 22,
