@@ -34,13 +34,13 @@ export default function AddDealerScreen() {
   } = useForm({
     defaultValues: {
       userType: "Dealer",
-      name: "",
-      mobile: "",
-      shop: "",
-      address: "",
-      pin: "",
-      city: "",
-      state: "",
+      name: "Chetan Kulchania",
+      mobile: "9111097770",
+      shop: "Om Building materials",
+      address: "Infront of govt bima, Ujjain Road",
+      pin: "455001",
+      city: "Dewas",
+      state: "Madhya Pradesh",
     },
   });
 
@@ -63,8 +63,8 @@ export default function AddDealerScreen() {
           };
           axios
             .post(
-              `${serverDomain}/api/auth/register`,
-              { ...formData, userType: "Dealer" },
+              `${serverDomain}/api/dealer/add-dealer`,
+              { ...formData },
               { headers }
             )
             .then((userInfoResponse) => {
@@ -74,7 +74,10 @@ export default function AddDealerScreen() {
               }
             })
             .catch((error) => {
-              setErrorMsg(error?.response?.data?.message);
+              setErrorMsg(
+                error?.response?.data?.message ||
+                  "Something went wrong at client side."
+              );
               setErrorVisible(true);
             });
         } else {
@@ -97,7 +100,7 @@ export default function AddDealerScreen() {
       >
         <UserHeader action={profilePressed} />
         <BackButton />
-        <PalsText label="Add Dealer" type="h1"></PalsText>
+        <PalsText label="Add Dealer" type={"h5"} />
 
         <PalsSelectInput
           name="userType"

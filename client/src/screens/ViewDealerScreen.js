@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, ScrollView, SafeAreaView } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
@@ -37,7 +38,13 @@ export default function ViewDealerScreen() {
     }
   };
 
-  const onRegisterPressed = async (formData) => {
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchDealers();
+    }, [])
+  );
+
+  const fetchDealers = async (formData) => {
     (() => {
       AsyncStorage.getItem("authToken").then((authToken) => {
         if (authToken) {
@@ -47,19 +54,14 @@ export default function ViewDealerScreen() {
             authorization: `Bearer ${authToken}`,
           };
           axios
-            .post(
-              `${serverDomain}/api/auth/register`,
-              { ...formData, userType: "Dealer" },
-              { headers }
-            )
+            .get(`${serverDomain}/api/dealer/get-dealers`, { headers })
             .then((userInfoResponse) => {
               console.log("User Info Response:", userInfoResponse);
-              if (userInfoResponse.data.status) {
-                navigation.navigate("DashboardScreen");
-              }
             })
             .catch((error) => {
-              setErrorMsg(error?.response?.data?.message);
+              setErrorMsg(
+                error?.response?.data?.message || "Client Side error."
+              );
               setErrorVisible(true);
             });
         } else {
@@ -82,7 +84,8 @@ export default function ViewDealerScreen() {
       >
         <UserHeader action={profilePressed} />
         <BackButton />
-        <PalsText label="Add Dealer" type="h1"></PalsText>
+        <PalsText label="View Dealer" type={"h3"} />
+
         <PalsTextInput
           name="name"
           placeholder="Full name"
@@ -96,14 +99,6 @@ export default function ViewDealerScreen() {
           control={control}
           rules={{ required: "Mobile is required." }}
         />
-
-        <View style={styles.continueBtn}>
-          <TouchableButton
-            label="Register"
-            theme="filled"
-            action={handleSubmit(onRegisterPressed)}
-          ></TouchableButton>
-        </View>
 
         <ErrorModal
           visible={errorVisible}

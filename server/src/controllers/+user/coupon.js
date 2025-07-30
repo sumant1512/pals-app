@@ -78,7 +78,6 @@ const generateCoupons = async (req, res) => {
 const scanCoupon = async (req, res) => {
   try {
     const { code } = req.body;
-    console.log("Redeeming coupon for user:", req.user, "with code:", code);
     const userId = req.user.id; // Assuming user is authenticated
 
     // Find coupon
@@ -207,12 +206,14 @@ const getRedeemRequest = async (req, res) => {
       status: "pending",
     })
       .sort({ createdAt: -1 })
-      .populate("userId", "_id name");
+      .populate("userId", "_id name shop address");
 
     const transactions = rawTxns.map((txn) => ({
       ...txn.toObject(),
       userId: txn.userId?._id,
       name: txn.userId?.name,
+      shop: txn.userId?.shop,
+      address: txn.userId?.address,
     }));
 
     if (!transactions || transactions.length === 0) {

@@ -2,7 +2,7 @@ const User = require("../../models/User");
 const Transaction = require("../../models/Transaction");
 
 const addDealer = async (req, res, next) => {
-  const { mobile, name, userType } = req.body;
+  const { userType, name, mobile, shop, address, pin, city, state } = req.body;
   const userId = req.user.id;
 
   if (!mobile || !name || !userId) {
@@ -32,24 +32,51 @@ const addDealer = async (req, res, next) => {
 
     // Creating user in mongodb
     User.create({
+      userType,
       name,
       mobile,
-      userType,
+      shop,
+      address,
+      pin,
+      city,
+      state,
     })
       .then(async (user) => {
-        return res.json({
+        return res.status(200).send({
           message: "User added successfully.",
           status: true,
         });
       }) // returning repsonse
-      .catch((err) => res.json({ message: err.toString(), status: false })); // returning db error
+      .catch((err) => {
+        console.log(err);
+        return res.status(502).send({ message: err.toString(), status: false });
+      }); // returning db error
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: ERROR_500, status: false });
   }
 };
 
-const getDealers = async (req, res, next) => {};
+const getDealers = async (req, res) => {
+  try {
+    const dealers = await User.find({ userType: "Dealer" })
+      .select("-otp") // exclude the OTP field
+      .sort({ createdAt: -1 }); // optional: sort by latest first
+
+    return res.status(200).json({
+      message: "Dealer list fetched successfully.",
+      status: true,
+      count: dealers.length,
+      dealers,
+    });
+  } catch (error) {
+    console.error("Error fetching dealers:", error);
+    return res.status(500).json({
+      message: "Something went wrong while fetching dealers.",
+      status: false,
+    });
+  }
+};
 
 const getDealersLedger = async (req, res) => {
   try {

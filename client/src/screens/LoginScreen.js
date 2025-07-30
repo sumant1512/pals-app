@@ -22,7 +22,7 @@ export default function LoginScreen() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      mobile: "9131410942",
+      mobile: "9111097771",
     },
   });
 

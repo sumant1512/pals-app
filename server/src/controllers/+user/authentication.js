@@ -6,54 +6,6 @@ const Session = require("../../models/Session");
 const { ERROR_500 } = require("./../../utils/constant");
 const AUTH_SECRET_KEY = "palsshop!123";
 
-const registerUser = async (req, res, next) => {
-  const { mobile, name, userType } = req.body;
-  const userId = req.user.id;
-
-  if (!mobile || !name || !userId) {
-    return res
-      .status(400)
-      .json({ message: "Mobile number and Name is required.", status: false });
-  }
-
-  try {
-    // Searching user permissions
-    const user = await User.findOne({ _id: userId });
-    if (!user || user.userType !== "Admin") {
-      return res.status(400).send({
-        message: "You do not have the necessary permissions to add a dealer.",
-        status: false,
-      });
-    }
-
-    // Searching if user already exists
-    const userForRegistration = await User.findOne({ mobile });
-    if (userForRegistration) {
-      return res.status(400).send({
-        message: "User already registerd with this mobile number.",
-        status: false,
-      });
-    }
-
-    // Creating user in mongodb
-    User.create({
-      name,
-      mobile,
-      userType,
-    })
-      .then(async (user) => {
-        return res.json({
-          message: "User added successfully.",
-          status: true,
-        });
-      }) // returning repsonse
-      .catch((err) => res.json({ message: err.toString(), status: false })); // returning db error
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ message: ERROR_500, status: false });
-  }
-};
-
 const sendOtp = async (req, res, next) => {
   const { mobile } = req.body;
 
@@ -219,7 +171,6 @@ const isAuthenticated = (req, res, next) => {
 };
 
 module.exports = {
-  registerUser: registerUser,
   sendOtp: sendOtp,
   verifyOtp: verifyOtp,
   userInfo: userInfo,

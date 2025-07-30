@@ -70,6 +70,7 @@ const DealerCreditRequestScreen = () => {
             )
             .then((couponResponse) => {
               console.log(couponResponse);
+              navigation.navigate("AdminDashboard");
               setLoading(false);
             })
             .catch((error) => {
