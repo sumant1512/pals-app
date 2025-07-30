@@ -149,7 +149,7 @@ export default function UserScanCouponScreen({ navigation }) {
         <TouchableButton
           label={isMobile ? "Retry" : "Submit"}
           theme="filled"
-          action={isMobile ? onRetryPressed : handleSubmit(redeemCoupon)}
+          onPress={isMobile ? onRetryPressed : handleSubmit(redeemCoupon)}
         />
       </View>
 

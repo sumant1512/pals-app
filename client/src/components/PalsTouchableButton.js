@@ -1,72 +1,45 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, Text } from "react-native";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
-export default function TouchableButton({ label, theme, action }) {
+const PalsTouchableButton = ({ label, onPress, style, theme = "filled" }) => {
+  const buttonStyles =
+    theme === "filled"
+      ? [styles.button, style]
+      : [styles.button, styles.outline, style];
+
+  const textStyles =
+    theme === "filled"
+      ? styles.buttonText
+      : [styles.buttonText, styles.outlineText];
+
   return (
-    <TouchableOpacity
-      style={[styles.button, fontButtonStyle(theme)]}
-      onPress={action}
-    >
-      <Text style={[styles.text, fontTextStyle(theme)]}>{label}</Text>
+    <TouchableOpacity style={buttonStyles} onPress={onPress}>
+      <Text style={textStyles}>{label}</Text>
     </TouchableOpacity>
   );
-}
+};
 
-function fontButtonStyle(type) {
-  switch (type) {
-    case "filled":
-      return {
-        backgroundColor: "#000000",
-      };
-    case "outlined":
-      return {
-        backgroundColor: "#ffffff",
-        borderWidth: 1,
-        borderColor: "#ddd",
-      };
-    case "light":
-      return {
-        backgroundColor: "#EDEDED",
-        borderColor: "#dadada",
-        borderWidth: 1,
-      };
-    default:
-      return {
-        backgroundColor: "#000000",
-      };
-  }
-}
-
-function fontTextStyle(type) {
-  switch (type) {
-    case "filled":
-      return {
-        color: "#ffffff",
-      };
-    case "outlined":
-      return {
-        color: "#000000",
-      };
-    case "light":
-      return {
-        color: "#000000",
-      };
-    default:
-      return {
-        color: "#ffffff",
-      };
-  }
-}
+export default PalsTouchableButton;
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "center",
+    backgroundColor: "#014589", // filled theme color
+    borderRadius: 25,
     paddingVertical: 12,
-    marginVertical: 8,
-    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  text: {
+  buttonText: {
+    color: "#fff",
     fontSize: 16,
     fontWeight: "600",
+  },
+  outline: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "#014589",
+  },
+  outlineText: {
+    color: "#014589",
   },
 });

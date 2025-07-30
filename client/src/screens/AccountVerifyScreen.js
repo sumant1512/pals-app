@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import TouchableButton from "../components/PalsTouchableButton";
+import PalsTouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
 import ErrorModal from "../components/PalsErrorModal";
 import Logo from "../components/Logo";
@@ -45,6 +45,7 @@ export default function AccountVerifyScreen() {
   };
 
   const verifyAccount = (data) => {
+    console.log("Cliecked");
     fetch(`${serverDomain}/api/auth/verify`, {
       method: "POST",
       headers: {
@@ -118,18 +119,18 @@ export default function AccountVerifyScreen() {
       </View>
 
       <View style={styles.verifyBtn}>
-        <TouchableButton
+        <PalsTouchableButton
           label="Verify"
           theme="dark"
-          action={handleSubmit(verifyAccount)}
-        ></TouchableButton>
+          onPress={handleSubmit(verifyAccount)}
+        />
       </View>
 
-      <TouchableButton
+      <PalsTouchableButton
         label="Back"
         theme="outlined"
-        action={onBackButtonPressed}
-      ></TouchableButton>
+        onPress={onBackButtonPressed}
+      />
 
       <View style={styles.signInLine}>
         <Text>
