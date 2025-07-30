@@ -2,7 +2,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { ScrollView } from "react-native";
 
 import LoginScreen from "../screens/LoginScreen";
-import AccountVerifyScreen from "../screens/AccountVerifyScreen";
 import DealerStack from "./dealer/DealerStack";
 import AdminStack from "./admin/AdminStack"; // <-- use this instead of AdminTabs
 
@@ -16,10 +15,6 @@ const AppNavigator = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen
-          name="AccountVerifyScreen"
-          component={AccountVerifyScreen}
-        />
         <Stack.Screen name="Dealer" component={DealerStack} />
         <Stack.Screen name="Admin" component={AdminStack} />
       </Stack.Navigator>

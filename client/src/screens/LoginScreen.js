@@ -10,16 +10,19 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import ErrorModal from "../components/PalsErrorModal";
 import PalsTouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
+import PalsOtpInput from "../components/PalsOtpInput";
 
 import { serverDomain } from "../constants/Config";
 
 const LoginScreen = () => {
   const [errorVisible, setErrorVisible] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [showOtpInput, setShowOtpInput] = useState(false);
   const navigation = useNavigation();
   const {
     control,
@@ -28,18 +31,37 @@ const LoginScreen = () => {
   } = useForm({
     defaultValues: {
       mobile: "9111097770",
+      otp: "",
     },
   });
 
+  const setAuthTokenToStorage = async (token) => {
+    try {
+      await AsyncStorage.setItem("authToken", token);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const setOpenedScreen = async (screenName) => {
+    try {
+      await AsyncStorage.setItem("openedScreen", screenName);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const onLoginPressed = (data) => {
-    fetch(`${serverDomain}/api/auth/sendOtp`, {
+    const { otp, mobile } = data;
+
+    fetch(`${serverDomain}/api/auth/send-otp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        ...data,
+        mobile,
       }),
     })
       .then((response) => {
@@ -52,14 +74,43 @@ const LoginScreen = () => {
       })
       .then((responseData) => {
         if (responseData.status) {
-          navigation.navigate("AccountVerifyScreen", {
-            mobile: data.mobile,
-          });
+          setShowOtpInput(true);
         }
       })
       .catch((error) => {
         console.error("API Error:", error);
         setErrorMsg(JSON.parse(error.message).message);
+        setErrorVisible(true);
+      });
+  };
+
+  const verifyUser = (data) => {
+    fetch(`${serverDomain}/api/auth/verify`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.status) {
+          setAuthTokenToStorage(responseData?.authToken);
+          setOpenedScreen("user");
+          navigation.navigate("Dealer");
+        } else {
+          console.error(
+            "[AccountLoginScreen - verify otp] API Error:",
+            responseData
+          );
+          setErrorMsg(responseData.message);
+          setErrorVisible(true);
+        }
+      })
+      .catch((error) => {
+        console.error("[AccountLoginScreen - verify otp] API Error:", error);
+        setErrorMsg(error);
         setErrorVisible(true);
       });
   };
@@ -81,31 +132,45 @@ const LoginScreen = () => {
         />
 
         <View style={styles.card}>
-          <Text style={styles.title}>Login</Text>
+          <Text style={styles.title}>{showOtpInput ? "Verify" : "Login"}</Text>
           <Text style={styles.subtitle}>
             If you face any trouble please contact Pals’ Paint
           </Text>
 
-          <PalsTextInput
-            name="mobile"
-            control={control}
-            label="Registered Mobile no."
-            placeholder="+91 9999999999"
-            keyboardType="number-pad"
-            maxLength={10}
-            rules={{
-              required: "Mobile number is required.",
-              pattern: {
-                value: /^[6-9]\d{9}$/,
-                message: "Invalid mobile number.",
-              },
-            }}
-          />
+          {!showOtpInput ? (
+            <PalsTextInput
+              name="mobile"
+              control={control}
+              label="Registered Mobile no."
+              placeholder="+91 9999999999"
+              keyboardType="number-pad"
+              maxLength={10}
+              rules={{
+                required: "Mobile number is required.",
+                pattern: {
+                  value: /^[6-9]\d{9}$/,
+                  message: "Invalid mobile number.",
+                },
+              }}
+            />
+          ) : (
+            <PalsOtpInput
+              name="otp"
+              control={control}
+              rules={{
+                required: "OTP is required.",
+                minLength: { value: 6, message: "Enter 6-digit OTP." },
+              }}
+            />
+          )}
 
           <PalsTouchableButton
-            label="Get OTP"
-            onPress={handleSubmit(onLoginPressed)}
-            theme="filled"
+            label={showOtpInput ? "Verify" : "Get OTP"}
+            onPress={
+              showOtpInput
+                ? handleSubmit(verifyUser)
+                : handleSubmit(onLoginPressed)
+            }
           />
         </View>
       </KeyboardAvoidingView>

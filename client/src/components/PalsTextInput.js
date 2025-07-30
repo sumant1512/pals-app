@@ -50,11 +50,12 @@ export default PalsTextInput;
 const styles = StyleSheet.create({
   wrapper: {
     width: "100%",
+    marginBottom: 20,
   },
   label: {
     fontSize: 14,
     color: "#748390",
-    marginBottom: 5,
+    marginBottom: 10,
   },
   input: {
     height: 48,
@@ -64,7 +65,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 12,
     fontSize: 16,
-    marginBottom: 16,
   },
   inputError: {
     borderColor: "#FF4C4C",
@@ -73,6 +73,5 @@ const styles = StyleSheet.create({
     color: "#FF4C4C",
     fontSize: 12,
     marginTop: 2,
-    marginBottom: 16,
   },
 });
