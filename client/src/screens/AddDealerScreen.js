@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
 import PalsText from "../components/PalsText";
+import PalsSelectInput from "../components/PalsSelectInput";
 import UserHeader from "../components/UserHeader";
 import BackButton from "../components/BackButton";
 import PalsTextInput from "../components/PalsTextInput";
@@ -16,7 +17,15 @@ import { serverDomain } from "../constants/Config";
 export default function AddDealerScreen() {
   const [errorVisible, setErrorVisible] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [selectedUserType, setSelectedUserType] = useState(null);
+
   const navigation = useNavigation();
+
+  const userTypes = [
+    { label: "Dealer", value: "Dealer" },
+    { label: "Admin", value: "Admin" },
+  ];
+
   const {
     control,
     handleSubmit,
@@ -24,6 +33,7 @@ export default function AddDealerScreen() {
     formState: { errors },
   } = useForm({
     defaultValues: {
+      userType: "Dealer",
       name: "",
       mobile: "",
       shop: "",
@@ -88,6 +98,15 @@ export default function AddDealerScreen() {
         <UserHeader action={profilePressed} />
         <BackButton />
         <PalsText label="Add Dealer" type="h1"></PalsText>
+
+        <PalsSelectInput
+          name="userType"
+          label="Select User Type"
+          control={control}
+          data={userTypes}
+          onSelect={setSelectedUserType}
+        />
+
         <PalsTextInput
           name="name"
           placeholder="Full name"

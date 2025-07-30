@@ -10,6 +10,26 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  shop: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  pin: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
   otp: {
     type: String,
   },

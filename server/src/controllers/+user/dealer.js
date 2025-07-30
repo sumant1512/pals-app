@@ -1,6 +1,56 @@
 const User = require("../../models/User");
 const Transaction = require("../../models/Transaction");
 
+const addDealer = async (req, res, next) => {
+  const { mobile, name, userType } = req.body;
+  const userId = req.user.id;
+
+  if (!mobile || !name || !userId) {
+    return res
+      .status(400)
+      .json({ message: "Mobile number and Name is required.", status: false });
+  }
+
+  try {
+    // Searching user permissions
+    const user = await User.findOne({ _id: userId });
+    if (!user || user.userType !== "Admin") {
+      return res.status(400).send({
+        message: "You do not have the necessary permissions to add a dealer.",
+        status: false,
+      });
+    }
+
+    // Searching if user already exists
+    const userForRegistration = await User.findOne({ mobile });
+    if (userForRegistration) {
+      return res.status(400).send({
+        message: "User already registerd with this mobile number.",
+        status: false,
+      });
+    }
+
+    // Creating user in mongodb
+    User.create({
+      name,
+      mobile,
+      userType,
+    })
+      .then(async (user) => {
+        return res.json({
+          message: "User added successfully.",
+          status: true,
+        });
+      }) // returning repsonse
+      .catch((err) => res.json({ message: err.toString(), status: false })); // returning db error
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: ERROR_500, status: false });
+  }
+};
+
+const getDealers = async (req, res, next) => {};
+
 const getDealersLedger = async (req, res) => {
   try {
     const dealers = await User.find({ userType: "Dealer" }).select(
@@ -89,6 +139,8 @@ const decideRedeemRequest = async (req, res) => {
 };
 
 module.exports = {
+  addDealer: addDealer,
+  getDealers: getDealers,
   getDealersLedger: getDealersLedger,
   decideRedeemRequest: decideRedeemRequest,
 };

@@ -126,14 +126,14 @@ export default function AdminProfileScreen() {
 
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>SHOP NAME</Text>
-            <Text style={styles.value}>Doe's Supplies</Text>
+            <Text style={styles.value}>{userInfo?.shop}</Text>
           </View>
 
           <View style={styles.separator} />
 
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>ADDRESS</Text>
-            <Text style={styles.value}>123 Main St</Text>
+            <Text style={styles.value}>{userInfo?.address}</Text>
           </View>
 
           <View style={styles.separator} />
@@ -141,11 +141,11 @@ export default function AdminProfileScreen() {
           <View style={styles.row}>
             <View style={styles.halfField}>
               <Text style={styles.label}>CITY</Text>
-              <Text style={styles.value}>Dewas</Text>
+              <Text style={styles.value}>{userInfo?.city}</Text>
             </View>
             <View style={styles.halfField}>
               <Text style={styles.label}>PIN</Text>
-              <Text style={styles.value}>455001</Text>
+              <Text style={styles.value}>{userInfo?.pin}</Text>
             </View>
           </View>
 
@@ -153,7 +153,7 @@ export default function AdminProfileScreen() {
 
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>STATE</Text>
-            <Text style={styles.value}>Madhya Pradesh</Text>
+            <Text style={styles.value}>{userInfo?.state}</Text>
           </View>
 
           <View style={styles.separator} />

@@ -161,6 +161,11 @@ const userInfo = async (req, res, next) => {
       totalCredit: userInfo.totalCredit,
       totalDebit: userInfo.totalDebit,
       availableCredit: userInfo.availableCredit,
+      shop: userInfo.shop,
+      address: userInfo.address,
+      pin: userInfo.pin,
+      city: userInfo.city,
+      state: userInfo.state,
     };
 
     return res.status(200).json({
