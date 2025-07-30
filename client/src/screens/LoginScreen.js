@@ -79,7 +79,13 @@ const LoginScreen = () => {
       })
       .catch((error) => {
         console.error("API Error:", error);
-        setErrorMsg(JSON.parse(error.message).message);
+        let finalError = "Something went wrong";
+
+        try {
+          const parsed = JSON.parse(error.message);
+          finalError = parsed.message || error.message;
+        } catch (e) {}
+        setErrorMsg(finalError.toString());
         setErrorVisible(true);
       });
   };
@@ -208,6 +214,7 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 20,
     borderTopEndRadius: 20,
     padding: 20,
+    paddingBottom: 60,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 10,
