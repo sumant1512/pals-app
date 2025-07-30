@@ -54,7 +54,7 @@ export default function ViewDealerScreen() {
             authorization: `Bearer ${authToken}`,
           };
           axios
-            .get(`${serverDomain}/api/dealer/get-dealers`, { headers })
+            .get(`${serverDomain}/api/dealer/get`, { headers })
             .then((userInfoResponse) => {
               console.log("User Info Response:", userInfoResponse);
             })

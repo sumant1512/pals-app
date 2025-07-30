@@ -6,12 +6,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import UserHeader from "../components/UserHeader";
 import BackButton from "../components/BackButton";
+import ErrorModal from "../components/PalsErrorModal";
 import PalsTextInput from "../components/PalsTextInput";
 import TouchableButton from "../components/PalsTouchableButton";
 import { serverDomain } from "../constants/Config";
 
 export default function UserScanCouponScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
+  const [errorVisible, setErrorVisible] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState("Not yet scanned");
   const isMobile = Platform.OS !== "web";
@@ -70,12 +73,16 @@ export default function UserScanCouponScreen({ navigation }) {
               { code: formData.code },
               { headers }
             )
-            .then((userInfoResponse) => {
-              navigation.navigate("DashboardScreen");
+            .then((scanApiResponse) => {
+              console.log(scanApiResponse);
+              if (scanApiResponse?.data?.status) {
+                navigation.navigate("Dashboard");
+              }
             })
             .catch((error) => {
-              alert(error.response?.data?.message || "An error occurred");
               console.error("API Error:", error);
+              setErrorMsg(error.response?.data?.message || "An error occurred");
+              setErrorVisible(true);
             });
         } else {
           setOpenedScreen();
@@ -145,6 +152,12 @@ export default function UserScanCouponScreen({ navigation }) {
           action={isMobile ? onRetryPressed : handleSubmit(redeemCoupon)}
         />
       </View>
+
+      <ErrorModal
+        visible={errorVisible}
+        message={errorMsg}
+        onClose={() => setErrorVisible(false)}
+      />
     </View>
   );
 }

@@ -63,7 +63,7 @@ export default function AddDealerScreen() {
           };
           axios
             .post(
-              `${serverDomain}/api/dealer/add-dealer`,
+              `${serverDomain}/api/dealer/add`,
               { ...formData },
               { headers }
             )

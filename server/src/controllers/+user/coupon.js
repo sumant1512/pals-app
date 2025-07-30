@@ -185,6 +185,10 @@ const redeemPoint = async (req, res) => {
       createdAt: new Date(),
     });
 
+    user.availableCredit -= amount;
+    user.lockedCredit += amount;
+    await user.save();
+
     return res.status(200).json({
       message: "Redeem request submitted successfully",
       transactionId: transaction._id,

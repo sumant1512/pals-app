@@ -133,17 +133,19 @@ const decideRedeemRequest = async (req, res) => {
     }
 
     if (decision === "approve") {
-      if (user.availableCredit < txn.amount) {
+      if (user.lockedCredit < txn.amount) {
         return res.status(400).json({
           success: false,
           message: "User has insufficient available credit",
         });
       }
 
-      user.availableCredit -= txn.amount;
       user.totalDebit += txn.amount;
+      user.lockedCredit -= txn.amount;
       txn.status = "approved";
     } else {
+      user.availableCredit += txn.amount;
+      user.lockedCredit -= txn.amount;
       txn.status = "rejected";
     }
 

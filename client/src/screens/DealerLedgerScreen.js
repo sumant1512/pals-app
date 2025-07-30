@@ -40,7 +40,7 @@ export default function DealerLedgerScreen() {
             authorization: `Bearer ${authToken}`,
           };
           axios
-            .get(`${serverDomain}/api/dealer/get-dealer-ledger`, { headers })
+            .get(`${serverDomain}/api/dealer/get-ledger`, { headers })
             .then((userInfoResponse) => {
               setDealerLedger(userInfoResponse?.data?.dealers || []);
               setLoading(false);

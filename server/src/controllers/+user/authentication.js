@@ -113,6 +113,7 @@ const userInfo = async (req, res, next) => {
       totalCredit: userInfo.totalCredit,
       totalDebit: userInfo.totalDebit,
       availableCredit: userInfo.availableCredit,
+      lockedCredit: userInfo?.lockedCredit,
       shop: userInfo.shop,
       address: userInfo.address,
       pin: userInfo.pin,
