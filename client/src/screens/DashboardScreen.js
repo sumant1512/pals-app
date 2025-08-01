@@ -108,9 +108,6 @@ export default function DashboardScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Always show header */}
-      <UserHeader action={profilePressed} />
-
       {loading ? (
         <View style={styles.loaderWrapper}>
           <ActivityIndicator size="large" color="#00206F" />
@@ -146,9 +143,9 @@ export default function DashboardScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
-    paddingTop: 40,
-    flex: 1,
+    // paddingHorizontal: 20,
+    // paddingTop: 40,
+    // flex: 1,
   },
   loaderWrapper: {
     flex: 1,

@@ -8,8 +8,11 @@ const PalsTouchableButton = ({ label, onPress, style, theme = "filled" }) => {
   if (theme === "outline") {
     buttonStyles.push(styles.outline);
     textStyles = [styles.buttonText, styles.outlineText];
+  } else if (theme === "light") {
+    buttonStyles = [styles.lightButton];
+    textStyles = [styles.lightText];
   } else if (theme === "text") {
-    buttonStyles = [styles.textButton]; // override all
+    buttonStyles = [styles.textButton];
     textStyles = [styles.textOnly];
   } else {
     buttonStyles = [styles.button];
@@ -57,6 +60,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textOnly: {
+    color: "#014589",
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  lightButton: {
+    backgroundColor: "#ffffff",
+    paddingVertical: 12,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  lightText: {
     color: "#014589",
     fontSize: 14,
     fontWeight: "500",

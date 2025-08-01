@@ -1,16 +1,21 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-import TouchableButton from "../components/PalsTouchableButton";
-import PalsUrl from "../components/PalsUrl";
-import ErrorModal from "../components/PalsErrorModal";
 import UserRedeemModal from "./UserRedeemModal";
+import ErrorModal from "../components/PalsErrorModal";
+import PalsTouchableButton from "../components/PalsTouchableButton";
 import { serverDomain } from "../constants/Config";
 
 const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
-  const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [errorVisible, setErrorVisible] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -19,9 +24,7 @@ const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
     setModalVisible(true);
   };
 
-  const closeModal = () => {
-    setModalVisible(false);
-  };
+  const closeModal = () => setModalVisible(false);
 
   const setOpenedScreen = async () => {
     try {
@@ -31,173 +34,186 @@ const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
     }
   };
 
-  const clearAuthStorage = async () => {
+  const clearStorage = async () => {
     try {
-      await AsyncStorage.removeItem("authToken");
+      await AsyncStorage.multiRemove(["authToken", "userInfo"]);
     } catch (e) {
       console.error(e);
     }
   };
 
-  const clearUserInfoStorage = async () => {
-    try {
-      await AsyncStorage.removeItem("userInfo");
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const onRedeemConfirm = () => {
+  const onRedeemConfirm = async () => {
     setModalVisible(false);
-    (() => {
-      AsyncStorage.getItem("authToken").then((authToken) => {
-        if (authToken) {
-          const headers = {
+    const token = await AsyncStorage.getItem("authToken");
+    if (!token) {
+      await clearStorage();
+      await setOpenedScreen();
+      navigation.navigate("Login");
+      return;
+    }
+
+    axios
+      .post(
+        `${serverDomain}/api/coupon/redeem`,
+        {
+          amount: parseInt(parseInt(userInfo.availableCredit / 100) * 100),
+        },
+        {
+          headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            authorization: `Bearer ${authToken}`,
-          };
-          axios
-            .post(
-              `${serverDomain}/api/coupon/redeem`,
-              {
-                amount: parseInt(
-                  parseInt(userInfo.availableCredit / 100) * 100
-                ),
-              },
-              { headers }
-            )
-            .then((userInfoResponse) => {
-              console.log("Redeem confirmed", userInfoResponse);
-              setLoading(false);
-            })
-            .catch((error) => {
-              console.error("API Error:", error);
-              setErrorMsg(error?.response?.data?.message);
-              setErrorVisible(true);
-              setLoading(false);
-            });
-        } else {
-          setModalVisible(false);
-          setOpenedScreen();
-          clearAuthStorage();
-          clearUserInfoStorage();
-          setLoading(false);
-          navigation.navigate("Login");
+            authorization: `Bearer ${token}`,
+          },
         }
+      )
+      .then((res) => {
+        console.log("Redeemed:", res.data);
+      })
+      .catch((err) => {
+        console.error("Redeem Error:", err);
+        setErrorMsg(err?.response?.data?.message || "Redeem failed");
+        setErrorVisible(true);
       });
-    })();
   };
 
   return (
-    <>
-      {/* Pals Credit Card */}
-      <View style={styles.card}>
-        <View style={styles.availableCreditRow}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={require("../assets/credit_card.png")}
-              style={styles.image}
-            />
+    <ImageBackground
+      source={require("../assets/dealer_dashboard_bg.png")}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
+        <Image
+          source={require("../assets/pals_paint.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>Pals Balance</Text>
+            <Text style={styles.currencyIcon}>₹</Text>
           </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.heading}>Pals' Credit</Text>
-            <Text style={styles.availableCredit}>
-              ₹{userInfo?.availableCredit || 0}
+          <Text style={styles.amount}>₹ {userInfo?.availableCredit || 0}</Text>
+
+          <View style={styles.divider} />
+
+          <View style={styles.rowBetween}>
+            <Text style={styles.label}>Credited</Text>
+            <Text style={styles.labelAmount}>
+              ₹{userInfo?.totalCredit || 0}
             </Text>
           </View>
-        </View>
-        <View style={styles.credit}>
-          <Text style={styles.totalCredit}>
-            Total: ₹{userInfo?.totalCredit || 0}
-          </Text>
-          <Text style={styles.totalDebit}>
-            Redeemed: ₹{userInfo?.totalDebit || 0}
-          </Text>
-        </View>
-      </View>
 
-      <View style={styles.redeemContainer}>
-        <PalsUrl label="Redeem Now" action={onRedeemNowPressed}></PalsUrl>
-      </View>
+          <View style={styles.rowBetween}>
+            <Text style={styles.label}>Redeemed</Text>
+            <Text style={styles.labelAmount}>₹{userInfo?.totalDebit || 0}</Text>
+          </View>
 
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <PalsTouchableButton
+            label="Redeem Now"
+            theme="light"
+            onPress={onRedeemNowPressed}
+            style={styles.redeemButton}
+          />
+        </View>
+
         <UserRedeemModal
           isVisible={modalVisible}
-          redemmablePoints={parseInt(userInfo.availableCredit / 100) * 100}
+          redemmablePoints={parseInt(userInfo?.availableCredit / 100) * 100}
           closeModal={closeModal}
           confirmModal={onRedeemConfirm}
         />
-      </View>
 
-      {/* Button always at bottom */}
-      <View style={styles.bottomButton}>
-        <TouchableButton
-          label="Scan Coupon"
-          theme="filled"
-          action={addCouponPressed}
+        <ErrorModal
+          visible={errorVisible}
+          message={errorMsg}
+          onClose={() => setErrorVisible(false)}
         />
       </View>
-
-      <ErrorModal
-        visible={errorVisible}
-        message={errorMsg}
-        onClose={() => setErrorVisible(false)}
-      />
-    </>
+    </ImageBackground>
   );
 };
 
+export default DealerDashboardScreen;
+
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingVertical: 40,
+  },
+  logo: {
+    width: 150,
+    height: 60,
+    alignSelf: "center",
+  },
   card: {
-    backgroundColor: "#00206F",
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    padding: 20,
     borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingTop: 35,
-    paddingBottom: 15,
+    borderColor: "#ccc",
+    borderWidth: 0.5,
   },
-  availableCreditRow: {
-    flexDirection: "row",
-  },
-  imageContainer: {
-    flex: 1,
-  },
-  redeemContainer: { marginTop: 16 },
-  image: {
-    width: 100,
-    height: 100,
-    alignSelf: "center",
-  },
-  textContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  heading: {
-    alignSelf: "center",
-    color: "#ffffff",
-    fontSize: 24,
-  },
-  availableCredit: {
-    alignSelf: "center",
-    color: "#ffffff",
-    fontWeight: "bold",
-    fontSize: 36,
-  },
-  credit: {
+  cardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 20,
+    alignItems: "center",
   },
-  totalCredit: {
-    color: "#ffffff",
+  cardTitle: {
+    fontSize: 18,
+    color: "#fff",
   },
-  totalDebit: {
-    color: "#ffffff",
+  currencyIcon: {
+    fontSize: 28,
+    color: "#fff",
   },
-  bottomButton: {
-    marginTop: "auto",
-    marginBottom: 20,
+  amount: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "#fff",
+    marginVertical: 10,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "#ccc",
+    opacity: 0.5,
+    marginVertical: 10,
+  },
+  rowBetween: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 6,
+  },
+  label: {
+    color: "#fff",
+    fontSize: 14,
+  },
+  labelAmount: {
+    color: "#fff",
+    fontSize: 14,
+  },
+  redeemButton: {
+    marginTop: 16,
+  },
+  tabBarContainer: {
+    backgroundColor: "#fff",
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    paddingVertical: 10,
+  },
+  scanNowButton: {
+    position: "absolute",
+    bottom: 20,
+    left: "42%",
   },
 });
-
-export default DealerDashboardScreen;

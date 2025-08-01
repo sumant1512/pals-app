@@ -11,6 +11,8 @@ const PalsTextInput = ({
   keyboardType = "default",
   maxLength,
   style,
+  placeholderTextColor,
+  textColor,
   ...props
 }) => {
   return (
@@ -27,9 +29,14 @@ const PalsTextInput = ({
         }) => (
           <>
             <TextInput
-              style={[styles.input, error && styles.inputError, style]}
+              style={[
+                styles.input,
+                error && styles.inputError,
+                { color: textColor || "#014589" },
+                style,
+              ]}
               placeholder={placeholder}
-              placeholderTextColor="#999"
+              placeholderTextColor={placeholderTextColor || "#999"}
               keyboardType={keyboardType}
               maxLength={maxLength}
               onChangeText={onChange}
@@ -61,7 +68,6 @@ const styles = StyleSheet.create({
     height: 48,
     borderWidth: 1,
     borderColor: "#85B9D7",
-    color: "#014589",
     borderRadius: 8,
     paddingHorizontal: 12,
     fontSize: 16,

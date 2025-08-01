@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button, Platform } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+  Pressable,
+  Text,
+  Button,
+  Platform,
+} from "react-native";
 import { useForm } from "react-hook-form";
 import { Camera } from "expo-camera";
+import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import UserHeader from "../components/UserHeader";
-import BackButton from "../components/BackButton";
-import ErrorModal from "../components/PalsErrorModal";
-import PalsTextInput from "../components/PalsTextInput";
-import TouchableButton from "../components/PalsTouchableButton";
-import { serverDomain } from "../constants/Config";
 
-export default function UserScanCouponScreen({ navigation }) {
+import PalsTextInput from "../components/PalsTextInput";
+import PalsTouchableButton from "../components/PalsTouchableButton";
+
+import ErrorModal from "../components/PalsErrorModal";
+
+const { width } = Dimensions.get("window");
+
+import { serverDomain } from "../constants/Config";
+const SCAN_BOX_SIZE = width * 0.6;
+
+export default function CoupanScanScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [errorVisible, setErrorVisible] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -45,7 +59,7 @@ export default function UserScanCouponScreen({ navigation }) {
   };
 
   useEffect(() => {
-    askForCameraPermission();
+    isMobile && askForCameraPermission();
   }, []);
 
   const profilePressed = () => {
@@ -115,11 +129,16 @@ export default function UserScanCouponScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View>
-        <UserHeader action={profilePressed} />
-        <BackButton />
-
+    <ImageBackground
+      source={require("../assets/scan_bg.png")} // 🖼️ Use your background image here
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
+        {/* <Pressable style={styles.circleButton} /> */}
+        <Pressable style={styles.circleButton} onPress={profilePressed}>
+          <Ionicons name="person" size={24} color="#014589" />
+        </Pressable>
         {isMobile && (
           <View style={styles.barcodebox}>
             <Camera
@@ -132,52 +151,74 @@ export default function UserScanCouponScreen({ navigation }) {
           </View>
         )}
 
-        {!isMobile && (
-          <PalsTextInput
-            name="code"
-            placeholder="Coupon Code"
-            control={control}
-            rules={{
-              required: "Coupon code is required.",
-            }}
-          />
-        )}
+        <View>
+          {!isMobile && (
+            <PalsTextInput
+              name="code"
+              control={control}
+              label="Coupon Code"
+              placeholder="Enter Coupon Code"
+              maxLength={20}
+              placeholderTextColor="#ffffff"
+              textColor="#ffffff"
+              rules={{
+                required: "Coupon Code is required.",
+              }}
+            />
+          )}
 
-        {isMobile && <Text style={styles.maintext}>{text}</Text>}
-      </View>
-      <View style={styles.continueBtn}>
-        <TouchableButton
-          label={isMobile ? "Retry" : "Submit"}
-          theme="filled"
-          onPress={isMobile ? onRetryPressed : handleSubmit(redeemCoupon)}
+          {isMobile && <Text style={styles.maintext}>{text}</Text>}
+        </View>
+        <View>
+          <PalsTouchableButton
+            label={isMobile ? "Retry" : "Submit"}
+            theme="light"
+            onPress={isMobile ? onRetryPressed : handleSubmit(redeemCoupon)}
+          />
+        </View>
+
+        <ErrorModal
+          visible={errorVisible}
+          message={errorMsg}
+          onClose={() => setErrorVisible(false)}
         />
       </View>
-
-      <ErrorModal
-        visible={errorVisible}
-        message={errorMsg}
-        onClose={() => setErrorVisible(false)}
-      />
-    </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+  },
   container: {
     flex: 1,
+    paddingTop: 100,
     paddingHorizontal: 20,
-    paddingVertical: 40,
-    justifyContent: "space-between",
+    alignItems: "center",
+    position: "relative",
   },
-  maintext: {
-    fontSize: 16,
-    margin: 20,
+  circleButton: {
+    position: "absolute",
+    top: 40,
+    right: 20,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 10,
+    elevation: 4,
   },
   barcodebox: {
     alignItems: "center",
     justifyContent: "center",
     height: 300,
-    width: "100%",
+    width: SCAN_BOX_SIZE,
+    height: SCAN_BOX_SIZE,
     overflow: "hidden",
     borderRadius: 30,
     backgroundColor: "tomato",
