@@ -16,6 +16,7 @@ import ErrorModal from "../components/PalsErrorModal";
 import PalsTouchableButton from "../components/PalsTouchableButton";
 import PalsTextInput from "../components/PalsTextInput";
 import PalsOtpInput from "../components/PalsOtpInput";
+import HeaderOverlay from "../components/HeaderOverlay";
 
 import { serverDomain } from "../constants/Config";
 
@@ -128,6 +129,8 @@ const LoginScreen = () => {
       style={styles.background}
       resizeMode="cover"
     >
+      <HeaderOverlay />
+
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : undefined}

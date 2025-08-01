@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     elevation: 4,
-    marginBottom: 20,
+    marginBottom: 50,
   },
   profileImage: {
     width: 100,

@@ -17,6 +17,7 @@ import axios from "axios";
 
 import PalsTextInput from "../components/PalsTextInput";
 import PalsTouchableButton from "../components/PalsTouchableButton";
+import HeaderOverlay from "../components/HeaderOverlay";
 
 import ErrorModal from "../components/PalsErrorModal";
 
@@ -63,7 +64,7 @@ export default function CoupanScanScreen({ navigation }) {
   }, []);
 
   const profilePressed = () => {
-    navigation.getParent()?.navigate("DealerProfile");
+    navigation.navigate("DealerProfile");
   };
 
   const handleBarCodeScanned = ({ type, data }) => {
@@ -133,6 +134,8 @@ export default function CoupanScanScreen({ navigation }) {
       style={styles.background}
       resizeMode="cover"
     >
+      <HeaderOverlay />
+
       <View style={styles.container}>
         <Pressable style={styles.circleButton} onPress={profilePressed}>
           <Ionicons name="person" size={24} color="#014589" />
@@ -202,7 +205,7 @@ const styles = StyleSheet.create({
   },
   circleButton: {
     position: "absolute",
-    top: 40,
+    top: 60,
     right: 20,
     width: 40,
     height: 40,
@@ -222,7 +225,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 30,
     backgroundColor: "tomato",
-    marginTop: 10,
+    marginTop: 30,
   },
   retryBtn: {
     marginBottom: 150,
