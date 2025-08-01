@@ -163,7 +163,7 @@ export default function AddDealerScreen() {
           <TouchableButton
             label="Register"
             theme="filled"
-            action={handleSubmit(onRegisterPressed)}
+            onPress={handleSubmit(onRegisterPressed)}
           ></TouchableButton>
         </View>
 

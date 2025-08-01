@@ -103,7 +103,7 @@ export default function CreateQRsScreen() {
           <TouchableButton
             label="Create coupon"
             theme="filled"
-            action={handleSubmit(onCreateCouponPressed)}
+            onPress={handleSubmit(onCreateCouponPressed)}
           ></TouchableButton>
         </View>
 

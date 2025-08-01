@@ -1,6 +1,5 @@
 const { body, validationResult } = require("express-validator");
 const { ERROR_500 } = require("./../../utils/constant");
-const Product = require("../../models/Products");
 
 const validateAddProduct = [
   body("productName").notEmpty().withMessage("Product name is required."),

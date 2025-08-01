@@ -102,7 +102,7 @@ export default function UserProfileSettingsScreen() {
           <TouchableButton
             label="Update"
             theme="filled"
-            action={handleSubmit(onUpdatePressed)}
+            onPress={handleSubmit(onUpdatePressed)}
           ></TouchableButton>
         </View>
       </View>

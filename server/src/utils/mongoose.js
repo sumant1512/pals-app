@@ -7,7 +7,8 @@ const connectToMongoDB = async () => {
     await mongoose.connect(DB_URI);
 
     // Send a ping to confirm a successful connection
-    const pingResult = await mongoose.connection.db.admin().ping();
+    const db = mongoose.connection.db;
+    const pingResult = await db.admin().ping();
     console.log("Ping result:", pingResult);
 
     console.log(

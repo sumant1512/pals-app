@@ -76,7 +76,7 @@ const DealerEntryCard = ({
           <TouchableButton
             label="View Transactions"
             theme="filled"
-            action={onPress}
+            onPress={onPress}
           ></TouchableButton>
         </>
       )}

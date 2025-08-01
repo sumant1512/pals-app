@@ -168,7 +168,7 @@ export default function AdminProfileScreen() {
             <TouchableButton
               label="Log Out"
               theme="outlined"
-              action={onLogoutPressed}
+              onPress={onLogoutPressed}
             />
           </View>
         </View>
