@@ -88,7 +88,6 @@ export default function CoupanScanScreen({ navigation }) {
               { headers }
             )
             .then((scanApiResponse) => {
-              console.log(scanApiResponse);
               if (scanApiResponse?.data?.status) {
                 navigation.navigate("Dashboard");
               }
@@ -135,7 +134,6 @@ export default function CoupanScanScreen({ navigation }) {
       resizeMode="cover"
     >
       <View style={styles.container}>
-        {/* <Pressable style={styles.circleButton} /> */}
         <Pressable style={styles.circleButton} onPress={profilePressed}>
           <Ionicons name="person" size={24} color="#014589" />
         </Pressable>
@@ -167,14 +165,15 @@ export default function CoupanScanScreen({ navigation }) {
             />
           )}
 
-          {isMobile && <Text style={styles.maintext}>{text}</Text>}
-        </View>
-        <View>
-          <PalsTouchableButton
-            label={isMobile ? "Retry" : "Submit"}
-            theme="light"
-            onPress={isMobile ? onRetryPressed : handleSubmit(redeemCoupon)}
-          />
+          {isMobile && <Text style={styles.notScannedText}>{text}</Text>}
+
+          <View style={styles.retryBtn}>
+            <PalsTouchableButton
+              label={isMobile ? "Retry" : "Submit"}
+              theme="light"
+              onPress={isMobile ? onRetryPressed : handleSubmit(redeemCoupon)}
+            />
+          </View>
         </View>
 
         <ErrorModal
@@ -199,6 +198,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     alignItems: "center",
     position: "relative",
+    justifyContent: "space-between",
   },
   circleButton: {
     position: "absolute",
@@ -223,5 +223,15 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "tomato",
     marginTop: 10,
+  },
+  retryBtn: {
+    marginBottom: 150,
+    marginTop: 16,
+  },
+  notScannedText: {
+    fontSize: 16,
+    fontWeight: 400,
+    color: "#ffffff",
+    marginTop: 16,
   },
 });
