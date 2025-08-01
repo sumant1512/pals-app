@@ -22,11 +22,12 @@ import { serverDomain } from "../constants/Config";
 const LoginScreen = () => {
   const [errorVisible, setErrorVisible] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [isVerifyScreen, setIsVerifyScreen] = useState(false);
   const navigation = useNavigation();
   const {
     control,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -51,8 +52,8 @@ const LoginScreen = () => {
     }
   };
 
-  const onLoginPressed = (data) => {
-    const { otp, mobile } = data;
+  const onLoginPressed = () => {
+    const { mobile } = getValues();
 
     fetch(`${serverDomain}/api/auth/send-otp`, {
       method: "POST",
@@ -74,7 +75,7 @@ const LoginScreen = () => {
       })
       .then((responseData) => {
         if (responseData.status) {
-          setShowOtpInput(true);
+          setIsVerifyScreen(true);
         }
       })
       .catch((error) => {
@@ -138,12 +139,14 @@ const LoginScreen = () => {
         />
 
         <View style={styles.card}>
-          <Text style={styles.title}>{showOtpInput ? "Verify" : "Login"}</Text>
+          <Text style={styles.title}>
+            {isVerifyScreen ? "Verify" : "Login"}
+          </Text>
           <Text style={styles.subtitle}>
             If you face any trouble please contact Pals’ Paint
           </Text>
 
-          {!showOtpInput ? (
+          {!isVerifyScreen ? (
             <PalsTextInput
               name="mobile"
               control={control}
@@ -171,13 +174,17 @@ const LoginScreen = () => {
           )}
 
           <PalsTouchableButton
-            label={showOtpInput ? "Verify" : "Get OTP"}
-            onPress={
-              showOtpInput
-                ? handleSubmit(verifyUser)
-                : handleSubmit(onLoginPressed)
-            }
+            label={isVerifyScreen ? "Verify" : "Get OTP"}
+            onPress={isVerifyScreen ? handleSubmit(verifyUser) : onLoginPressed}
           />
+          {isVerifyScreen && (
+            <PalsTouchableButton
+              label={"Resend OTP"}
+              theme="text"
+              style={styles.resendOtp}
+              onPress={onLoginPressed}
+            />
+          )}
         </View>
       </KeyboardAvoidingView>
 
@@ -244,5 +251,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     fontSize: 16,
     marginBottom: 20,
+  },
+  resendOtp: {
+    marginTop: 10,
   },
 });
