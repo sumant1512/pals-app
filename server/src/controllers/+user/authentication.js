@@ -25,6 +25,7 @@ const sendOtp = async (req, res, next) => {
       return res.json({
         message: "Otp Sent to you registered mobile number.",
         otp: loginOtp,
+        userType: user.userType,
         status: true,
       });
     }

@@ -223,7 +223,7 @@ const getRedeemRequest = async (req, res) => {
     if (!transactions || transactions.length === 0) {
       return res.status(200).json({
         message: "No pending transactions found",
-        transactions: [],
+        redeemRequests: [],
         status: false,
       });
     }
@@ -231,7 +231,7 @@ const getRedeemRequest = async (req, res) => {
     return res.status(200).json({
       message: "Pending debit transactions fetched successfully",
       count: transactions.length,
-      transactions,
+      redeemRequests: transactions,
       status: true,
     });
   } catch (error) {

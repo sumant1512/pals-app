@@ -110,6 +110,13 @@ const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
             <Text style={styles.labelAmount}>₹{userInfo?.totalDebit || 0}</Text>
           </View>
 
+          <View style={styles.rowBetween}>
+            <Text style={styles.label}>Locked Credit</Text>
+            <Text style={styles.labelAmount}>
+              ₹{userInfo?.lockedCredit || 0}
+            </Text>
+          </View>
+
           <PalsTouchableButton
             label="Redeem Now"
             theme="light"
