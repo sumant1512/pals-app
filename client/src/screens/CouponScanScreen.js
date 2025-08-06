@@ -62,10 +62,6 @@ export default function CoupanScanScreen({ navigation }) {
     isMobile && askForCameraPermission();
   }, []);
 
-  const profilePressed = () => {
-    navigation.navigate("DealerProfile");
-  };
-
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     setText(data);
