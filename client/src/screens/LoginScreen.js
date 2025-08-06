@@ -76,7 +76,12 @@ const LoginScreen = () => {
       })
       .then((responseData) => {
         if (responseData.status) {
-          setIsVerifyScreen(true);
+          if (responseData.userType !== "Dealer") {
+            setErrorMsg("User not registered on app.");
+            setErrorVisible(true);
+          } else {
+            setIsVerifyScreen(true);
+          }
         }
       })
       .catch((error) => {
