@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 import UserHeader from "../components/UserHeader";
+import HeaderOverlay from "../components/HeaderOverlay";
 import UserRedeemModal from "./UserRedeemModal";
 import ErrorModal from "../components/PalsErrorModal";
 import PalsTouchableButton from "../components/PalsTouchableButton";
@@ -83,6 +84,7 @@ const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
       style={styles.background}
       resizeMode="cover"
     >
+      <HeaderOverlay />
       <UserHeader />
       <View style={styles.container}>
         <View style={styles.card}>
@@ -158,7 +160,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   card: {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: "rgba(0, 19, 51, 0.4)",
+    backdropFilter: "blur(10px)",
     padding: 20,
     borderRadius: 16,
     borderColor: "#ccc",
@@ -176,6 +179,8 @@ const styles = StyleSheet.create({
   currencyIcon: {
     fontSize: 28,
     color: "#fff",
+    fontWeight: 700,
+    opacity: 0.3,
   },
   amount: {
     fontSize: 36,

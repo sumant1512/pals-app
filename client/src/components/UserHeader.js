@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Image, StyleSheet, Pressable } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -16,14 +16,9 @@ export default function UserHeader() {
         source={require("./../assets/pals_paint.png")}
         style={styles.logo}
       />
-      <TouchableOpacity style={styles.imgContainer} onPress={profilePressed}>
-        <Ionicons
-          style={styles.userLogo}
-          name={"person-circle-outline"}
-          size={30}
-          color="#176B87"
-        />
-      </TouchableOpacity>
+      <Pressable style={styles.circleButton} onPress={profilePressed}>
+        <Ionicons name="person" size={24} color="#014589" />
+      </Pressable>
     </View>
   );
 }
@@ -32,7 +27,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 30,
+    marginTop: 45,
+    marginBottom: 25,
     marginHorizontal: 20,
     alignItems: "center",
   },
@@ -40,15 +36,12 @@ const styles = StyleSheet.create({
     height: 50,
     width: 160,
   },
-  imgContainer: {
-    backgroundColor: "#ffffff",
-    height: 40,
+  circleButton: {
     width: 40,
-    justifyContent: "center",
-    alignItems: "center",
+    height: 40,
     borderRadius: 20,
-  },
-  userLogo: {
-    marginTop: 1.5,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

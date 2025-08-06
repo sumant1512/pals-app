@@ -6,6 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import DashboardScreen from "../../screens/DashboardScreen";
 import UserTransactionsScreen from "../../screens/UserTransactionsScreen";
 import CouponScanScreen from "../../screens/CouponScanScreen";
+import DealerProfileScreen from "../../screens/DealerProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,6 +44,14 @@ export default function DealerTabs() {
       <Tab.Screen name="Dashboard" component={DashboardScreen} />
       <Tab.Screen name="ScanCoupon" component={CouponScanScreen} />
       <Tab.Screen name="Transactions" component={UserTransactionsScreen} />
+      <Tab.Screen
+        name="DealerProfile"
+        component={DealerProfileScreen}
+        options={{
+          tabBarButton: () => null,
+          tabBarVisible: false,
+        }}
+      />
     </Tab.Navigator>
   );
 }

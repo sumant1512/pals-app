@@ -2,17 +2,15 @@ import { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
-  TouchableOpacity,
   ScrollView,
-  Image,
   Text,
+  ImageBackground,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions } from "@react-navigation/native";
 
-import UserHeader from "../components/UserHeader";
-import BackButton from "../components/BackButton";
+import HeaderOverlay from "../components/HeaderOverlay";
 import TouchableButton from "../components/PalsTouchableButton";
 import { serverDomain } from "../constants/Config";
 
@@ -101,15 +99,18 @@ export default function DealerProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <UserHeader />
-      <BackButton />
-
+      <HeaderOverlay />
       <ScrollView style={styles.scroll}>
-        <View style={styles.card}>
-          <Image
-            source={require("../assets/profile-placeholder.png")}
-            style={styles.profileImage}
-          />
+        <ImageBackground
+          source={require("../assets/profile_bg.png")}
+          style={styles.topBackground}
+          resizeMode="cover"
+        />
+
+        {/* User Image Placeholder */}
+        <View style={styles.imagePlaceholder} />
+
+        <View style={styles.form}>
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>FULL NAME</Text>
             <Text style={styles.value}>{userInfo?.name}</Text>
@@ -164,10 +165,10 @@ export default function DealerProfileScreen() {
           </View>
 
           {/* Log Out button stuck at the bottom of the card */}
-          <View>
+          <View style={styles.logoutBtn}>
             <TouchableButton
               label="Log Out"
-              theme="outlined"
+              theme="outline"
               onPress={onLogoutPressed}
             />
           </View>
@@ -180,35 +181,44 @@ export default function DealerProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
+  },
+  topBackground: {
+    height: 180,
+    width: "100%",
+    position: "absolute",
+    top: 0,
+  },
+  imagePlaceholder: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    backgroundColor: "#ccc",
+    marginTop: 80,
+    marginBottom: 30,
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderWidth: 3,
+    borderColor: "#fff",
+    zIndex: 1,
+  },
+  form: {
+    width: "100%",
     paddingHorizontal: 20,
-    paddingTop: 40,
-  },
-  card: {
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 20,
-    elevation: 4,
-    marginBottom: 50,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    alignSelf: "center",
-    marginBottom: 20,
-    borderRadius: 50,
+    paddingBottom: 120,
   },
   fieldContainer: {
     marginBottom: 10,
   },
   label: {
     fontSize: 12,
-    color: "#999",
+    color: "#748390",
     marginBottom: 4,
   },
   value: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#000",
+    color: "#014589",
   },
   separator: {
     borderBottomWidth: 1,
@@ -224,6 +234,9 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flex: 1,
-    marginTop: 10,
+    width: "100%",
+  },
+  logoutBtn: {
+    marginTop: 20,
   },
 });

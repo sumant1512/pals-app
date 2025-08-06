@@ -4,18 +4,17 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
-  Pressable,
   Text,
   Button,
   Platform,
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { Camera } from "expo-camera";
-import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 import PalsTextInput from "../components/PalsTextInput";
+import UserHeader from "../components/UserHeader";
 import PalsTouchableButton from "../components/PalsTouchableButton";
 import HeaderOverlay from "../components/HeaderOverlay";
 
@@ -135,11 +134,9 @@ export default function CoupanScanScreen({ navigation }) {
       resizeMode="cover"
     >
       <HeaderOverlay />
+      <UserHeader />
 
       <View style={styles.container}>
-        <Pressable style={styles.circleButton} onPress={profilePressed}>
-          <Ionicons name="person" size={24} color="#014589" />
-        </Pressable>
         {isMobile && (
           <View style={styles.barcodebox}>
             <Camera
@@ -197,7 +194,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 100,
     paddingHorizontal: 20,
     alignItems: "center",
     position: "relative",
@@ -225,7 +221,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 30,
     backgroundColor: "tomato",
-    marginTop: 30,
   },
   retryBtn: {
     marginBottom: 150,

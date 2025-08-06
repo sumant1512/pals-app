@@ -152,26 +152,27 @@ export default function UserTransactionsScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <>
       <UserHeader action={profilePressed} />
-      <BackButton />
-      <PalsText label={"Transactions"} type={"h5"} />
+      <View style={styles.container}>
+        <PalsText label={"Transactions"} type={"h5"} />
 
-      <View style={styles.listContainer}>
-        {loading ? (
-          <Text style={styles.centerText}>Loading...</Text>
-        ) : transactions.length === 0 ? (
-          <Text style={styles.centerText}>No transactions found.</Text>
-        ) : (
-          <FlatList
-            data={transactions}
-            renderItem={renderTransaction}
-            keyExtractor={(item) => item._id}
-            showsVerticalScrollIndicator={true}
-          />
-        )}
+        <View style={styles.listContainer}>
+          {loading ? (
+            <Text style={styles.centerText}>Loading...</Text>
+          ) : transactions.length === 0 ? (
+            <Text style={styles.centerText}>No transactions found.</Text>
+          ) : (
+            <FlatList
+              data={transactions}
+              renderItem={renderTransaction}
+              keyExtractor={(item) => item._id}
+              showsVerticalScrollIndicator={true}
+            />
+          )}
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
@@ -179,7 +180,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 40,
+    paddingBottom: 80,
   },
   listContainer: {
     flex: 1,
