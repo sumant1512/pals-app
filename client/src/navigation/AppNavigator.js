@@ -3,7 +3,6 @@ import { ScrollView } from "react-native";
 
 import LoginScreen from "../screens/LoginScreen";
 import DealerStack from "./dealer/DealerStack";
-import AdminStack from "./admin/AdminStack"; // <-- use this instead of AdminTabs
 
 const Stack = createStackNavigator();
 
@@ -16,7 +15,6 @@ const AppNavigator = () => {
       >
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Dealer" component={DealerStack} />
-        <Stack.Screen name="Admin" component={AdminStack} />
       </Stack.Navigator>
     </ScrollView>
   );

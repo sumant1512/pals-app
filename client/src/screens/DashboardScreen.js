@@ -4,9 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 
-import UserHeader from "../components/UserHeader";
 import ErrorModal from "../components/PalsErrorModal";
-import AdminDashboardScreen from "./AdminDashboardScreen";
 import DealerDashboardScreen from "./DealerDashboardScreen";
 import { serverDomain } from "../constants/Config";
 
@@ -115,20 +113,11 @@ export default function DashboardScreen({ navigation }) {
         </View>
       ) : (
         <>
-          {userInfo?.userType === "Admin" ? (
-            <>
-              {/* Admin Dashboard */}
-              <AdminDashboardScreen />
-            </>
-          ) : (
-            <>
-              {/* Dealer Dashboard */}
-              <DealerDashboardScreen
-                userInfo={userInfo}
-                addCouponPressed={addCouponPressed}
-              />
-            </>
-          )}
+          {/* Dealer Dashboard */}
+          <DealerDashboardScreen
+            userInfo={userInfo}
+            addCouponPressed={addCouponPressed}
+          />
         </>
       )}
 

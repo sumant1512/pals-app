@@ -10,6 +10,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
+import UserHeader from "../components/UserHeader";
 import UserRedeemModal from "./UserRedeemModal";
 import ErrorModal from "../components/PalsErrorModal";
 import PalsTouchableButton from "../components/PalsTouchableButton";
@@ -82,13 +83,8 @@ const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
       style={styles.background}
       resizeMode="cover"
     >
+      <UserHeader />
       <View style={styles.container}>
-        <Image
-          source={require("../assets/pals_paint.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-
         <View style={styles.card}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>Pals Balance</Text>
@@ -154,7 +150,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     paddingHorizontal: 20,
-    paddingVertical: 40,
+    paddingBottom: 40,
   },
   logo: {
     width: 150,

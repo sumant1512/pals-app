@@ -1,17 +1,27 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function UserHeader({ action }) {
+import { Ionicons } from "@expo/vector-icons";
+
+export default function UserHeader() {
+  const navigation = useNavigation();
+
+  const profilePressed = () => {
+    navigation.navigate("DealerProfile");
+  };
+
   return (
     <View style={styles.container}>
       <Image
         source={require("./../assets/pals_paint.png")}
         style={styles.logo}
       />
-      <TouchableOpacity style={styles.imgContainer} onPress={action}>
-        <Image
-          source={require("./../assets/user_avtar.png")}
-          style={styles.userImage}
+      <TouchableOpacity style={styles.imgContainer} onPress={profilePressed}>
+        <Ionicons
+          style={styles.userLogo}
+          name={"person-circle-outline"}
+          size={30}
+          color="#176B87"
         />
       </TouchableOpacity>
     </View>
@@ -23,18 +33,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 30,
+    marginHorizontal: 20,
+    alignItems: "center",
   },
   logo: {
-    height: 60,
-    width: 150,
+    height: 50,
+    width: 160,
   },
   imgContainer: {
-    alignSelf: "center",
+    backgroundColor: "#ffffff",
+    height: 40,
+    width: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 20,
   },
-  userImage: {
-    height: 30,
-    width: 30,
-    alignSelf: "center",
-    marginRight: 20,
+  userLogo: {
+    marginTop: 1.5,
   },
 });
