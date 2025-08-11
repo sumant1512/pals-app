@@ -31,6 +31,15 @@ app.use(function (req, res, next) {
 // app.use(bodyParser.json());
 app.use(express.json({ limit: "50mb" }));
 
+// Health-check route
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: true,
+    uptime: process.uptime(),              // how long the process has been running
+    timestamp: new Date().toISOString(),   // current time
+  });
+});
+
 // app.use("/admin/color", auth, colorRoutes.routes);
 // app.use("/admin/dimension", auth, dimensionRoutes.routes);
 // app.use("/admin/product-name", auth, productNameRoutes.routes);
