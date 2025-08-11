@@ -6,13 +6,10 @@ const connectToMongoDB = require("./src/utils/mongoose");
 connectToMongoDB();
 
 // controller Imports
-const productRoutes = require("./src/routes/+product/product");
 const couponRoutes = require("./src/routes/+user/coupon");
 const dealerRoutes = require("./src/routes/+user/dealer");
 const fanDeckRoutes = require("./src/routes/+open/fan-deck");
 const authenticationRoutes = require("./src/routes/+user/authentication");
-const orderRoutes = require("./src/routes/+user/orders");
-const cartRoutes = require("./src/routes/+user/cart");
 const { authorize, adminAuthorize } = require("./src/utils/auth");
 
 const port = process.env.PORT || 8080;
@@ -50,11 +47,8 @@ app.get('/health', (req, res) => {
 
 //without auth
 app.use("/api/auth", authenticationRoutes.routes); // Api includes createUser, VerifyOtp and isAuthenticated
-app.use("/api/product", productRoutes.routes); // Api includes crud operation fo product
 app.use("/api/coupon", authorize, couponRoutes.routes); // Api includes coupon generation and redemption
 app.use("/api/dealer", adminAuthorize, dealerRoutes.routes); // Api dealer ledger
 app.use("/fan-deck", fanDeckRoutes.routes);
-app.use("/order", authorize, orderRoutes.routes);
-app.use("/cart", authorize, cartRoutes.routes);
 
 app.listen(port, () => console.log(`server is running at port - ${port}`));
