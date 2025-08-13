@@ -21,7 +21,7 @@ const ProductSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now },
 });
 
-const Product = mongoose.model("product", ProductSchema);
+const Product = mongoose.model("Product", ProductSchema);
 Product.createIndexes();
 module.exports = Product;
 
