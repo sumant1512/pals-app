@@ -94,7 +94,7 @@ const getProductDetails = async (req, res, next) => {
     const productDetails = await ProductModel.findById(productId).lean();
     if (productDetails) {
       // Sending Products
-      return res.status(200).send({ product: productDetails, status: true });
+      return res.status(200).send({ productDetails: productDetails, status: true });
     } else {
       // No Products found
       return res.status(404).send({ message: "No Products Available.", status: true });
