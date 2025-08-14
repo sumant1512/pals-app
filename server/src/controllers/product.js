@@ -73,15 +73,12 @@ const updateProduct = async (req, res, next) => {
 const getProducts = async (req, res, next) => {
   try {
     // Reading all the products
-    const Product = await ProductModel.find();
-    console.log(Product);
+    const products = await ProductModel.find();
     if (products) {
       // Sending Products
-      console.log("in if",Product);
       return res.status(200).send({ products: products, status: true });
     } else {
       // No Products found
-      console.log("in else",Product);
       return res.status(404).send({ message: "No Products Available.", status: true });
     }
   } catch (error) {
