@@ -8,27 +8,20 @@ const ProductSchema = new mongoose.Schema({
   productType: {
     type: String,
     required: true,
+    enum: ["Interior", "Exterior"]
   },
   image: {
     type: String,
     required: true,
   },
-  pigmentPrice: {
-    type: Number,
-    required: true,
-    default: 5,
-  },
   isShadeEnabled: {
     type: Boolean,
     required: true,
   },
-  timestamp: {
-    type: String,
-    required: true,
-    default: Date.now,
-  },
+  timestamp: { type: Date, default: Date.now },
 });
 
-const Product = mongoose.model("product", ProductSchema);
+const Product = mongoose.model("Product", ProductSchema);
 Product.createIndexes();
 module.exports = Product;
+

@@ -1,72 +1,78 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, Text } from "react-native";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
-export default function TouchableButton({ label, theme, action }) {
+const PalsTouchableButton = ({ label, onPress, style, theme = "filled" }) => {
+  let buttonStyles = [styles.button];
+  let textStyles = [styles.buttonText];
+
+  if (theme === "outline") {
+    buttonStyles.push(styles.outline);
+    textStyles = [styles.buttonText, styles.outlineText];
+  } else if (theme === "light") {
+    buttonStyles = [styles.lightButton];
+    textStyles = [styles.lightText];
+  } else if (theme === "text") {
+    buttonStyles = [styles.textButton];
+    textStyles = [styles.textOnly];
+  } else {
+    buttonStyles = [styles.button];
+    textStyles = [styles.buttonText];
+  }
+
+  if (style) {
+    buttonStyles.push(style);
+  }
+
   return (
-    <TouchableOpacity
-      style={[styles.button, fontButtonStyle(theme)]}
-      onPress={action}
-    >
-      <Text style={[styles.text, fontTextStyle(theme)]}>{label}</Text>
+    <TouchableOpacity style={buttonStyles} onPress={onPress}>
+      <Text style={textStyles}>{label}</Text>
     </TouchableOpacity>
   );
-}
+};
 
-function fontButtonStyle(type) {
-  switch (type) {
-    case "filled":
-      return {
-        backgroundColor: "#000000",
-      };
-    case "outlined":
-      return {
-        backgroundColor: "#ffffff",
-        borderColor: "#dadada",
-        borderWidth: 1,
-      };
-    case "light":
-      return {
-        backgroundColor: "#EDEDED",
-        borderColor: "#dadada",
-        borderWidth: 1,
-      };
-    default:
-      return {
-        backgroundColor: "#000000",
-      };
-  }
-}
-
-function fontTextStyle(type) {
-  switch (type) {
-    case "filled":
-      return {
-        color: "#ffffff",
-      };
-    case "outlined":
-      return {
-        color: "#000000",
-      };
-    case "light":
-      return {
-        color: "#000000",
-      };
-    default:
-      return {
-        color: "#ffffff",
-      };
-  }
-}
+export default PalsTouchableButton;
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "center",
+    backgroundColor: "#014589",
+    borderRadius: 25,
     paddingVertical: 12,
-    marginVertical: 8,
-    borderRadius: 10,
+    alignItems: "center",
   },
-  text: {
-    fontSize: 22,
-    fontWeight: "400",
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  outline: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "#014589",
+  },
+  outlineText: {
+    color: "#014589",
+  },
+  textButton: {
+    backgroundColor: "transparent",
+    paddingVertical: 0,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  textOnly: {
+    color: "#014589",
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  lightButton: {
+    backgroundColor: "#ffffff",
+    paddingVertical: 12,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  lightText: {
+    color: "#014589",
+    fontSize: 14,
+    fontWeight: "500",
   },
 });

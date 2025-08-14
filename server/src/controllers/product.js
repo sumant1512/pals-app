@@ -1,6 +1,6 @@
 const { body, validationResult } = require("express-validator");
-const { ERROR_500 } = require("./../../utils/constant");
-const Product = require("../../models/Products");
+const { ERROR_500 } = require("./../utils/constant");
+const Product = require("../models/Product");
 
 const validateAddProduct = [
   body("productName").notEmpty().withMessage("Product name is required."),
@@ -32,12 +32,13 @@ const addProduct = async (req, res, next) => {
         // Response when product is added
         return res.status(200).json({
           message: "Product added.",
+          status: true,
         });
       })
-      .catch((error) => res.json({ error })); // Response when error while adding product to DB
+      .catch((error) => res.status(402).send({ error: error, status: false })); // Response when error while adding product to DB
   } catch (error) {
     // Exception error
-    return res.status(500).send(ERROR_500);
+    return res.status(500).send({ error: ERROR_500, status: false});
   }
 };
 
@@ -45,7 +46,7 @@ const updateProduct = async (req, res, next) => {
   const productId = req.params.id;
   const updatedData = req.body;
   if (!productId) {
-    return res.status(404).json({ message: "Product not found." });
+    return res.status(404).json({ message: "Product not found.", status: false });
   }
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
@@ -58,13 +59,14 @@ const updateProduct = async (req, res, next) => {
       return res.status(200).json({
         message: "Product updated successfully.",
         product: updatedProduct,
+        status: true
       });
     } else {
-      return res.status(404).json({ message: "Product not found." });
+      return res.status(404).json({ message: "Product not found.", status: false });
     }
   } catch (error) {
     // Exception error
-    return res.status(500).json(ERROR_500);
+    return res.status(500).send({ error: ERROR_500, status: false});
   }
 };
 
@@ -74,14 +76,14 @@ const getProducts = async (req, res, next) => {
     const products = await Product.find();
     if (products) {
       // Sending Products
-      return res.status(200).json({ products });
+      return res.status(200).send({ products: products, status: true });
     } else {
       // No Products found
-      return res.status(404).json({ message: "No Products Available." });
+      return res.status(404).send({ message: "No Products Available.", status: true });
     }
   } catch (error) {
     // Exception error
-    return res.status(500).send(ERROR_500);
+    return res.status(500).send({ error: ERROR_500, status: false});
   }
 };
 
@@ -99,13 +101,14 @@ const deleteProduct = async (req, res, next) => {
       res.status(200).json({
         message: "Product deleted successfully.",
         product: deletedProduct,
+        status: true
       });
     } else {
-      res.status(404).json({ message: "Product not available." });
+      res.status(404).json({ message: "Product not available.", status: true });
     }
   } catch (error) {
     // Exception error
-    res.status(500).send(ERROR_500);
+    res.status(500).send({ error: ERROR_500, status: false});
   }
 };
 

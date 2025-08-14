@@ -17,12 +17,12 @@ const UserRedeemModal = ({
           <TouchableButton
             label="Confirm"
             theme="filled"
-            action={confirmModal}
+            onPress={confirmModal}
           ></TouchableButton>
           <TouchableButton
             label="Close"
             theme="light"
-            action={closeModal}
+            onPress={closeModal}
           ></TouchableButton>
         </View>
       </View>

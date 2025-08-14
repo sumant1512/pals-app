@@ -3,70 +3,81 @@ import { View, Text, TextInput, StyleSheet } from "react-native";
 import { Controller } from "react-hook-form";
 
 const PalsTextInput = ({
-  control,
   name,
-  disabled,
+  control,
   rules = {},
+  label,
   placeholder,
-  secureTextEntry,
+  keyboardType = "default",
+  maxLength,
+  style,
+  placeholderTextColor,
+  textColor,
+  ...props
 }) => {
   return (
-    <Controller
-      control={control}
-      name={name}
-      rules={rules}
-      render={({
-        field: { value, onChange, onBlur },
-        fieldState: { error },
-      }) => (
-        <>
-          <Text style={styles.label}>{placeholder}</Text>
-          <View
-            style={[
-              styles.container,
-              { borderColor: error ? "red" : "#e8e8e8" },
-            ]}
-          >
+    <View style={styles.wrapper}>
+      {label && <Text style={styles.label}>{label}</Text>}
+
+      <Controller
+        control={control}
+        name={name}
+        rules={rules}
+        render={({
+          field: { onChange, onBlur, value },
+          fieldState: { error },
+        }) => (
+          <>
             <TextInput
-              value={value}
+              style={[
+                styles.input,
+                error && styles.inputError,
+                { color: textColor || "#014589" },
+                style,
+              ]}
+              placeholder={placeholder}
+              placeholderTextColor={placeholderTextColor || "#999"}
+              keyboardType={keyboardType}
+              maxLength={maxLength}
               onChangeText={onChange}
               onBlur={onBlur}
-              style={styles.input}
-              readOnly={disabled}
-              secureTextEntry={secureTextEntry}
+              value={value}
+              {...props}
             />
-          </View>
-          {error && (
-            <Text style={{ color: "red", alignSelf: "stretch" }}>
-              {error.message || "Error"}
-            </Text>
-          )}
-        </>
-      )}
-    />
+            {error && <Text style={styles.errorText}>{error.message}</Text>}
+          </>
+        )}
+      />
+    </View>
   );
 };
 
+export default PalsTextInput;
+
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#EDEDED",
+  wrapper: {
     width: "100%",
-    borderColor: "#e8e8e8",
-    borderRadius: 10,
-    borderColor: "#dadada",
-    borderWidth: 1,
+    marginBottom: 20,
   },
   label: {
-    fontSize: 16,
-    fontWeight: "400",
-    marginBottom: 4,
-    marginTop: 16,
+    fontSize: 14,
+    color: "#748390",
+    marginBottom: 10,
   },
   input: {
-    height: 50,
-    paddingHorizontal: 10,
-    borderRadius: 10,
+    height: 48,
+    borderWidth: 1,
+    borderColor: "#85B9D7",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    fontSize: 16,
+  },
+  inputError: {
+    borderColor: "#FF4C4C",
+  },
+  errorText: {
+    color: "#FF4C4C",
+    fontSize: 12,
+    marginTop: 2,
   },
 });
-
-export default PalsTextInput;

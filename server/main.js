@@ -6,12 +6,12 @@ const connectToMongoDB = require("./src/utils/mongoose");
 connectToMongoDB();
 
 // controller Imports
-const productRoutes = require("./src/routes/+product/product");
+const couponRoutes = require("./src/routes/+user/coupon");
+const dealerRoutes = require("./src/routes/+user/dealer");
 const fanDeckRoutes = require("./src/routes/+open/fan-deck");
 const authenticationRoutes = require("./src/routes/+user/authentication");
-const orderRoutes = require("./src/routes/+user/orders");
-const cartRoutes = require("./src/routes/+user/cart");
-const { authorize } = require("./src/utils/auth");
+const productRoutes = require("./src/routes/product");
+const { authorize, adminAuthorize } = require("./src/utils/auth");
 
 const port = process.env.PORT || 8080;
 
@@ -29,6 +29,15 @@ app.use(function (req, res, next) {
 // app.use(bodyParser.json());
 app.use(express.json({ limit: "50mb" }));
 
+// Health-check route
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: true,
+    uptime: process.uptime(),              // how long the process has been running
+    timestamp: new Date().toISOString(),   // current time
+  });
+});
+
 // app.use("/admin/color", auth, colorRoutes.routes);
 // app.use("/admin/dimension", auth, dimensionRoutes.routes);
 // app.use("/admin/product-name", auth, productNameRoutes.routes);
@@ -39,9 +48,9 @@ app.use(express.json({ limit: "50mb" }));
 
 //without auth
 app.use("/api/auth", authenticationRoutes.routes); // Api includes createUser, VerifyOtp and isAuthenticated
-app.use("/api/product", productRoutes.routes); // Api includes crud operation fo product
+app.use("/api/coupon", authorize, couponRoutes.routes); // Api includes coupon generation and redemption
+app.use("/api/dealer", adminAuthorize, dealerRoutes.routes); // Api dealer ledger
+app.use("/api/product", productRoutes.routes); // Api products
 app.use("/fan-deck", fanDeckRoutes.routes);
-app.use("/order", authorize, orderRoutes.routes);
-app.use("/cart", authorize, cartRoutes.routes);
 
 app.listen(port, () => console.log(`server is running at port - ${port}`));

@@ -6,46 +6,6 @@ const Session = require("../../models/Session");
 const { ERROR_500 } = require("./../../utils/constant");
 const AUTH_SECRET_KEY = "palsshop!123";
 
-const registerUser = async (req, res, next) => {
-  const { mobile, name } = req.body;
-
-  if (!mobile || !name) {
-    return res
-      .status(400)
-      .json({ message: "Mobile number and Name is required.", status: false });
-  }
-
-  try {
-    // Searching user in db
-    const user = await User.findOne({ mobile });
-    if (user) {
-      return res
-        .status(400)
-        .send({ message: "User already exists", status: false });
-    }
-
-    // Creating user in mongodb
-    User.create({
-      name,
-      mobile,
-    })
-      .then(async (user) => {
-        const otp = await generateOTP(6);
-        user.otp = otp;
-        await user.save();
-        return res.json({
-          message: "Otp Sent to you registered mobile number.",
-          otp: otp,
-          status: true,
-        });
-      }) // returning repsonse
-      .catch((err) => res.json({ error: err })); // returning db error
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ message: ERROR_500, status: false });
-  }
-};
-
 const sendOtp = async (req, res, next) => {
   const { mobile } = req.body;
 
@@ -65,28 +25,18 @@ const sendOtp = async (req, res, next) => {
       return res.json({
         message: "Otp Sent to you registered mobile number.",
         otp: loginOtp,
+        userType: user.userType,
         status: true,
       });
     }
 
-    // Creating user in mongodb
-    User.create({
-      mobile,
-    })
-      .then(async (user) => {
-        const otp = await generateOTP(6);
-        user.otp = otp;
-        await user.save();
-        return res.json({
-          message: "Otp Sent to you registered mobile number.",
-          otp: otp,
-          status: true,
-        });
-      }) // returning repsonse
-      .catch((err) => res.json({ error: err })); // returning db error
+    return res.status(404).json({
+      message: "User not registered.",
+      status: false,
+    });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: ERROR_500, status: true });
+    return res.status(500).send({ message: ERROR_500, status: true });
   }
 };
 
@@ -123,6 +73,9 @@ const verifyOtp = async (req, res, next) => {
       expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
     });
 
+    user.otp = null;
+    await user.save();
+
     // Response when user logged in.
     res
       .status(200)
@@ -130,6 +83,56 @@ const verifyOtp = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: ERROR_500, status: false });
+  }
+};
+
+const userInfo = async (req, res, next) => {
+  try {
+    // Ensure user ID is present from middleware
+    if (!req.user || !req.user.id) {
+      return res.status(400).json({
+        message: "User authentication failed. Missing user ID. Contact Admin.",
+        status: false,
+      });
+    }
+
+    const userInfo = await User.findById(req.user.id);
+
+    // Check if user exists
+    if (!userInfo) {
+      return res.status(404).json({
+        message: "User not found. Contact Admin.",
+        status: false,
+      });
+    }
+
+    // Build user data
+    const userData = {
+      name: userInfo.name,
+      mobile: userInfo.mobile,
+      userType: userInfo.userType,
+      totalCredit: userInfo.totalCredit,
+      totalDebit: userInfo.totalDebit,
+      availableCredit: userInfo.availableCredit,
+      lockedCredit: userInfo?.lockedCredit,
+      shop: userInfo.shop,
+      address: userInfo.address,
+      pin: userInfo.pin,
+      city: userInfo.city,
+      state: userInfo.state,
+    };
+
+    return res.status(200).json({
+      message: "User info fetched successfully.",
+      data: userData,
+      status: true,
+    });
+  } catch (error) {
+    console.error("Internal server error in userInfo:", error);
+    return res.status(500).json({
+      message: "Internal server error. Please try again later.",
+      status: false,
+    });
   }
 };
 
@@ -170,9 +173,9 @@ const isAuthenticated = (req, res, next) => {
 };
 
 module.exports = {
-  registerUser: registerUser,
   sendOtp: sendOtp,
   verifyOtp: verifyOtp,
+  userInfo: userInfo,
   logout: logout,
   isAuthenticated: isAuthenticated,
 };
