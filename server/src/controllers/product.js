@@ -74,6 +74,7 @@ const getProducts = async (req, res, next) => {
   try {
     // Reading all the products
     const Product = await ProductModel.find();
+    console.log(Product);
     if (products) {
       // Sending Products
       return res.status(200).send({ products: products, status: true });
