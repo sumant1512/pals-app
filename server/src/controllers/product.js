@@ -83,7 +83,7 @@ const getProducts = async (req, res, next) => {
     }
   } catch (error) {
     // Exception error
-    return res.status(500).send({ error: ERROR_500, status: false});
+    return res.status(500).send({ error: error, status: false});
   }
 };
 
