@@ -77,9 +77,11 @@ const getProducts = async (req, res, next) => {
     console.log(Product);
     if (products) {
       // Sending Products
+      console.log("in if",Product);
       return res.status(200).send({ products: products, status: true });
     } else {
       // No Products found
+      console.log("in else",Product);
       return res.status(404).send({ message: "No Products Available.", status: true });
     }
   } catch (error) {
