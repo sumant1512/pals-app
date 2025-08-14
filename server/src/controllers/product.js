@@ -1,6 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const { ERROR_500 } = require("./../utils/constant");
-const Product = require("../models/Product");
+const ProductModel = require("../models/Product");
 
 const validateAddProduct = [
   body("productName").notEmpty().withMessage("Product name is required."),
@@ -21,7 +21,7 @@ const addProduct = async (req, res, next) => {
 
   try {
     // Creating product in database
-    Product.create({
+    ProductModel.create({
       productName: req.body.productName,
       productType: req.body.productType,
       image: req.body.image,
@@ -49,7 +49,7 @@ const updateProduct = async (req, res, next) => {
     return res.status(404).json({ message: "Product not found.", status: false });
   }
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(
+    const updatedProduct = await ProductModel.findByIdAndUpdate(
       productId,
       updatedData,
       { new: true, runValidators: true } // Options: return the updated document and validate
@@ -73,7 +73,7 @@ const updateProduct = async (req, res, next) => {
 const getProducts = async (req, res, next) => {
   try {
     // Reading all the products
-    const products = await Product.find();
+    const Product = await ProductModel.find();
     if (products) {
       // Sending Products
       return res.status(200).send({ products: products, status: true });
@@ -96,7 +96,7 @@ const deleteProduct = async (req, res, next) => {
       return res.status(404).json({ error: "Missing Product Id." });
     }
 
-    const deletedProduct = await Product.findByIdAndDelete(productId);
+    const deletedProduct = await ProductModel.findByIdAndDelete(productId);
     if (deletedProduct) {
       res.status(200).json({
         message: "Product deleted successfully.",
