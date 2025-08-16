@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 import { useForm } from "react-hook-form";
-import { Camera } from "expo-camera";
+import { Camera, CameraView } from "expo-camera";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
@@ -33,21 +33,15 @@ export default function CoupanScanScreen({ navigation }) {
   const [text, setText] = useState("Not yet scanned");
   const isMobile = Platform.OS !== "web";
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       code: "",
     },
   });
 
-  const askForCameraPermission = () => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
+  const askForCameraPermission = async () => {
+    const { status } = await Camera.requestCameraPermissionsAsync();
+    setHasPermission(status === "granted");
   };
 
   const setOpenedScreen = async () => {
@@ -59,7 +53,7 @@ export default function CoupanScanScreen({ navigation }) {
   };
 
   useEffect(() => {
-    isMobile && askForCameraPermission();
+    if (isMobile) askForCameraPermission();
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
@@ -69,36 +63,34 @@ export default function CoupanScanScreen({ navigation }) {
   };
 
   const redeemCoupon = async (formData) => {
-    (() => {
-      AsyncStorage.getItem("authToken").then((authToken) => {
-        if (authToken) {
-          const headers = {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            authorization: `Bearer ${authToken}`,
-          };
-          axios
-            .post(
-              `${BE_PATH}/api/coupon/scan`,
-              { code: formData.code },
-              { headers }
-            )
-            .then((scanApiResponse) => {
-              if (scanApiResponse?.data?.status) {
-                navigation.navigate("Dashboard");
-              }
-            })
-            .catch((error) => {
-              console.error("API Error:", error);
-              setErrorMsg(error.response?.data?.message || "An error occurred");
-              setErrorVisible(true);
-            });
-        } else {
-          setOpenedScreen();
-          navigation.navigate("Login");
-        }
-      });
-    })();
+    AsyncStorage.getItem("authToken").then((authToken) => {
+      if (authToken) {
+        const headers = {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          authorization: `Bearer ${authToken}`,
+        };
+        axios
+          .post(
+            `${BE_PATH}/api/coupon/scan`,
+            { code: formData.code },
+            { headers }
+          )
+          .then((scanApiResponse) => {
+            if (scanApiResponse?.data?.status) {
+              navigation.navigate("Dashboard");
+            }
+          })
+          .catch((error) => {
+            console.error("API Error:", error);
+            setErrorMsg(error.response?.data?.message || "An error occurred");
+            setErrorVisible(true);
+          });
+      } else {
+        setOpenedScreen();
+        navigation.navigate("Login");
+      }
+    });
   };
 
   if (hasPermission === null && isMobile) {
@@ -118,6 +110,11 @@ export default function CoupanScanScreen({ navigation }) {
     );
   }
 
+  const onErrorClose = () => {
+    onRetryPressed();
+    setErrorVisible(false);
+  };
+
   const onRetryPressed = () => {
     setText("Not yet scanned");
     setScanned(false);
@@ -125,7 +122,7 @@ export default function CoupanScanScreen({ navigation }) {
 
   return (
     <ImageBackground
-      source={require("../assets/scan_bg.png")} // 🖼️ Use your background image here
+      source={require("../assets/scan_bg.png")}
       style={styles.background}
       resizeMode="cover"
     >
@@ -135,12 +132,13 @@ export default function CoupanScanScreen({ navigation }) {
       <View style={styles.container}>
         {isMobile && (
           <View style={styles.barcodebox}>
-            <Camera
+            <CameraView
               style={styles.camera}
-              onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-              barCodeScannerSettings={{
-                barCodeTypes: [Camera.Constants.BarCodeType.qr],
+              facing="back"
+              barcodeScannerSettings={{
+                barcodeTypes: ["qr"], // ✅ correct for SDK 53
               }}
+              onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
             />
           </View>
         )}
@@ -175,7 +173,7 @@ export default function CoupanScanScreen({ navigation }) {
         <ErrorModal
           visible={errorVisible}
           message={errorMsg}
-          onClose={() => setErrorVisible(false)}
+          onClose={onErrorClose}
         />
       </View>
     </ImageBackground>
@@ -195,28 +193,18 @@ const styles = StyleSheet.create({
     position: "relative",
     justifyContent: "space-between",
   },
-  circleButton: {
-    position: "absolute",
-    top: 60,
-    right: 20,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 10,
-    elevation: 4,
-  },
   barcodebox: {
     alignItems: "center",
     justifyContent: "center",
-    height: 300,
     width: SCAN_BOX_SIZE,
     height: SCAN_BOX_SIZE,
     overflow: "hidden",
     borderRadius: 30,
-    backgroundColor: "tomato",
+    backgroundColor: "black",
+  },
+  camera: {
+    width: "100%",
+    height: "100%",
   },
   retryBtn: {
     marginBottom: 150,
@@ -224,7 +212,7 @@ const styles = StyleSheet.create({
   },
   notScannedText: {
     fontSize: 16,
-    fontWeight: 400,
+    fontWeight: "400",
     color: "#ffffff",
     marginTop: 16,
   },
