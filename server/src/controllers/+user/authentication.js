@@ -82,7 +82,7 @@ const verifyOtp = async (req, res, next) => {
       .json({ message: "User Logged in.", authToken: authToken, status: true });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: ERROR_500, status: false });
+    res.status(500).send({ message: error, status: false });
   }
 };
 
