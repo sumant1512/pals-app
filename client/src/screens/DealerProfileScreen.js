@@ -238,5 +238,6 @@ const styles = StyleSheet.create({
   },
   logoutBtn: {
     marginTop: 20,
+    marginBottom: 20,
   },
 });
