@@ -8,7 +8,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-import { serverDomain } from "../constants/Config";
+import { BE_PATH } from "../constants/Config";
 import PalsText from "../components/PalsText";
 import UserHeader from "../components/UserHeader";
 import BackButton from "../components/BackButton";
@@ -50,7 +50,7 @@ export default function UserTransactionsScreen() {
     };
 
     try {
-      const res = await axios.get(`${serverDomain}/api/coupon/transactions`, {
+      const res = await axios.get(`${BE_PATH}/api/coupon/transactions`, {
         headers,
       });
       setTransactions(res.data.transactions || []);
@@ -78,7 +78,7 @@ export default function UserTransactionsScreen() {
 
     try {
       const res = await axios.post(
-        `${serverDomain}/api/coupon/transactions-by-admin`,
+        `${BE_PATH}/api/coupon/transactions-by-admin`,
         { userId: userId },
         {
           headers,

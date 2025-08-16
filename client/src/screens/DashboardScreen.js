@@ -6,7 +6,7 @@ import axios from "axios";
 
 import ErrorModal from "../components/PalsErrorModal";
 import DealerDashboardScreen from "./DealerDashboardScreen";
-import { serverDomain } from "../constants/Config";
+import { BE_PATH } from "../constants/Config";
 
 export default function DashboardScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -76,7 +76,7 @@ export default function DashboardScreen({ navigation }) {
             authorization: `Bearer ${authToken}`,
           };
           axios
-            .get(`${serverDomain}/api/auth/userInfo`, { headers })
+            .get(`${BE_PATH}/api/auth/userInfo`, { headers })
             .then((userInfoResponse) => {
               navigation.navigate(userInfoResponse?.data?.data?.userType);
               setUserInfo(userInfoResponse?.data?.data);

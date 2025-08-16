@@ -1,6 +1,6 @@
 const { body, validationResult } = require("express-validator");
-const { ERROR_500 } = require("./../utils/constant");
-const ProductModel = require("../models/Product");
+const { ERROR_500 } = require("./../../utils/constant");
+const ProductModel = require("../../models/Product");
 
 const validateAddProduct = [
   body("productName").notEmpty().withMessage("Product name is required."),
@@ -38,7 +38,7 @@ const addProduct = async (req, res, next) => {
       .catch((error) => res.status(402).send({ error: error, status: false })); // Response when error while adding product to DB
   } catch (error) {
     // Exception error
-    return res.status(500).send({ error: ERROR_500, status: false});
+    return res.status(500).send({ error: ERROR_500, status: false });
   }
 };
 
@@ -46,7 +46,9 @@ const updateProduct = async (req, res, next) => {
   const productId = req.params.id;
   const updatedData = req.body;
   if (!productId) {
-    return res.status(404).json({ message: "Product not found.", status: false });
+    return res
+      .status(404)
+      .json({ message: "Product not found.", status: false });
   }
   try {
     const updatedProduct = await ProductModel.findByIdAndUpdate(
@@ -59,14 +61,16 @@ const updateProduct = async (req, res, next) => {
       return res.status(200).json({
         message: "Product updated successfully.",
         product: updatedProduct,
-        status: true
+        status: true,
       });
     } else {
-      return res.status(404).json({ message: "Product not found.", status: false });
+      return res
+        .status(404)
+        .json({ message: "Product not found.", status: false });
     }
   } catch (error) {
     // Exception error
-    return res.status(500).send({ error: ERROR_500, status: false});
+    return res.status(500).send({ error: ERROR_500, status: false });
   }
 };
 
@@ -79,11 +83,13 @@ const getProducts = async (req, res, next) => {
       return res.status(200).send({ products: products, status: true });
     } else {
       // No Products found
-      return res.status(404).send({ message: "No Products Available.", status: true });
+      return res
+        .status(404)
+        .send({ message: "No Products Available.", status: true });
     }
   } catch (error) {
     // Exception error
-    return res.status(500).send({ error: error, status: false});
+    return res.status(500).send({ error: error, status: false });
   }
 };
 
@@ -94,14 +100,18 @@ const getProductDetails = async (req, res, next) => {
     const productDetails = await ProductModel.findById(productId).lean();
     if (productDetails) {
       // Sending Products
-      return res.status(200).send({ productDetails: productDetails, status: true });
+      return res
+        .status(200)
+        .send({ productDetails: productDetails, status: true });
     } else {
       // No Products found
-      return res.status(404).send({ message: "No Products Available.", status: true });
+      return res
+        .status(404)
+        .send({ message: "No Products Available.", status: true });
     }
   } catch (error) {
     // Exception error
-    return res.status(500).send({ error: error, status: false});
+    return res.status(500).send({ error: error, status: false });
   }
 };
 
@@ -119,14 +129,14 @@ const deleteProduct = async (req, res, next) => {
       res.status(200).json({
         message: "Product deleted successfully.",
         product: deletedProduct,
-        status: true
+        status: true,
       });
     } else {
       res.status(404).json({ message: "Product not available.", status: true });
     }
   } catch (error) {
     // Exception error
-    res.status(500).send({ error: ERROR_500, status: false});
+    res.status(500).send({ error: ERROR_500, status: false });
   }
 };
 

@@ -22,7 +22,7 @@ import ErrorModal from "../components/PalsErrorModal";
 
 const { width } = Dimensions.get("window");
 
-import { serverDomain } from "../constants/Config";
+import { BE_PATH } from "../constants/Config";
 const SCAN_BOX_SIZE = width * 0.6;
 
 export default function CoupanScanScreen({ navigation }) {
@@ -79,7 +79,7 @@ export default function CoupanScanScreen({ navigation }) {
           };
           axios
             .post(
-              `${serverDomain}/api/coupon/scan`,
+              `${BE_PATH}/api/coupon/scan`,
               { code: formData.code },
               { headers }
             )

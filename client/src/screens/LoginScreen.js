@@ -18,7 +18,7 @@ import PalsTextInput from "../components/PalsTextInput";
 import PalsOtpInput from "../components/PalsOtpInput";
 import HeaderOverlay from "../components/HeaderOverlay";
 
-import { serverDomain } from "../constants/Config";
+import { BE_PATH } from "../constants/Config";
 
 const LoginScreen = () => {
   const [errorVisible, setErrorVisible] = useState(false);
@@ -56,7 +56,7 @@ const LoginScreen = () => {
   const onLoginPressed = () => {
     const { mobile } = getValues();
 
-    fetch(`${serverDomain}/api/auth/send-otp`, {
+    fetch(`${BE_PATH}/api/auth/send-otp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -98,7 +98,7 @@ const LoginScreen = () => {
   };
 
   const verifyUser = (data) => {
-    fetch(`${serverDomain}/api/auth/verify`, {
+    fetch(`${BE_PATH}/api/auth/verify`, {
       method: "POST",
       headers: {
         Accept: "application/json",

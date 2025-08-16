@@ -12,7 +12,7 @@ import { CommonActions } from "@react-navigation/native";
 
 import HeaderOverlay from "../components/HeaderOverlay";
 import TouchableButton from "../components/PalsTouchableButton";
-import { serverDomain } from "../constants/Config";
+import { BE_PATH } from "../constants/Config";
 
 export default function DealerProfileScreen() {
   const navigation = useNavigation();
@@ -71,7 +71,7 @@ export default function DealerProfileScreen() {
   };
 
   const onLogoutPressed = () => {
-    fetch(`${serverDomain}/api/auth/logout`, {
+    fetch(`${BE_PATH}/api/auth/logout`, {
       method: "GET",
       headers: {
         Accept: "application/json",

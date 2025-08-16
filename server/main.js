@@ -10,7 +10,7 @@ const couponRoutes = require("./src/routes/+user/coupon");
 const dealerRoutes = require("./src/routes/+user/dealer");
 const fanDeckRoutes = require("./src/routes/+open/fan-deck");
 const authenticationRoutes = require("./src/routes/+user/authentication");
-const productRoutes = require("./src/routes/product");
+const productRoutes = require("./src/routes/+products/product");
 const { authorize, adminAuthorize } = require("./src/utils/auth");
 
 const port = process.env.PORT || 8080;
@@ -30,11 +30,11 @@ app.use(function (req, res, next) {
 app.use(express.json({ limit: "50mb" }));
 
 // Health-check route
-app.get('/health', (req, res) => {
+app.get("/health", (req, res) => {
   res.status(200).json({
     status: true,
-    uptime: process.uptime(),              // how long the process has been running
-    timestamp: new Date().toISOString(),   // current time
+    uptime: process.uptime(), // how long the process has been running
+    timestamp: new Date().toISOString(), // current time
   });
 });
 
