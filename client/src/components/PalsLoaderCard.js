@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 
-const LoaderCard = () => {
+const PalsLoaderCard = () => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.loaderContainer}>
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoaderCard;
+export default PalsLoaderCard;

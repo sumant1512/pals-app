@@ -5,6 +5,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 
 import ErrorModal from "../components/PalsErrorModal";
+import PalsLoaderCard from "./../components/PalsLoaderCard";
 import DealerDashboardScreen from "./DealerDashboardScreen";
 import { BE_PATH } from "../constants/Config";
 
@@ -107,10 +108,7 @@ export default function DashboardScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={styles.loaderWrapper}>
-          <ActivityIndicator size="large" color="#00206F" />
-          <Text style={styles.loaderText}>Loading Dashboard...</Text>
-        </View>
+        <PalsLoaderCard />
       ) : (
         <>
           {/* Dealer Dashboard */}
@@ -132,18 +130,6 @@ export default function DashboardScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    // paddingHorizontal: 20,
-    // paddingTop: 40,
-    // flex: 1,
-  },
-  loaderWrapper: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loaderText: {
-    marginTop: 10,
-    color: "#00206F",
-    fontSize: 16,
   },
 });

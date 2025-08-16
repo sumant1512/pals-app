@@ -11,7 +11,7 @@ import axios from "axios";
 import { BE_PATH } from "../constants/Config";
 import PalsText from "../components/PalsText";
 import UserHeader from "../components/UserHeader";
-import BackButton from "../components/BackButton";
+import PalsLoaderCard from "./../components/PalsLoaderCard";
 
 export default function UserTransactionsScreen() {
   const navigation = useNavigation();
@@ -159,7 +159,7 @@ export default function UserTransactionsScreen() {
 
         <View style={styles.listContainer}>
           {loading ? (
-            <Text style={styles.centerText}>Loading...</Text>
+            <PalsLoaderCard />
           ) : transactions.length === 0 ? (
             <Text style={styles.centerText}>No transactions found.</Text>
           ) : (
