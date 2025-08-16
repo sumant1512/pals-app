@@ -57,30 +57,31 @@ export default function UserTransactionsScreen() {
   return (
     <View style={styles.container}>
       <HeaderOverlay />
+
       {/* Top Background */}
       <ImageBackground
         source={require("../assets/profile_bg.png")}
         style={styles.topBackground}
-        resizeMode="cover"
       >
         <UserHeader />
         <Text style={styles.title}>Transactions</Text>
       </ImageBackground>
 
-      {/* List of Transactions */}
-
-      {loading ? (
-        <PalsLoaderCard />
-      ) : transactions.length === 0 ? (
-        <Text style={styles.centerText}>No transactions found.</Text>
-      ) : (
-        <FlatList
-          data={transactions}
-          keyExtractor={(item) => item._id}
-          renderItem={({ item }) => <TransactionCard transaction={item} />}
-          contentContainerStyle={{ paddingTop: 210, paddingBottom: 20 }}
-        />
-      )}
+      {/* Transactions Section */}
+      <View style={styles.transactionsWrapper}>
+        {loading ? (
+          <PalsLoaderCard />
+        ) : transactions.length === 0 ? (
+          <Text style={styles.centerText}>No transactions found.</Text>
+        ) : (
+          <FlatList
+            data={transactions}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => <TransactionCard transaction={item} />}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        )}
+      </View>
     </View>
   );
 }
@@ -94,14 +95,25 @@ const styles = StyleSheet.create({
     height: 250,
     width: "100%",
     backgroundColor: "#001333",
-    position: "absolute",
-    top: 0,
-    left: 0,
   },
   title: {
     fontSize: 24,
     color: "#fff",
     fontWeight: "bold",
     paddingHorizontal: 20,
+    marginTop: 10,
+  },
+  transactionsWrapper: {
+    flex: 1,
+    marginTop: -40,
+    zIndex: 10,
+    position: "relative",
+    paddingHorizontal: 10,
+  },
+  centerText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+    color: "#555",
   },
 });
