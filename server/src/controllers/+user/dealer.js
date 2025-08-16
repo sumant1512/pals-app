@@ -1,8 +1,10 @@
 const User = require("../../models/User");
 const Transaction = require("../../models/Transaction");
+const generateOTP = require("../../utils/otp-generator");
 
 const addDealer = async (req, res, next) => {
   const { userType, name, mobile, shop, address, pin, city, state } = req.body;
+  const otp = generateOTP(6);
   const userId = req.user.id;
 
   if (!mobile || !name || !userId) {
@@ -40,6 +42,7 @@ const addDealer = async (req, res, next) => {
       pin,
       city,
       state,
+      otp,
     })
       .then(async (user) => {
         return res.status(200).send({

@@ -15,7 +15,7 @@ import HeaderOverlay from "../components/HeaderOverlay";
 import UserRedeemModal from "./UserRedeemModal";
 import ErrorModal from "../components/PalsErrorModal";
 import PalsTouchableButton from "../components/PalsTouchableButton";
-import { serverDomain } from "../constants/Config";
+import { BE_PATH } from "../constants/Config";
 
 const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -56,7 +56,7 @@ const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
 
     axios
       .post(
-        `${serverDomain}/api/coupon/redeem`,
+        `${BE_PATH}/api/coupon/redeem`,
         {
           amount: parseInt(parseInt(userInfo.availableCredit / 100) * 100),
         },
