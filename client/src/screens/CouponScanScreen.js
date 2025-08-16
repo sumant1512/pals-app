@@ -6,7 +6,6 @@ import {
   Dimensions,
   Text,
   Button,
-  Platform,
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { Camera, CameraView } from "expo-camera";
@@ -31,7 +30,6 @@ export default function CoupanScanScreen({ navigation }) {
   const [errorMsg, setErrorMsg] = useState("");
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState("Not yet scanned");
-  const isMobile = Platform.OS !== "web";
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -53,7 +51,7 @@ export default function CoupanScanScreen({ navigation }) {
   };
 
   useEffect(() => {
-    if (isMobile) askForCameraPermission();
+    askForCameraPermission();
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
@@ -93,7 +91,7 @@ export default function CoupanScanScreen({ navigation }) {
     });
   };
 
-  if (hasPermission === null && isMobile) {
+  if (hasPermission === null) {
     return (
       <View style={styles.container}>
         <Text>Requesting for camera permission</Text>
@@ -101,7 +99,7 @@ export default function CoupanScanScreen({ navigation }) {
     );
   }
 
-  if (hasPermission === false && isMobile) {
+  if (hasPermission === false) {
     return (
       <View style={styles.container}>
         <Text style={{ margin: 10 }}>No access to camera</Text>
@@ -130,42 +128,25 @@ export default function CoupanScanScreen({ navigation }) {
       <UserHeader />
 
       <View style={styles.container}>
-        {isMobile && (
-          <View style={styles.barcodebox}>
-            <CameraView
-              style={styles.camera}
-              facing="back"
-              barcodeScannerSettings={{
-                barcodeTypes: ["qr"], // ✅ correct for SDK 53
-              }}
-              onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-            />
-          </View>
-        )}
+        <View style={styles.barcodebox}>
+          <CameraView
+            style={styles.camera}
+            facing="back"
+            barcodeScannerSettings={{
+              barcodeTypes: ["qr"], // ✅ correct for SDK 53
+            }}
+            onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+          />
+        </View>
 
         <View>
-          {!isMobile && (
-            <PalsTextInput
-              name="code"
-              control={control}
-              label="Coupon Code"
-              placeholder="Enter Coupon Code"
-              maxLength={20}
-              placeholderTextColor="#ffffff"
-              textColor="#ffffff"
-              rules={{
-                required: "Coupon Code is required.",
-              }}
-            />
-          )}
-
-          {isMobile && <Text style={styles.notScannedText}>{text}</Text>}
+          <Text style={styles.notScannedText}>{text}</Text>
 
           <View style={styles.retryBtn}>
             <PalsTouchableButton
-              label={isMobile ? "Retry" : "Submit"}
+              label={"Retry"}
               theme="light"
-              onPress={isMobile ? onRetryPressed : handleSubmit(redeemCoupon)}
+              onPress={onRetryPressed}
             />
           </View>
         </View>
