@@ -9,6 +9,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -113,87 +114,88 @@ const LoginScreen = () => {
           setOpenedScreen("user");
           navigation.navigate("Dealer");
         } else {
-          console.error(
-            "[AccountLoginScreen - verify otp] API Error:",
-            responseData
-          );
           setErrorMsg(responseData.message);
           setErrorVisible(true);
         }
       })
       .catch((error) => {
         console.error("[AccountLoginScreen - verify otp] API Error:", error);
-        setErrorMsg(error);
+        setErrorMsg(error.message || "Something went wrong");
         setErrorVisible(true);
       });
   };
 
   return (
     <ImageBackground
-      source={require("../assets/login_bg.png")} // 🔁 replace with your image
+      source={require("../assets/login_bg.png")}
       style={styles.background}
       resizeMode="cover"
     >
       <HeaderOverlay />
 
       <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
       >
-        <Image
-          source={require("../assets/pals_paint.png")} // 🔁 replace with your logo
-          style={styles.logo}
-          resizeMode="contain"
-        />
-
-        <View style={styles.card}>
-          <Text style={styles.title}>
-            {isVerifyScreen ? "Verify" : "Login"}
-          </Text>
-          <Text style={styles.subtitle}>
-            If you face any trouble please contact Pals’ Paint
-          </Text>
-
-          {!isVerifyScreen ? (
-            <PalsTextInput
-              name="mobile"
-              control={control}
-              label="Registered Mobile no."
-              placeholder="+91 9999999999"
-              keyboardType="number-pad"
-              maxLength={10}
-              rules={{
-                required: "Mobile number is required.",
-                pattern: {
-                  value: /^[6-9]\d{9}$/,
-                  message: "Invalid mobile number.",
-                },
-              }}
-            />
-          ) : (
-            <PalsOtpInput
-              name="otp"
-              control={control}
-              rules={{
-                required: "OTP is required.",
-                minLength: { value: 6, message: "Enter 6-digit OTP." },
-              }}
-            />
-          )}
-
-          <PalsTouchableButton
-            label={isVerifyScreen ? "Verify" : "Get OTP"}
-            onPress={isVerifyScreen ? handleSubmit(verifyUser) : onLoginPressed}
+        <ScrollView contentContainerStyle={styles.container}>
+          <Image
+            source={require("../assets/pals_paint.png")}
+            style={styles.logo}
+            resizeMode="contain"
           />
-          {isVerifyScreen && (
+
+          <View style={styles.card}>
+            <Text style={styles.title}>
+              {isVerifyScreen ? "Verify" : "Login"}
+            </Text>
+            <Text style={styles.subtitle}>
+              If you face any trouble please contact Pals’ Paint
+            </Text>
+
+            {!isVerifyScreen ? (
+              <PalsTextInput
+                name="mobile"
+                control={control}
+                label="Registered Mobile no."
+                placeholder="+91 9999999999"
+                keyboardType="number-pad"
+                maxLength={10}
+                rules={{
+                  required: "Mobile number is required.",
+                  pattern: {
+                    value: /^[6-9]\d{9}$/,
+                    message: "Invalid mobile number.",
+                  },
+                }}
+              />
+            ) : (
+              <PalsOtpInput
+                name="otp"
+                control={control}
+                rules={{
+                  required: "OTP is required.",
+                  minLength: { value: 6, message: "Enter 6-digit OTP." },
+                }}
+              />
+            )}
+
             <PalsTouchableButton
-              label={"Resend OTP"}
-              theme="text"
-              style={styles.resendOtp}
-              onPress={onLoginPressed}
+              label={isVerifyScreen ? "Verify" : "Get OTP"}
+              onPress={
+                isVerifyScreen ? handleSubmit(verifyUser) : onLoginPressed
+              }
             />
-          )}
-        </View>
+            {isVerifyScreen && (
+              <PalsTouchableButton
+                label={"Resend OTP"}
+                theme="text"
+                style={styles.resendOtp}
+                onPress={onLoginPressed}
+              />
+            )}
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
 
       <ErrorModal
@@ -220,8 +222,7 @@ const styles = StyleSheet.create({
     paddingTop: 80,
   },
   logo: {
-    width: 200,
-    height: 80,
+    height: 200,
   },
   card: {
     width: "100%",
@@ -243,21 +244,6 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 14,
     color: "#484848",
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    color: "#748390",
-    marginBottom: 5,
-  },
-  input: {
-    height: 48,
-    borderWidth: 1,
-    borderColor: "#85B9D7",
-    color: "#014589",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    fontSize: 16,
     marginBottom: 20,
   },
   resendOtp: {
