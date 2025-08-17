@@ -16,6 +16,34 @@ const getStatusColor = (status) => {
   }
 };
 
+function formatDate(date) {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+
+  let hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12; // convert 0 to 12
+
+  return `${day}-${month}-${year} | ${hours}:${minutes} ${ampm}`;
+}
+
 const TransactionCard = ({ transaction }) => {
   return (
     <View style={styles.card}>
@@ -34,7 +62,9 @@ const TransactionCard = ({ transaction }) => {
       <Text style={styles.text}>
         Ref. No.: <Text style={styles.highlight}>{transaction.reference}</Text>
       </Text>
-      <Text style={styles.date}>{transaction.createdAt}</Text>
+      <Text style={styles.date}>
+        {formatDate(new Date(transaction.createdAt))}
+      </Text>
     </View>
   );
 };
