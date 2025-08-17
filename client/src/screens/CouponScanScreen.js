@@ -8,11 +8,11 @@ import {
   Button,
 } from "react-native";
 import { useForm } from "react-hook-form";
-import { Camera, CameraView } from "expo-camera";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
+import { Camera, CameraView } from "expo-camera";
 
-import PalsTextInput from "../components/PalsTextInput";
 import UserHeader from "../components/UserHeader";
 import PalsTouchableButton from "../components/PalsTouchableButton";
 import HeaderOverlay from "../components/HeaderOverlay";
@@ -36,6 +36,8 @@ export default function CoupanScanScreen({ navigation }) {
       code: "",
     },
   });
+
+  const isFocused = useIsFocused();
 
   const askForCameraPermission = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
@@ -129,14 +131,16 @@ export default function CoupanScanScreen({ navigation }) {
 
       <View style={styles.container}>
         <View style={styles.barcodebox}>
-          <CameraView
-            style={styles.camera}
-            facing="back"
-            barcodeScannerSettings={{
-              barcodeTypes: ["qr"], // ✅ correct for SDK 53
-            }}
-            onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-          />
+          {isFocused && (
+            <CameraView
+              style={styles.camera}
+              facing="back"
+              barcodeScannerSettings={{
+                barcodeTypes: ["qr"],
+              }}
+              onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+            />
+          )}
         </View>
 
         <View>

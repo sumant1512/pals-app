@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Pals Paint",
-    "slug": "expo-template-tabs",
+    "slug": "pals-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/pals_paint.png",
@@ -36,7 +36,7 @@
     "plugins": ["expo-camera"],
     "extra": {
       "eas": {
-        "projectId": "79ccaf43-8807-4be0-b9a2-8ff06ed5a935"
+        "projectId": "2be20ac3-b018-4563-b9ac-c225823660b0"
       }
     }
   }

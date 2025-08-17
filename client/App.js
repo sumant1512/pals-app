@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useLoadedAssets } from "./src/hooks/useLoadedAssets";
 import AppNavigator from "./src/navigation/AppNavigator";
@@ -17,6 +17,11 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      <StatusBar
+        translucent={true}
+        backgroundColor="transparent" // makes it transparent
+        barStyle="light-content"
+      />
       <AppNavigator />
     </NavigationContainer>
   );
