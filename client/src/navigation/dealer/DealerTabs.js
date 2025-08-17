@@ -59,7 +59,7 @@ export default function DealerTabs() {
 const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
-    height: 100,
+    height: 60,
     backgroundColor: "#F1F8FF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,

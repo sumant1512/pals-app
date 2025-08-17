@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const generateOTP = require("../../utils/otp-generator");
+const { sendOtpEmail } = require("./../../utils/email");
 
 const User = require("../../models/User");
 const Session = require("../../models/Session");
@@ -20,14 +21,25 @@ const sendOtp = async (req, res, next) => {
     const user = await User.findOne({ mobile });
     if (user) {
       const loginOtp = await generateOTP(6);
-      user.otp = loginOtp;
-      await user.save();
-      return res.json({
-        message: "Otp Sent to you registered mobile number.",
-        otp: loginOtp,
-        userType: user.userType,
-        status: true,
-      });
+
+      try {
+        if (user?.email) {
+          await sendOtpEmail(user.email, "OTP from PALS' PAINT", loginOtp);
+        }
+        user.otp = loginOtp;
+        await user.save();
+
+        return res.json({
+          message: "Otp Sent to you registered email and mobile number.",
+          userType: user.userType,
+          status: true,
+        });
+      } catch (err) {
+        console.error(err);
+        user.otp = null;
+        await user.save();
+        return res.status(500).json({ success: false, error: err.message });
+      }
     }
 
     return res.status(404).json({

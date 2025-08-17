@@ -1,9 +1,11 @@
+const { registrationConfirmationEmail } = require("./../../utils/email");
 const User = require("../../models/User");
 const Transaction = require("../../models/Transaction");
 const generateOTP = require("../../utils/otp-generator");
 
 const addDealer = async (req, res, next) => {
-  const { userType, name, mobile, shop, address, pin, city, state } = req.body;
+  const { userType, name, mobile, email, shop, address, pin, city, state } =
+    req.body;
   const otp = generateOTP(6);
   const userId = req.user.id;
 
@@ -37,6 +39,7 @@ const addDealer = async (req, res, next) => {
       userType,
       name,
       mobile,
+      email,
       shop,
       address,
       pin,
@@ -45,10 +48,28 @@ const addDealer = async (req, res, next) => {
       otp,
     })
       .then(async (user) => {
-        return res.status(200).send({
-          message: "User added successfully.",
-          status: true,
-        });
+        try {
+          await registrationConfirmationEmail(email, name);
+          return res.status(200).send({
+            message: "User added successfully.",
+            status: true,
+          });
+        } catch (err) {
+          console.error(err);
+          await User.findByIdAndDelete(user._id);
+
+          if (err.code === "EAUTH") {
+            return res
+              .status(401)
+              .json({ success: false, error: "Authentication failed" });
+          }
+          if (err.code === "ECONNECTION") {
+            return res
+              .status(503)
+              .json({ success: false, error: "SMTP connection failed" });
+          }
+          return res.status(500).json({ success: false, error: error.message });
+        }
       }) // returning repsonse
       .catch((err) => {
         console.log(err);
@@ -56,7 +77,7 @@ const addDealer = async (req, res, next) => {
       }); // returning db error
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: ERROR_500, status: false });
+    return res.status(500).send({ message: ERROR_500, status: false });
   }
 };
 
