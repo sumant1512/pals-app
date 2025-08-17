@@ -1,29 +1,27 @@
 {
   "expo": {
-    "name": "palspaint",
+    "name": "Pals Paint",
     "slug": "expo-template-tabs",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/icon.png",
+    "icon": "./src/assets/pals_paint.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./src/assets/images/splash.png",
+      "image": "./src/assets/pals_paint.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "foregroundImage": "./src/assets/pals_paint.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -33,11 +31,9 @@
       "package": "com.sumant1512.expotemplatetabs"
     },
     "web": {
-      "favicon": "./src/assets/images/favicon.png"
+      "favicon": "./src/assets/pals_paint.png"
     },
-    "plugins": [
-      "expo-camera"
-    ],
+    "plugins": ["expo-camera"],
     "extra": {
       "eas": {
         "projectId": "79ccaf43-8807-4be0-b9a2-8ff06ed5a935"
