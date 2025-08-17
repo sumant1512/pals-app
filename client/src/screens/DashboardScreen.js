@@ -20,14 +20,6 @@ export default function DashboardScreen({ navigation }) {
     navigation.getParent()?.navigate("ScanCoupon");
   };
 
-  const profilePressed = () => {
-    navigation
-      .getParent()
-      ?.navigate(
-        userInfo?.userType === "Dealer" ? "DealerProfile" : "AdminProfile"
-      );
-  };
-
   const setUserInfoToAsyncStorage = async (userInfo) => {
     try {
       await AsyncStorage.setItem("userInfo", userInfo);
@@ -60,6 +52,13 @@ export default function DashboardScreen({ navigation }) {
     }
   };
 
+  const resetToLogin = async () => {
+    setOpenedScreen();
+    clearAuthStorage();
+    clearUserInfoStorage();
+    navigation.navigate("Login");
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       getUserInfo();
@@ -87,19 +86,19 @@ export default function DashboardScreen({ navigation }) {
               setLoading(false);
             })
             .catch((error) => {
-              console.error("API Error:", error);
+              setLoading(false);
+              console.error("API Error:", error.status);
+              if (error.status === 401) {
+                resetToLogin();
+              }
               setErrorMsg(
                 error?.response?.data?.message || "Failed to load user info."
               );
               setErrorVisible(true);
-              setLoading(false);
             });
         } else {
-          setOpenedScreen();
-          clearAuthStorage();
-          clearUserInfoStorage();
           setLoading(false);
-          navigation.navigate("Login");
+          resetToLogin();
         }
       });
     })();

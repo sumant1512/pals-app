@@ -33,7 +33,7 @@ const LoginScreen = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      mobile: "9111097770",
+      mobile: "",
       otp: "",
     },
   });
