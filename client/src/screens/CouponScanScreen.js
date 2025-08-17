@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     width: SCAN_BOX_SIZE,
     height: SCAN_BOX_SIZE,
     overflow: "hidden",
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: "black",
   },
   camera: {

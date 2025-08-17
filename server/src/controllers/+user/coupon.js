@@ -168,7 +168,7 @@ const redeemPoint = async (req, res) => {
       });
     }
 
-    if (user.availableCredit < amount || amount < 500) {
+    if (user.availableCredit < amount || amount < 2000) {
       return res.status(400).json({
         message: "Insufficient credit or amount below 2000",
         status: false,

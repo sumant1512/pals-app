@@ -7,7 +7,6 @@ export default function UserHeader() {
   const navigation = useNavigation();
 
   const profilePressed = () => {
-    console.log("Clicke");
     navigation.navigate("DealerProfile");
   };
 
