@@ -1,38 +1,18 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
-const { google } = require("googleapis");
 
-const CLIENT_ID = process.env.MAILER_CLIENT_ID;
-const CLIENT_SECRET = process.env.MAILER_CLIENT_SECRET;
-const REDIRECT_URI = "https://developers.google.com/oauthplayground"; // or your own redirect URI
-const REFRESH_TOKEN = process.env.MAILER_REFRESH_TOKEN;
+// ✅ Create transporter with Gmail + App Password
+const createTransporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MAILER_EMAIL,
+    pass: process.env.MAILER_APP_PASSWORD,
+  },
+});
 
-const oAuth2Client = new google.auth.OAuth2(
-  CLIENT_ID,
-  CLIENT_SECRET,
-  REDIRECT_URI
-);
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-
-// Create transporter function (dynamic access token)
-async function createTransporter() {
-  const accessToken = await oAuth2Client.getAccessToken();
-
-  return nodemailer.createTransport({
-    service: process.env.MAILER_SERVICE,
-    auth: {
-      type: process.env.MAILER_AUTH_TYPE,
-      user: process.env.MAILER_EMAIL,
-      clientId: CLIENT_ID,
-      clientSecret: CLIENT_SECRET,
-      refreshToken: REFRESH_TOKEN,
-      accessToken: accessToken.token, // dynamic token
-    },
-  });
-}
-
+// 🔹 Send OTP Email
 const sendOtpEmail = async (to, subject = "Login OTP - PALS PAINT", otp) => {
-  const transporter = await createTransporter();
+  const transporter = await createTransporter;
 
   const mailContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background: #ffffff;">
