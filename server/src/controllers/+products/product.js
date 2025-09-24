@@ -77,7 +77,7 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
-const getProducts = async (req, res, next) => {
+const getAllProductDetails = async (req, res, next) => {
   try {
     // Reading all the products
     const products = await ProductModel.find();
@@ -93,6 +93,39 @@ const getProducts = async (req, res, next) => {
   } catch (error) {
     // Exception error
     return res.status(500).send({ error: error, status: false });
+  }
+};
+
+const getProducts = async (req, res, next) => {
+  try {
+    const products = await ProductModel.find();
+
+    if (!products || products.length === 0) {
+      return res
+        .status(404)
+        .send({ message: "No Products Available.", status: true });
+    }
+
+    // Map products to return only required fields + priceStartingFrom
+    const formattedProducts = products.map((product) => {
+      let priceStartingFrom = 0;
+      if (product.packSize && product.packSize.length > 0) {
+        const lastPack = product.packSize[product.packSize.length - 1];
+        priceStartingFrom = lastPack.mrp * (1 - (lastPack.discount || 0) / 100);
+      }
+
+      return {
+        productName: product.productName,
+        productType: product.productType,
+        shortDescription: product.shortDescription,
+        image: product.image,
+        priceStartingFrom,
+      };
+    });
+
+    return res.status(200).send({ products: formattedProducts, status: true });
+  } catch (error) {
+    return res.status(500).send({ error: error.message, status: false });
   }
 };
 
@@ -148,6 +181,7 @@ module.exports = {
   validateAddProduct,
   updateProduct,
   getProducts,
+  getAllProductDetails,
   getProductDetails,
   deleteProduct,
 };
