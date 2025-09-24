@@ -6,9 +6,12 @@ const validateAddProduct = [
   body("productName").notEmpty().withMessage("Product name is required."),
   body("productType").notEmpty().withMessage("Product type is required."),
   body("image").notEmpty().withMessage("Product Image is required."),
-  body("pigmentPrice")
-    .isInt()
-    .withMessage("Pigment Price must be a positive number."),
+  body("shortDescription")
+    .notEmpty()
+    .withMessage("Product description is missing."),
+  body("packSize")
+    .isArray({ min: 1 })
+    .withMessage("At least one pack size is required"),
 ];
 
 const addProduct = async (req, res, next) => {
@@ -25,8 +28,8 @@ const addProduct = async (req, res, next) => {
       productName: req.body.productName,
       productType: req.body.productType,
       image: req.body.image,
-      pigmentPrice: req.body.pigmentPrice,
-      isShadeEnabled: req.body.isShadeEnabled,
+      shortDescription: req.body.shortDescription,
+      packSize: req.body.packSize,
     })
       .then(async (product) => {
         // Response when product is added
