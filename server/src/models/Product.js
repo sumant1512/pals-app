@@ -25,6 +25,10 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    longDescription: {
+      type: String,
+      required: true,
+    },
     packSize: { type: [PackSizeSchema], validate: (v) => v.length > 0 },
   },
   { timestamps: true, collection: "Product" }

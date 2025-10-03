@@ -29,6 +29,7 @@ const addProduct = async (req, res, next) => {
       productType: req.body.productType,
       image: req.body.image,
       shortDescription: req.body.shortDescription,
+      longDescription: req.body.longDescription,
       packSize: req.body.packSize,
     })
       .then(async (product) => {
