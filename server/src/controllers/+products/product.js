@@ -116,6 +116,7 @@ const getProducts = async (req, res, next) => {
       }
 
       return {
+        _id: product._id,
         productName: product.productName,
         productType: product.productType,
         shortDescription: product.shortDescription,
@@ -137,9 +138,16 @@ const getProductDetails = async (req, res, next) => {
     const productDetails = await ProductModel.findById(productId).lean();
     if (productDetails) {
       // Sending Products
+      let priceStartingFrom = 0;
+      if (productDetails.packSize && productDetails.packSize.length > 0) {
+        const lastPack =
+          productDetails.packSize[productDetails.packSize.length - 1];
+        priceStartingFrom = lastPack.mrp * (1 - (lastPack.discount || 0) / 100);
+      }
+      const formattedProducts = { ...productDetails, priceStartingFrom };
       return res
         .status(200)
-        .send({ productDetails: productDetails, status: true });
+        .send({ productDetails: formattedProducts, status: true });
     } else {
       // No Products found
       return res
