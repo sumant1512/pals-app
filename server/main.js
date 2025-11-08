@@ -52,7 +52,7 @@ app.use("/api/auth", authenticationRoutes.routes); // Api includes createUser, V
 app.use("/api/coupon", authorize, couponRoutes.routes); // Api includes coupon generation and redemption
 app.use("/api/dealer", adminAuthorize, dealerRoutes.routes); // Api dealer ledger
 app.use("/api/product", productRoutes.routes); // Api products
-app.use("api/fan-deck", fanDeckRoutes.routes);
-app.use("api/email", emailRoutes.routes);
+app.use("/api/fan-deck", fanDeckRoutes.routes);
+app.use("/api/email", emailRoutes.routes);
 
 app.listen(port, () => console.log(`server is running at port - ${port}`));
