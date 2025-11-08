@@ -8,7 +8,10 @@ const validateAddProduct = [
   body("image").notEmpty().withMessage("Product Image is required."),
   body("shortDescription")
     .notEmpty()
-    .withMessage("Product description is missing."),
+    .withMessage("Product short description is missing."),
+  body("longDescription")
+    .notEmpty()
+    .withMessage("Product long description is missing."),
   body("packSize")
     .isArray({ min: 1 })
     .withMessage("At least one pack size is required"),
