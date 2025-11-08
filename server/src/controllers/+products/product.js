@@ -60,7 +60,7 @@ const updateProduct = async (req, res, next) => {
   try {
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       productId,
-      updatedData,
+      { $set: updatedData },
       { new: true, runValidators: true } // Options: return the updated document and validate
     );
 
