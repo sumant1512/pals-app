@@ -111,4 +111,31 @@ const registrationConfirmationEmail = async (to, name) => {
   }
 };
 
-module.exports = { sendOtpEmail, registrationConfirmationEmail };
+const sendContactUsEmail = async (
+  subject = "Customer wants to connect - PALS PAINT",
+  mailContent = "Hey, Let's connect!",
+  to = process.env.MAILER_EMAIL
+) => {
+  const transporter = await createTransporter;
+
+  try {
+    const mailOptions = {
+      from: process.env.MAILER_EMAIL,
+      to,
+      subject,
+      html: mailContent,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    return info;
+  } catch (error) {
+    console.error("❌ Error sending OTP email:", error);
+    throw error;
+  }
+};
+
+module.exports = {
+  sendOtpEmail,
+  registrationConfirmationEmail,
+  sendContactUsEmail,
+};
