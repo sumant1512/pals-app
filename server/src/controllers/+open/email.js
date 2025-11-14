@@ -2,7 +2,6 @@ const { sendContactUsEmail } = require("./../../utils/email");
 
 const contactUs = async (req, res, next) => {
   const { name, email, phone, message } = req.body;
-  console.log(req.body);
 
   if (!email) {
     return res
