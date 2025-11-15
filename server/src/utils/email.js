@@ -52,13 +52,11 @@ const sendOtpEmail = async (to, subject = "Login OTP - PALS PAINT", otp) => {
 
   try {
     const mailOptions = {
-      from: process.env.MAILER_EMAIL,
+      from: "sumantmishra43@gmail.com",
       to,
       subject,
       html: mailContent,
     };
-
-    return "sumant  mishra";
 
     const info = await transporter.sendMail(mailOptions);
     return info;

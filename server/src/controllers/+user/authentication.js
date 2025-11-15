@@ -24,13 +24,19 @@ const sendOtp = async (req, res, next) => {
 
       try {
         if (user?.email) {
-          await sendOtpEmail(user.email, "OTP from PALS' PAINT", loginOtp);
+          const mailResponse = await sendOtpEmail(
+            user.email,
+            "OTP from PALS' PAINT",
+            loginOtp
+          );
         }
         user.otp = loginOtp;
         await user.save();
 
         return res.json({
-          message: "Otp Sent to you registered email and mobile number 1.",
+          message:
+            "Otp Sent to you registered email and mobile number 2." +
+            mailResponse,
           userType: user.userType,
           status: true,
         });
