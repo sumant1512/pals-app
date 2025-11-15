@@ -6,6 +6,8 @@ const validateAddProduct = [
   body("productName").notEmpty().withMessage("Product name is required."),
   body("productType").notEmpty().withMessage("Product type is required."),
   body("image").notEmpty().withMessage("Product Image is required."),
+  body("largeImage").notEmpty().withMessage("Product Large Image is required."),
+  body("thumbnail").notEmpty().withMessage("Product Thumbnail is required."),
   body("shortDescription")
     .notEmpty()
     .withMessage("Product short description is missing."),
@@ -32,6 +34,7 @@ const addProduct = async (req, res, next) => {
       productType: req.body.productType,
       image: req.body.image,
       largeImage: req.body.largeImage,
+      thumbnail: req.body.thumbnail,
       shortDescription: req.body.shortDescription,
       longDescription: req.body.longDescription,
       packSize: req.body.packSize,
