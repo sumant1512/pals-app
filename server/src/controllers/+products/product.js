@@ -31,7 +31,7 @@ const addProduct = async (req, res, next) => {
       productName: req.body.productName,
       productType: req.body.productType,
       image: req.body.image,
-      largerImage: req.body.largeImage,
+      largeImage: req.body.largeImage,
       shortDescription: req.body.shortDescription,
       longDescription: req.body.longDescription,
       packSize: req.body.packSize,
