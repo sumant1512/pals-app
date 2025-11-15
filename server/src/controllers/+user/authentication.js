@@ -48,7 +48,7 @@ const sendOtp = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send({ message: ERROR_500, status: true });
+    return res.status(500).send({ message: error, status: true });
   }
 };
 
