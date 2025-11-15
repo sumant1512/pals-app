@@ -13,7 +13,6 @@ const createTransporter = nodemailer.createTransport({
 // 🔹 Send OTP Email
 const sendOtpEmail = async (to, subject = "Login OTP - PALS PAINT", otp) => {
   const transporter = await createTransporter;
-  return "sumant  mishra";
 
   const mailContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background: #ffffff;">
@@ -58,6 +57,8 @@ const sendOtpEmail = async (to, subject = "Login OTP - PALS PAINT", otp) => {
       subject,
       html: mailContent,
     };
+
+    return "sumant  mishra";
 
     const info = await transporter.sendMail(mailOptions);
     return info;

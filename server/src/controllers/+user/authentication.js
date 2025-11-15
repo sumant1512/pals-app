@@ -30,7 +30,7 @@ const sendOtp = async (req, res, next) => {
         await user.save();
 
         return res.json({
-          message: "Otp Sent to you registered email and mobile number.",
+          message: "Otp Sent to you registered email and mobile number 1.",
           userType: user.userType,
           status: true,
         });
