@@ -8,7 +8,7 @@ const { ERROR_500 } = require("./../../utils/constant");
 const AUTH_SECRET_KEY = "palsshop!123";
 
 const sendOtp = async (req, res, next) => {
-  const { mobile } = req.body;
+  const { mobile, device } = req.body;
 
   if (!mobile) {
     return res
@@ -19,6 +19,12 @@ const sendOtp = async (req, res, next) => {
   try {
     // Searching user in db
     const user = await User.findOne({ mobile });
+    if (user?.userType === "Admin" && device !== "web") {
+      return res.status(403).json({
+        message: "User not registered, Contact Admin.",
+        status: false,
+      });
+    }
     if (user) {
       const loginOtp = await generateOTP(6);
 
@@ -34,7 +40,7 @@ const sendOtp = async (req, res, next) => {
         await user.save();
 
         return res.json({
-          message: "Otp Sent to you registered email and mobile number 2.",
+          message: "Otp Sent to you registered email and mobile number.",
           userType: user.userType,
           status: true,
         });

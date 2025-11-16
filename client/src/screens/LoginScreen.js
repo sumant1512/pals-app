@@ -65,6 +65,7 @@ const LoginScreen = () => {
       },
       body: JSON.stringify({
         mobile,
+        device: Platform.OS,
       }),
     })
       .then((response) => {
