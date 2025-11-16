@@ -4,11 +4,11 @@
     "slug": "pals-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/pals_paint.png",
+    "icon": "./src/assets/pals_paint_icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./src/assets/pals_paint.png",
+      "image": "./src/assets/pals_paint_icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,7 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/pals_paint.png",
+        "foregroundImage": "./src/assets/pals_paint_icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -31,7 +31,7 @@
       "package": "com.sumant1512.expotemplatetabs"
     },
     "web": {
-      "favicon": "./src/assets/pals_paint.png"
+      "favicon": "./src/assets/pals_paint_icon.png"
     },
     "plugins": ["expo-camera"],
     "extra": {

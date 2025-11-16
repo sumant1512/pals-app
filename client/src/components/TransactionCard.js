@@ -44,6 +44,11 @@ function formatDate(date) {
   return `${day}-${month}-${year} | ${hours}:${minutes} ${ampm}`;
 }
 
+const capitalizeFirst = (text) => {
+  if (!text) return "";
+  return text.charAt(0).toUpperCase() + text.slice(1);
+};
+
 const TransactionCard = ({ transaction }) => {
   return (
     <View style={styles.card}>
@@ -51,13 +56,16 @@ const TransactionCard = ({ transaction }) => {
         <Text
           style={[styles.status, { color: getStatusColor(transaction.status) }]}
         >
-          {transaction.status}
+          {capitalizeFirst(transaction.status)}
         </Text>
         <Text style={styles.amount}>₹ {transaction.amount}</Text>
       </View>
 
       <Text style={styles.text}>
-        Source: <Text style={styles.highlight}>{transaction.source}</Text>
+        Source:{" "}
+        <Text style={styles.highlight}>
+          {capitalizeFirst(transaction.source)}
+        </Text>
       </Text>
       <Text style={styles.text}>
         Ref. No.: <Text style={styles.highlight}>{transaction.reference}</Text>

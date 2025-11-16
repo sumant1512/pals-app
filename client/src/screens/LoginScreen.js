@@ -141,7 +141,7 @@ const LoginScreen = () => {
       >
         <ScrollView contentContainerStyle={styles.container}>
           <Image
-            source={require("../assets/pals_paint.png")}
+            source={require("../assets/pals_paint_icon.png")}
             style={styles.logo}
             resizeMode="contain"
           />
