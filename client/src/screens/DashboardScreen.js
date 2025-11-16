@@ -5,6 +5,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 
 import ErrorModal from "../components/PalsErrorModal";
+import PalsLoaderCard from "./../components/PalsLoaderCard";
 import DealerDashboardScreen from "./DealerDashboardScreen";
 import { BE_PATH } from "../constants/Config";
 
@@ -17,14 +18,6 @@ export default function DashboardScreen({ navigation }) {
 
   const addCouponPressed = () => {
     navigation.getParent()?.navigate("ScanCoupon");
-  };
-
-  const profilePressed = () => {
-    navigation
-      .getParent()
-      ?.navigate(
-        userInfo?.userType === "Dealer" ? "DealerProfile" : "AdminProfile"
-      );
   };
 
   const setUserInfoToAsyncStorage = async (userInfo) => {
@@ -59,6 +52,13 @@ export default function DashboardScreen({ navigation }) {
     }
   };
 
+  const resetToLogin = async () => {
+    setOpenedScreen();
+    clearAuthStorage();
+    clearUserInfoStorage();
+    navigation.navigate("Login");
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       getUserInfo();
@@ -86,19 +86,19 @@ export default function DashboardScreen({ navigation }) {
               setLoading(false);
             })
             .catch((error) => {
-              console.error("API Error:", error);
+              setLoading(false);
+              console.error("API Error:", error.status);
+              if (error.status === 401) {
+                resetToLogin();
+              }
               setErrorMsg(
                 error?.response?.data?.message || "Failed to load user info."
               );
               setErrorVisible(true);
-              setLoading(false);
             });
         } else {
-          setOpenedScreen();
-          clearAuthStorage();
-          clearUserInfoStorage();
           setLoading(false);
-          navigation.navigate("Login");
+          resetToLogin();
         }
       });
     })();
@@ -107,10 +107,7 @@ export default function DashboardScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View style={styles.loaderWrapper}>
-          <ActivityIndicator size="large" color="#00206F" />
-          <Text style={styles.loaderText}>Loading Dashboard...</Text>
-        </View>
+        <PalsLoaderCard />
       ) : (
         <>
           {/* Dealer Dashboard */}
@@ -132,18 +129,6 @@ export default function DashboardScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    // paddingHorizontal: 20,
-    // paddingTop: 40,
-    // flex: 1,
-  },
-  loaderWrapper: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loaderText: {
-    marginTop: 10,
-    color: "#00206F",
-    fontSize: 16,
   },
 });

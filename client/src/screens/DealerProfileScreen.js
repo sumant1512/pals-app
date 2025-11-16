@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   form: {
     width: "100%",
     paddingHorizontal: 20,
-    paddingBottom: 120,
+    paddingBottom: 85,
   },
   fieldContainer: {
     marginBottom: 10,
@@ -238,5 +238,6 @@ const styles = StyleSheet.create({
   },
   logoutBtn: {
     marginTop: 20,
+    marginBottom: 20,
   },
 });

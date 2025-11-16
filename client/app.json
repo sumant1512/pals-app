@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "palspaint",
-    "slug": "expo-template-tabs",
+    "name": "Pals Paint",
+    "slug": "pals-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/icon.png",
+    "icon": "./src/assets/pals_paint_icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./src/assets/images/splash.png",
+      "image": "./src/assets/pals_paint_icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,13 +21,23 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "foregroundImage": "./src/assets/pals_paint_icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.sumant1512.expotemplatetabs"
     },
     "web": {
-      "favicon": "./src/assets/images/favicon.png"
+      "favicon": "./src/assets/pals_paint_icon.png"
     },
-    "plugins": ["expo-camera"]
+    "plugins": ["expo-camera"],
+    "extra": {
+      "eas": {
+        "projectId": "2be20ac3-b018-4563-b9ac-c225823660b0"
+      }
+    }
   }
 }

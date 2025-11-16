@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const generateOTP = require("../../utils/otp-generator");
+const { otpEmail } = require("./../../utils/email");
 
 const User = require("../../models/User");
 const Session = require("../../models/Session");
@@ -7,7 +8,7 @@ const { ERROR_500 } = require("./../../utils/constant");
 const AUTH_SECRET_KEY = "palsshop!123";
 
 const sendOtp = async (req, res, next) => {
-  const { mobile } = req.body;
+  const { mobile, device } = req.body;
 
   if (!mobile) {
     return res
@@ -18,16 +19,37 @@ const sendOtp = async (req, res, next) => {
   try {
     // Searching user in db
     const user = await User.findOne({ mobile });
+    if (user?.userType === "Admin" && device !== "web") {
+      return res.status(403).json({
+        message: "User not registered, Contact Admin.",
+        status: false,
+      });
+    }
     if (user) {
       const loginOtp = await generateOTP(6);
-      user.otp = loginOtp;
-      await user.save();
-      return res.json({
-        message: "Otp Sent to you registered mobile number.",
-        otp: loginOtp,
-        userType: user.userType,
-        status: true,
-      });
+
+      try {
+        if (user?.email) {
+          const mailResponse = await otpEmail(
+            user.email,
+            "OTP from PALS' PAINT",
+            loginOtp
+          );
+        }
+        user.otp = loginOtp;
+        await user.save();
+
+        return res.json({
+          message: "Otp Sent to you registered email and mobile number.",
+          userType: user.userType,
+          status: true,
+        });
+      } catch (err) {
+        console.error(err);
+        user.otp = null;
+        await user.save();
+        return res.status(500).json({ success: false, error: err.message });
+      }
     }
 
     return res.status(404).json({
@@ -36,7 +58,7 @@ const sendOtp = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send({ message: ERROR_500, status: true });
+    return res.status(500).send({ message: error, status: true });
   }
 };
 

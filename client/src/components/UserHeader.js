@@ -17,7 +17,7 @@ export default function UserHeader() {
         style={styles.logo}
       />
       <Pressable style={styles.circleButton} onPress={profilePressed}>
-        <Ionicons name="person" size={24} color="#014589" />
+        <Ionicons name="person" size={32} color="#014589" />
       </Pressable>
     </View>
   );
@@ -33,13 +33,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    height: 50,
-    width: 160,
+    height: 100,
   },
   circleButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 40,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",

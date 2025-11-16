@@ -33,7 +33,7 @@ export default function DealerTabs() {
             >
               <Ionicons
                 name={iconName}
-                size={isCenter ? 28 : 24}
+                size={isCenter ? 24 : 20}
                 color={focused ? "#014589" : "#748390"}
               />
             </View>
@@ -59,8 +59,7 @@ export default function DealerTabs() {
 const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
-    height: 70,
-    backgroundColor: "#F1F8FF",
+    height: 60,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     shadowColor: "#000",
@@ -69,6 +68,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 10,
     borderTopWidth: 0,
+    paddingBottom: 10,
   },
   iconContainer: {
     alignItems: "center",
@@ -76,15 +76,15 @@ const styles = StyleSheet.create({
     top: 0,
   },
   centerIconContainer: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     borderRadius: 60,
     borderWidth: 1,
     borderColor: "#85B9D7",
     backgroundColor: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: -60,
+    marginTop: -40,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,

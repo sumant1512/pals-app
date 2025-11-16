@@ -9,6 +9,7 @@ connectToMongoDB();
 const couponRoutes = require("./src/routes/+user/coupon");
 const dealerRoutes = require("./src/routes/+user/dealer");
 const fanDeckRoutes = require("./src/routes/+open/fan-deck");
+const emailRoutes = require("./src/routes/+open/email");
 const authenticationRoutes = require("./src/routes/+user/authentication");
 const productRoutes = require("./src/routes/+products/product");
 const { authorize, adminAuthorize } = require("./src/utils/auth");
@@ -51,6 +52,7 @@ app.use("/api/auth", authenticationRoutes.routes); // Api includes createUser, V
 app.use("/api/coupon", authorize, couponRoutes.routes); // Api includes coupon generation and redemption
 app.use("/api/dealer", adminAuthorize, dealerRoutes.routes); // Api dealer ledger
 app.use("/api/product", productRoutes.routes); // Api products
-app.use("/fan-deck", fanDeckRoutes.routes);
+app.use("/api/fan-deck", fanDeckRoutes.routes);
+app.use("/api/email", emailRoutes.routes);
 
 app.listen(port, () => console.log(`server is running at port - ${port}`));

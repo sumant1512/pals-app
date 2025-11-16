@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 
-const LoaderCard = () => {
+const PalsLoaderCard = () => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.loaderContainer}>
@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f0f0f0", // optional backdrop
   },
   loaderContainer: {
     justifyContent: "center",
@@ -39,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoaderCard;
+export default PalsLoaderCard;

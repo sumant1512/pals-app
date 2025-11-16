@@ -16,9 +16,10 @@ const authorize = async (req, res, next) => {
     const session = await Session.findOne({ token });
 
     if (!session)
-      return res
-        .status(401)
-        .json({ message: "Session expired", status: false });
+      return res.status(401).json({
+        message: "Session expired. Please login to continue.",
+        status: false,
+      });
 
     req.user = decoded;
     next();
@@ -40,9 +41,10 @@ const adminAuthorize = async (req, res, next) => {
     const session = await Session.findOne({ token });
 
     if (!session)
-      return res
-        .status(401)
-        .json({ message: "Session expired", status: false });
+      return res.status(401).json({
+        message: "Session expired. Please login to continue.",
+        status: false,
+      });
 
     req.user = decoded;
 

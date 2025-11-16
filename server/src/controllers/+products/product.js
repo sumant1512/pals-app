@@ -6,9 +6,17 @@ const validateAddProduct = [
   body("productName").notEmpty().withMessage("Product name is required."),
   body("productType").notEmpty().withMessage("Product type is required."),
   body("image").notEmpty().withMessage("Product Image is required."),
-  body("pigmentPrice")
-    .isInt()
-    .withMessage("Pigment Price must be a positive number."),
+  body("largeImage").notEmpty().withMessage("Product Large Image is required."),
+  body("thumbnail").notEmpty().withMessage("Product Thumbnail is required."),
+  body("shortDescription")
+    .notEmpty()
+    .withMessage("Product short description is missing."),
+  body("longDescription")
+    .notEmpty()
+    .withMessage("Product long description is missing."),
+  body("packSize")
+    .isArray({ min: 1 })
+    .withMessage("At least one pack size is required"),
 ];
 
 const addProduct = async (req, res, next) => {
@@ -25,8 +33,11 @@ const addProduct = async (req, res, next) => {
       productName: req.body.productName,
       productType: req.body.productType,
       image: req.body.image,
-      pigmentPrice: req.body.pigmentPrice,
-      isShadeEnabled: req.body.isShadeEnabled,
+      largeImage: req.body.largeImage,
+      thumbnail: req.body.thumbnail,
+      shortDescription: req.body.shortDescription,
+      longDescription: req.body.longDescription,
+      packSize: req.body.packSize,
     })
       .then(async (product) => {
         // Response when product is added
@@ -53,7 +64,7 @@ const updateProduct = async (req, res, next) => {
   try {
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       productId,
-      updatedData,
+      { $set: updatedData },
       { new: true, runValidators: true } // Options: return the updated document and validate
     );
 
@@ -74,7 +85,7 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
-const getProducts = async (req, res, next) => {
+const getAllProductDetails = async (req, res, next) => {
   try {
     // Reading all the products
     const products = await ProductModel.find();
@@ -93,6 +104,40 @@ const getProducts = async (req, res, next) => {
   }
 };
 
+const getProducts = async (req, res, next) => {
+  try {
+    const products = await ProductModel.find();
+
+    if (!products || products.length === 0) {
+      return res
+        .status(404)
+        .send({ message: "No Products Available.", status: true });
+    }
+
+    // Map products to return only required fields + priceStartingFrom
+    const formattedProducts = products.map((product) => {
+      let priceStartingFrom = 0;
+      if (product.packSize && product.packSize.length > 0) {
+        const lastPack = product.packSize[product.packSize.length - 1];
+        priceStartingFrom = lastPack.mrp * (1 - (lastPack.discount || 0) / 100);
+      }
+
+      return {
+        _id: product._id,
+        productName: product.productName,
+        productType: product.productType,
+        shortDescription: product.shortDescription,
+        image: product.image,
+        priceStartingFrom,
+      };
+    });
+
+    return res.status(200).send({ products: formattedProducts, status: true });
+  } catch (error) {
+    return res.status(500).send({ error: error.message, status: false });
+  }
+};
+
 const getProductDetails = async (req, res, next) => {
   try {
     // Reading product details
@@ -100,9 +145,16 @@ const getProductDetails = async (req, res, next) => {
     const productDetails = await ProductModel.findById(productId).lean();
     if (productDetails) {
       // Sending Products
+      let priceStartingFrom = 0;
+      if (productDetails.packSize && productDetails.packSize.length > 0) {
+        const lastPack =
+          productDetails.packSize[productDetails.packSize.length - 1];
+        priceStartingFrom = lastPack.mrp * (1 - (lastPack.discount || 0) / 100);
+      }
+      const formattedProducts = { ...productDetails, priceStartingFrom };
       return res
         .status(200)
-        .send({ productDetails: productDetails, status: true });
+        .send({ productDetails: formattedProducts, status: true });
     } else {
       // No Products found
       return res
@@ -145,6 +197,7 @@ module.exports = {
   validateAddProduct,
   updateProduct,
   getProducts,
+  getAllProductDetails,
   getProductDetails,
   deleteProduct,
 };

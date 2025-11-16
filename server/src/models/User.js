@@ -11,6 +11,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    email: {
+      type: String,
+      required: true,
+    },
     shop: {
       type: String,
       required: true,
@@ -33,7 +37,6 @@ const UserSchema = new mongoose.Schema(
     },
     otp: {
       type: String,
-      required: true,
       default: null,
     },
     userType: {
