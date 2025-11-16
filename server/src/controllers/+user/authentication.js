@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const generateOTP = require("../../utils/otp-generator");
-const { sendOtpEmail } = require("./../../utils/email");
+const { otpEmail } = require("./../../utils/email");
 
 const User = require("../../models/User");
 const Session = require("../../models/Session");
@@ -24,7 +24,7 @@ const sendOtp = async (req, res, next) => {
 
       try {
         if (user?.email) {
-          const mailResponse = await sendOtpEmail(
+          const mailResponse = await otpEmail(
             user.email,
             "OTP from PALS' PAINT",
             loginOtp
@@ -34,9 +34,7 @@ const sendOtp = async (req, res, next) => {
         await user.save();
 
         return res.json({
-          message:
-            "Otp Sent to you registered email and mobile number 2." +
-            mailResponse,
+          message: "Otp Sent to you registered email and mobile number 2.",
           userType: user.userType,
           status: true,
         });

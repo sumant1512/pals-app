@@ -1,42 +1,19 @@
-const { google } = require("googleapis");
-const fs = require("fs");
-const path = require("path");
+require("dotenv").config();
+const nodemailer = require("nodemailer");
 
-// Load OAuth2 credentials
-const credentials = JSON.parse(process.env.GOOGLE_OAUTH_CREDENTIALS);
-const token = JSON.parse(process.env.GOOGLE_OAUTH_TOKEN);
+// ✅ Create transporter with Gmail + App Password
+const createTransporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MAILER_EMAIL,
+    pass: process.env.MAILER_APP_PASSWORD,
+  },
+});
 
-const { client_id, client_secret, redirect_uris } = credentials.installed;
+// 🔹 Send OTP Email
+const sendOtpEmail = async (to, subject = "Login OTP - PALS PAINT", otp) => {
+  const transporter = await createTransporter;
 
-const oAuth2Client = new google.auth.OAuth2(
-  client_id,
-  client_secret,
-  redirect_uris[0]
-);
-
-oAuth2Client.setCredentials(token);
-
-const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
-
-function makeEmail(to, subject, html) {
-  const messageParts = [
-    `To: ${to}`,
-    "Content-Type: text/html; charset=utf-8",
-    `Subject: ${subject}`,
-    "",
-    html,
-  ];
-
-  const message = messageParts.join("\n");
-
-  return Buffer.from(message)
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
-}
-
-const otpEmail = async (to, subject = "Login OTP - PALS PAINT", otp) => {
   const mailContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background: #ffffff;">
       <div style="text-align: center; border-bottom: 2px solid #f5f5f5; padding-bottom: 15px; margin-bottom: 20px;">
@@ -73,15 +50,16 @@ const otpEmail = async (to, subject = "Login OTP - PALS PAINT", otp) => {
     </div>
   `;
 
-  const rawEmail = makeEmail(to, subject, mailContent);
-
   try {
-    const res = await gmail.users.messages.send({
-      userId: "me",
-      requestBody: { raw: rawEmail },
-    });
+    const mailOptions = {
+      from: "sumantmishra43@gmail.com",
+      to,
+      subject,
+      html: mailContent,
+    };
 
-    return res.data;
+    const info = await transporter.sendMail(mailOptions);
+    return info;
   } catch (error) {
     console.error("❌ Error sending OTP email:", error);
     throw error;
@@ -89,7 +67,9 @@ const otpEmail = async (to, subject = "Login OTP - PALS PAINT", otp) => {
 };
 
 const registrationConfirmationEmail = async (to, name) => {
-  const subject = "Registration Confirmation from PALS PAINT";
+  const transporter = await createTransporter();
+
+  const mailSubject = "Registration Confirmation from PALS PAINT";
   const mailContent = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background: #ffffff;">
       <div style="text-align: center; border-bottom: 2px solid #f5f5f5; padding-bottom: 15px; margin-bottom: 20px;">
@@ -115,15 +95,16 @@ const registrationConfirmationEmail = async (to, name) => {
     </div>
   `;
 
-  const rawEmail = makeEmail(to, subject, mailContent);
-
   try {
-    const res = await gmail.users.messages.send({
-      userId: "me",
-      requestBody: { raw: rawEmail },
-    });
+    const mailOptions = {
+      from: process.env.MAILER_EMAIL,
+      to,
+      subject: mailSubject,
+      html: mailContent,
+    };
 
-    return res.data;
+    const info = await transporter.sendMail(mailOptions);
+    return info;
   } catch (error) {
     console.error("❌ Error sending registration email:", error);
     throw error;
@@ -135,23 +116,26 @@ const sendContactUsEmail = async (
   mailContent = "Hey, Let's connect!",
   to = process.env.MAILER_EMAIL
 ) => {
-  const rawEmail = makeEmail(to, subject, mailContent);
+  const transporter = await createTransporter;
 
   try {
-    const res = await gmail.users.messages.send({
-      userId: "me",
-      requestBody: { raw: rawEmail },
-    });
+    const mailOptions = {
+      from: process.env.MAILER_EMAIL,
+      to,
+      subject,
+      html: mailContent,
+    };
 
-    return res.data;
+    const info = await transporter.sendMail(mailOptions);
+    return info;
   } catch (error) {
-    console.error("❌ Error sending registration email:", error);
+    console.error("❌ Error sending OTP email:", error);
     throw error;
   }
 };
 
 module.exports = {
-  otpEmail: otpEmail,
-  registrationConfirmationEmail: registrationConfirmationEmail,
-  sendContactUsEmail: sendContactUsEmail,
+  sendOtpEmail,
+  registrationConfirmationEmail,
+  sendContactUsEmail,
 };
