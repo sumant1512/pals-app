@@ -12,10 +12,7 @@ export default function UserHeader() {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require("./../assets/pals_paint.png")}
-        style={styles.logo}
-      />
+      <Image source={require("./../assets/logo.png")} style={styles.logo} />
       <Pressable style={styles.circleButton} onPress={profilePressed}>
         <Ionicons name="person" size={32} color="#014589" />
       </Pressable>
