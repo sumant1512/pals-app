@@ -134,12 +134,12 @@ const LoginScreen = () => {
     >
       <HeaderOverlay />
 
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-      >
-        <ScrollView contentContainerStyle={styles.container}>
+      <View style={{ flex: 1 }}>
+        <ScrollView
+          contentContainerStyle={styles.container}
+          keyboardShouldPersistTaps="always"
+          showsVerticalScrollIndicator={false}
+        >
           <Image
             source={require("./../assets/circle_logo.png")}
             style={styles.logo}
@@ -197,7 +197,7 @@ const LoginScreen = () => {
             )}
           </View>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </View>
 
       <ErrorModal
         visible={errorVisible}
