@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "Pals Paint",
+    "slug": "pals-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/square_logo.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./src/assets/square_logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sumant1512.expotemplatetabs",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/square_logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.sumant1512.expotemplatetabs"
+    },
+    "web": {
+      "favicon": "./src/assets/square_logo.png"
+    },
+    "plugins": [
+      "expo-camera"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2be20ac3-b018-4563-b9ac-c225823660b0"
+      }
+    }
+  }
+}
