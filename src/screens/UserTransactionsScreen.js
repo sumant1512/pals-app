@@ -14,6 +14,7 @@ import { BE_PATH } from "../constants/Config";
 import TransactionCard from "../components/TransactionCard";
 import HeaderOverlay from "../components/HeaderOverlay";
 import UserHeader from "../components/UserHeader";
+import NoTransactionCard from "../components/NoTransactionCard";
 import PalsLoaderCard from "../components/PalsLoaderCard";
 
 export default function UserTransactionsScreen() {
@@ -72,7 +73,7 @@ export default function UserTransactionsScreen() {
         {loading ? (
           <PalsLoaderCard />
         ) : transactions.length === 0 ? (
-          <Text style={styles.centerText}>No transactions found.</Text>
+          <NoTransactionCard />
         ) : (
           <FlatList
             data={transactions}
