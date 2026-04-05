@@ -58,20 +58,32 @@ const TransactionCard = ({ transaction }) => {
         >
           {capitalizeFirst(transaction.status)}
         </Text>
-        <Text style={styles.amount}>₹ {transaction.amount}</Text>
+        <Text style={styles.amount}>₹ {transaction.points}</Text>
       </View>
 
       <Text style={styles.text}>
         Source:{" "}
         <Text style={styles.highlight}>
-          {capitalizeFirst(transaction.source)}
+          {capitalizeFirst(transaction.event_type)}
         </Text>
       </Text>
       <Text style={styles.text}>
-        Ref. No.: <Text style={styles.highlight}>{transaction.reference}</Text>
+        Ref. No.: <Text style={styles.highlight}>{transaction.id}</Text>
       </Text>
+      {transaction.balance_before != null && (
+        <Text style={styles.text}>
+          Balance Before:{" "}
+          <Text style={styles.highlight}>{transaction.balance_before}</Text>
+        </Text>
+      )}
+      {transaction.balance_after != null && (
+        <Text style={styles.text}>
+          Balance After:{" "}
+          <Text style={styles.highlight}>{transaction.balance_after}</Text>
+        </Text>
+      )}
       <Text style={styles.date}>
-        {formatDate(new Date(transaction.createdAt))}
+        {formatDate(new Date(transaction.created_at))}
       </Text>
     </View>
   );

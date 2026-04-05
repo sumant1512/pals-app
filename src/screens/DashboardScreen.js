@@ -7,7 +7,7 @@ import axios from "axios";
 import ErrorModal from "../components/PalsErrorModal";
 import PalsLoaderCard from "./../components/PalsLoaderCard";
 import DealerDashboardScreen from "./DealerDashboardScreen";
-import { BE_PATH } from "../constants/Config";
+import { BE_PATH, VERIFICATION_APP_ID } from "../constants/Config";
 
 export default function DashboardScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -73,12 +73,13 @@ export default function DashboardScreen({ navigation }) {
           const headers = {
             Accept: "application/json",
             "Content-Type": "application/json",
-            authorization: `Bearer ${authToken}`,
+            Authorization: `Bearer ${authToken}`,
+            "X-App-Id": VERIFICATION_APP_ID,
           };
           axios
-            .get(`${BE_PATH}/api/auth/userInfo`, { headers })
+            .get(`${BE_PATH}/api/mobile/v1/auth/me`, { headers })
             .then((userInfoResponse) => {
-              navigation.navigate(userInfoResponse?.data?.data?.userType);
+              // navigation.navigate(userInfoResponse?.data?.role);
               setUserInfo(userInfoResponse?.data?.data);
               setUserInfoToAsyncStorage(
                 JSON.stringify(userInfoResponse?.data?.data)
@@ -87,7 +88,7 @@ export default function DashboardScreen({ navigation }) {
             })
             .catch((error) => {
               setLoading(false);
-              console.error("API Error:", error.status);
+              console.error("API Error:", error);
               if (error.status === 401) {
                 resetToLogin();
               }

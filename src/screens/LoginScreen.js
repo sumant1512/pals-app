@@ -46,6 +46,14 @@ const LoginScreen = () => {
     }
   };
 
+  const setRefreshTokenToStorage = async (token) => {
+    try {
+      await AsyncStorage.setItem("refreshToken", token);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const setOpenedScreen = async (screenName) => {
     try {
       await AsyncStorage.setItem("openedScreen", screenName);
@@ -57,14 +65,14 @@ const LoginScreen = () => {
   const onLoginPressed = () => {
     const { mobile } = getValues();
 
-    fetch(`${BE_PATH}/api/auth/send-otp`, {
+    fetch(`${BE_PATH}/api/mobile/v1/auth/request-otp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        mobile,
+        phone_e164: mobile,
         device: Platform.OS,
       }),
     })
@@ -78,12 +86,7 @@ const LoginScreen = () => {
       })
       .then((responseData) => {
         if (responseData.status) {
-          if (responseData.userType !== "Dealer") {
-            setErrorMsg("User not registered on app.");
-            setErrorVisible(true);
-          } else {
-            setIsVerifyScreen(true);
-          }
+          setIsVerifyScreen(true);
         }
       })
       .catch((error) => {
@@ -100,18 +103,24 @@ const LoginScreen = () => {
   };
 
   const verifyUser = (data) => {
-    fetch(`${BE_PATH}/api/auth/verify`, {
+    const requestData = {
+      phone_e164: data.mobile,
+      otp: data.otp,
+      device: Platform.OS,
+    };
+    fetch(`${BE_PATH}/api/mobile/v1/auth/verify-otp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(requestData),
     })
       .then((response) => response.json())
       .then((responseData) => {
         if (responseData.status) {
-          setAuthTokenToStorage(responseData?.authToken);
+          setAuthTokenToStorage(responseData?.data?.accessToken);
+          setRefreshTokenToStorage(responseData?.data?.refreshToken);
           setOpenedScreen("user");
           navigation.navigate("Dealer");
         } else {

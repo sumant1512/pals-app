@@ -44,10 +44,10 @@ export default function UserTransactionsScreen() {
     };
 
     try {
-      const res = await axios.get(`${BE_PATH}/api/coupon/transactions`, {
+      const res = await axios.get(`${BE_PATH}/api/mobile/v1/transactions`, {
         headers,
       });
-      setTransactions(res.data.transactions || []);
+      setTransactions(res.data.data.transactions || []);
     } catch (error) {
       alert("Failed to fetch transactions.");
     } finally {
@@ -77,7 +77,7 @@ export default function UserTransactionsScreen() {
         ) : (
           <FlatList
             data={transactions}
-            keyExtractor={(item) => item._id}
+            keyExtractor={(item) => item.id}
             renderItem={({ item }) => <TransactionCard transaction={item} />}
             contentContainerStyle={{ paddingBottom: 20 }}
           />

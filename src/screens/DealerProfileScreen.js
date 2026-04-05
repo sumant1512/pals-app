@@ -12,17 +12,19 @@ import { CommonActions } from "@react-navigation/native";
 
 import HeaderOverlay from "../components/HeaderOverlay";
 import TouchableButton from "../components/PalsTouchableButton";
-import { BE_PATH } from "../constants/Config";
+import { BE_PATH, VERIFICATION_APP_ID } from "../constants/Config";
 
 export default function DealerProfileScreen() {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [userAuthToken, setUserAuthToken] = useState("");
+  const [userRefreshToken, setUserRefreshToken] = useState("");
   const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
     getAuthToken();
     getUserInfo();
+    getRefreshToken();
   }, []);
 
   const clearAuthStorage = async () => {
@@ -35,7 +37,8 @@ export default function DealerProfileScreen() {
 
   const clearUserInfoStorage = async () => {
     try {
-      await AsyncStorage.removeItem("userInfo");
+      const test = await AsyncStorage.removeItem("userInfo");
+      console.log("User info cleared:", test);
     } catch (e) {
       console.error(e);
     }
@@ -51,11 +54,21 @@ export default function DealerProfileScreen() {
     })();
   };
 
+  const getRefreshToken = () => {
+    (() => {
+      AsyncStorage.getItem("refreshToken").then((refreshToken) => {
+        if (refreshToken) {
+          setUserRefreshToken(refreshToken);
+        }
+      });
+    })();
+  };
+
   const getUserInfo = (authToken) => {
     (() => {
       AsyncStorage.getItem("userInfo").then((userInfo) => {
         if (userInfo) {
-          const userInfoParsed = JSON.parse(userInfo);
+          const userInfoParsed = JSON.parse(userInfo).data;
           setUserInfo(userInfoParsed);
         }
       });
@@ -71,13 +84,16 @@ export default function DealerProfileScreen() {
   };
 
   const onLogoutPressed = () => {
-    fetch(`${BE_PATH}/api/auth/logout`, {
-      method: "GET",
+    fetch(`${BE_PATH}/api/mobile/v1/auth/logout`, {
+      method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        authorization: `Bearer ${userAuthToken}`,
+        "X-App-Id": VERIFICATION_APP_ID,
       },
+      body: JSON.stringify({
+        refreshToken: userRefreshToken,
+      }),
     })
       .then((resp) => resp.json())
       .then((logoutResponseData) => {
@@ -89,7 +105,7 @@ export default function DealerProfileScreen() {
             CommonActions.reset({
               index: 0,
               routes: [{ name: "Login" }],
-            })
+            }),
           );
         }
       })
@@ -113,28 +129,28 @@ export default function DealerProfileScreen() {
         <View style={styles.form}>
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>FULL NAME</Text>
-            <Text style={styles.value}>{userInfo?.name}</Text>
+            <Text style={styles.value}>{userInfo?.full_name}</Text>
           </View>
 
           <View style={styles.separator} />
 
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>Designation</Text>
-            <Text style={styles.value}>Pals' {userInfo?.userType}</Text>
+            <Text style={styles.value}>Pals' {userInfo?.role}</Text>
           </View>
 
           <View style={styles.separator} />
 
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>SHOP NAME</Text>
-            <Text style={styles.value}>{userInfo?.shop}</Text>
+            <Text style={styles.value}>{userInfo?.dealer?.shop_name}</Text>
           </View>
 
           <View style={styles.separator} />
 
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>ADDRESS</Text>
-            <Text style={styles.value}>{userInfo?.address}</Text>
+            <Text style={styles.value}>{userInfo?.dealer?.address}</Text>
           </View>
 
           <View style={styles.separator} />
@@ -142,11 +158,11 @@ export default function DealerProfileScreen() {
           <View style={styles.row}>
             <View style={styles.halfField}>
               <Text style={styles.label}>CITY</Text>
-              <Text style={styles.value}>{userInfo?.city}</Text>
+              <Text style={styles.value}>{userInfo?.dealer?.city}</Text>
             </View>
             <View style={styles.halfField}>
               <Text style={styles.label}>PIN</Text>
-              <Text style={styles.value}>{userInfo?.pin}</Text>
+              <Text style={styles.value}>{userInfo?.dealer?.pincode}</Text>
             </View>
           </View>
 
@@ -154,14 +170,14 @@ export default function DealerProfileScreen() {
 
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>STATE</Text>
-            <Text style={styles.value}>{userInfo?.state}</Text>
+            <Text style={styles.value}>{userInfo?.dealer?.state}</Text>
           </View>
 
           <View style={styles.separator} />
 
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>MOBILE NUMBER</Text>
-            <Text style={styles.value}>{userInfo?.mobile}</Text>
+            <Text style={styles.value}>{userInfo?.phone}</Text>
           </View>
 
           {/* Log Out button stuck at the bottom of the card */}

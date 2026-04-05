@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
@@ -15,7 +8,7 @@ import HeaderOverlay from "../components/HeaderOverlay";
 import UserRedeemModal from "./UserRedeemModal";
 import ErrorModal from "../components/PalsErrorModal";
 import PalsTouchableButton from "../components/PalsTouchableButton";
-import { BE_PATH } from "../constants/Config";
+import { BE_PATH, VERIFICATION_APP_ID } from "../constants/Config";
 
 const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -56,17 +49,18 @@ const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
 
     axios
       .post(
-        `${BE_PATH}/api/coupon/redeem`,
+        `${BE_PATH}/api/mobile/v1/points/redeem`,
         {
-          amount: parseInt(parseInt(userInfo.availableCredit / 100) * 100),
+          points: parseInt(parseInt(userInfo?.points?.available)),
         },
         {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
             authorization: `Bearer ${token}`,
+            "X-App-Id": VERIFICATION_APP_ID,
           },
-        }
+        },
       )
       .then((res) => {
         console.log("Redeemed:", res.data);
@@ -92,26 +86,30 @@ const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
             <Text style={styles.cardTitle}>Pals Balance</Text>
             <Text style={styles.currencyIcon}>₹</Text>
           </View>
-          <Text style={styles.amount}>₹ {userInfo?.availableCredit || 0}</Text>
+          <Text style={styles.amount}>
+            ₹ {userInfo?.points?.available || 0}
+          </Text>
 
           <View style={styles.divider} />
 
           <View style={styles.rowBetween}>
             <Text style={styles.label}>Credited</Text>
             <Text style={styles.labelAmount}>
-              ₹{userInfo?.totalCredit || 0}
+              ₹{userInfo?.points?.credited || 0}
             </Text>
           </View>
 
           <View style={styles.rowBetween}>
             <Text style={styles.label}>Redeemed</Text>
-            <Text style={styles.labelAmount}>₹{userInfo?.totalDebit || 0}</Text>
+            <Text style={styles.labelAmount}>
+              ₹{userInfo?.points?.redeemed || 0}
+            </Text>
           </View>
 
           <View style={styles.rowBetween}>
             <Text style={styles.label}>Locked Credit</Text>
             <Text style={styles.labelAmount}>
-              ₹{userInfo?.lockedCredit || 0}
+              ₹{userInfo?.points?.locked || 0}
             </Text>
           </View>
 
@@ -125,7 +123,7 @@ const DealerDashboardScreen = ({ userInfo, addCouponPressed }) => {
 
         <UserRedeemModal
           isVisible={modalVisible}
-          redemmablePoints={parseInt(userInfo?.availableCredit / 100) * 100}
+          redemmablePoints={parseInt(userInfo?.points?.available)}
           closeModal={closeModal}
           confirmModal={onRedeemConfirm}
         />

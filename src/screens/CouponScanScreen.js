@@ -21,7 +21,7 @@ import ErrorModal from "../components/PalsErrorModal";
 
 const { width } = Dimensions.get("window");
 
-import { BE_PATH } from "../constants/Config";
+import { BE_PATH, VERIFICATION_APP_ID } from "../constants/Config";
 const SCAN_BOX_SIZE = width * 0.6;
 
 export default function CoupanScanScreen({ navigation }) {
@@ -69,11 +69,12 @@ export default function CoupanScanScreen({ navigation }) {
           Accept: "application/json",
           "Content-Type": "application/json",
           authorization: `Bearer ${authToken}`,
+          "X-App-Id": VERIFICATION_APP_ID,
         };
         axios
           .post(
-            `${BE_PATH}/api/coupon/scan`,
-            { code: formData.code },
+            `${BE_PATH}/api/mobile/v1/scan`,
+            { coupon_code: formData.code },
             { headers }
           )
           .then((scanApiResponse) => {
