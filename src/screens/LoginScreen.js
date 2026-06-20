@@ -19,7 +19,7 @@ import PalsTextInput from "../components/PalsTextInput";
 import PalsOtpInput from "../components/PalsOtpInput";
 import HeaderOverlay from "../components/HeaderOverlay";
 
-import { BE_PATH } from "../constants/Config";
+import { BE_PATH, VERIFICATION_APP_ID } from "../constants/Config";
 
 const LoginScreen = () => {
   const [errorVisible, setErrorVisible] = useState(false);
@@ -33,12 +33,12 @@ const LoginScreen = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      mobile: "",
+      email: "",
       otp: "",
     },
   });
 
-  const setAuthTokenToStorage = async (token) => {
+  const setauthTokenToStorage = async (token) => {
     try {
       await AsyncStorage.setItem("authToken", token);
     } catch (e) {
@@ -63,16 +63,17 @@ const LoginScreen = () => {
   };
 
   const onLoginPressed = () => {
-    const { mobile } = getValues();
+    const { email } = getValues();
 
-    fetch(`${BE_PATH}/api/mobile/v1/auth/request-otp`, {
+    fetch(`${BE_PATH}/auth/request-otp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        "X-App-Id": VERIFICATION_APP_ID,
       },
       body: JSON.stringify({
-        phone_e164: mobile,
+        email: email,
         device: Platform.OS,
       }),
     })
@@ -95,33 +96,35 @@ const LoginScreen = () => {
 
         try {
           const parsed = JSON.parse(error.message);
-          finalError = parsed.message || error.message;
-        } catch (e) {}
+          console.log("Parsed error:", parsed);
+          finalError = parsed.error.message;
+        } catch (e) { }
         setErrorMsg(finalError.toString());
         setErrorVisible(true);
       });
   };
 
-  const verifyUser = (data) => {
+  const verifyOtp = (data) => {
     const requestData = {
-      phone_e164: data.mobile,
+      email: data.email,
       otp: data.otp,
       device: Platform.OS,
     };
-    fetch(`${BE_PATH}/api/mobile/v1/auth/verify-otp`, {
+    fetch(`${BE_PATH}/auth/verify-otp`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        "X-App-Id": VERIFICATION_APP_ID,
       },
       body: JSON.stringify(requestData),
     })
       .then((response) => response.json())
-      .then((responseData) => {
+      .then(async (responseData) => {
         if (responseData.status) {
-          setAuthTokenToStorage(responseData?.data?.accessToken);
-          setRefreshTokenToStorage(responseData?.data?.refreshToken);
-          setOpenedScreen("user");
+          await setauthTokenToStorage(responseData?.data?.authToken);
+          await setRefreshTokenToStorage(responseData?.data?.refreshToken);
+          await setOpenedScreen("user");
           navigation.navigate("Dealer");
         } else {
           setErrorMsg(responseData.message);
@@ -130,7 +133,7 @@ const LoginScreen = () => {
       })
       .catch((error) => {
         console.error("[AccountLoginScreen - verify otp] API Error:", error);
-        setErrorMsg(error.message || "Something went wrong");
+        setErrorMsg(error.error.message || "Something went wrong");
         setErrorVisible(true);
       });
   };
@@ -165,17 +168,15 @@ const LoginScreen = () => {
 
             {!isVerifyScreen ? (
               <PalsTextInput
-                name="mobile"
+                name="email"
                 control={control}
-                label="Registered Mobile no."
-                placeholder="+91 9999999999"
-                keyboardType="number-pad"
-                maxLength={10}
+                label="Registered Email Id."
+                keyboardType="email-address"
                 rules={{
-                  required: "Mobile number is required.",
+                  required: "Email is required.",
                   pattern: {
-                    value: /^[6-9]\d{9}$/,
-                    message: "Invalid mobile number.",
+                    value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                    message: "Invalid email address.",
                   },
                 }}
               />
@@ -193,7 +194,7 @@ const LoginScreen = () => {
             <PalsTouchableButton
               label={isVerifyScreen ? "Verify" : "Get OTP"}
               onPress={
-                isVerifyScreen ? handleSubmit(verifyUser) : onLoginPressed
+                isVerifyScreen ? handleSubmit(verifyOtp) : onLoginPressed
               }
             />
             {isVerifyScreen && (

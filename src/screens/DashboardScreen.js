@@ -77,9 +77,8 @@ export default function DashboardScreen({ navigation }) {
             "X-App-Id": VERIFICATION_APP_ID,
           };
           axios
-            .get(`${BE_PATH}/api/mobile/v1/auth/me`, { headers })
+            .get(`${BE_PATH}/auth/context`, { headers })
             .then((userInfoResponse) => {
-              // navigation.navigate(userInfoResponse?.data?.role);
               setUserInfo(userInfoResponse?.data?.data);
               setUserInfoToAsyncStorage(
                 JSON.stringify(userInfoResponse?.data?.data)

@@ -30,6 +30,7 @@ export default function DealerProfileScreen() {
   const clearAuthStorage = async () => {
     try {
       await AsyncStorage.removeItem("authToken");
+      await AsyncStorage.removeItem("refreshToken");
     } catch (e) {
       console.error(e);
     }
@@ -84,12 +85,13 @@ export default function DealerProfileScreen() {
   };
 
   const onLogoutPressed = () => {
-    fetch(`${BE_PATH}/api/mobile/v1/auth/logout`, {
+    fetch(`${BE_PATH}/auth/logout`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         "X-App-Id": VERIFICATION_APP_ID,
+        "Authorization": `Bearer ${userAuthToken}`,
       },
       body: JSON.stringify({
         refreshToken: userRefreshToken,
